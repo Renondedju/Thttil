@@ -2,6 +2,10 @@
 
 > todo
 
+# Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) to know what to do.
+
 # Dependencies
 
 ## Antlr4 by Terence Parr
