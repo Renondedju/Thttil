@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Vscode
+.vscode/
+
 # Distribution / packaging
 .Python
 build/
@@ -102,3 +105,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+antlr\.jar
