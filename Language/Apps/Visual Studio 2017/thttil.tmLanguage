@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+MIT License
+
+Copyright (c) 2019 Basile Combet
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE. -->
+
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>$schema</key>
+    <string>https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json</string>
+    <key>name</key>
+    <string>Thttil</string>
+    <key>fileTypes</key>
+    <array>
+      <string>thtt</string>
+      <string>thttil</string>
+      <string>t</string>
+    </array>
+    <key>foldingStartMarker</key>
+    <string>\{\s*$</string>
+    <key>foldingStopMarker</key>
+    <string>^\s*\}</string>
+    <key>patterns</key>
+    <array>
+      <dict>
+        <key>include</key>
+        <string>#capture_groups</string>
+      </dict>
+      <dict>
+        <key>include</key>
+        <string>#strings</string>
+      </dict>
+      <dict>
+        <key>include</key>
+        <string>#global_tokens</string>
+      </dict>
+    </array>
+    <key>repository</key>
+    <dict>
+      <key>global_tokens</key>
+      <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>name</key>
+            <string>markup.quote.thttil</string>
+            <key>begin</key>
+            <string>%</string>
+            <key>end</key>
+            <string>%</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>name</key>
+                <string>constant.character.escape.thttil</string>
+                <key>match</key>
+                <string>\\.</string>
+              </dict>
+            </array>
+          </dict>
+          <dict>
+            <key>name</key>
+            <string>comment.line.number-sign.thttil</string>
+            <key>match</key>
+            <string>(#.*)</string>
+          </dict>
+        </array>
+      </dict>
+      <key>tokens</key>
+      <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>match</key>
+            <string>([A-Z]+)\s+</string>
+            <key>name</key>
+            <string>entity.name.function.thttil</string>
+          </dict>
+          <dict>
+            <key>name</key>
+            <string>variable.parameter.thttil</string>
+            <key>match</key>
+            <string>\$([\w\d\._-]+)</string>
+          </dict>
+        </array>
+      </dict>
+      <key>capture_groups</key>
+      <dict>
+        <key>begin</key>
+        <string>\$\(</string>
+        <key>end</key>
+        <string>\)</string>
+        <key>beginCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.definition.token.begin.thttil</string>
+          </dict>
+        </dict>
+        <key>endCaptures</key>
+        <dict>
+          <key>0</key>
+          <dict>
+            <key>name</key>
+            <string>punctuation.definition.token.end.thttil</string>
+          </dict>
+        </dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>include</key>
+            <string>#tokens</string>
+          </dict>
+          <dict>
+            <key>include</key>
+            <string>#strings</string>
+          </dict>
+        </array>
+      </dict>
+      <key>strings</key>
+      <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>name</key>
+            <string>string.quoted.double.thttil</string>
+            <key>begin</key>
+            <string>"</string>
+            <key>end</key>
+            <string>"</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>name</key>
+                <string>constant.character.escape.thttil</string>
+                <key>match</key>
+                <string>\\.</string>
+              </dict>
+            </array>
+          </dict>
+        </array>
+      </dict>
+    </dict>
+    <key>scopeName</key>
+    <string>source.thttil</string>
+  </dict>
+</plist>

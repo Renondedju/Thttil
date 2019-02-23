@@ -1,0 +1,25 @@
+{
+    "name": "thttil",
+    "displayName": "Thttil",
+    "description": "Thttil language support",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.31.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "thttil",
+            "aliases": ["Thttil", "thttil"],
+            "extensions": ["thtt","thttil","t"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "thttil",
+            "scopeName": "source.thttil",
+            "path": "./syntaxes/thttil.tmLanguage.json"
+        }]
+    }
+}

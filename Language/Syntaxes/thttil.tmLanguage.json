@@ -1,0 +1,89 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Thttil",
+	"fileTypes": ["thtt", "thttil", "t"],
+	"foldingStartMarker":"\\{\\s*$",
+	"foldingStopMarker" :"^\\s*\\}",
+	"patterns": [
+		{
+			"include": "#capture_groups"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#global_tokens"
+		}
+	],
+	"repository": {
+		"global_tokens": {
+			"patterns": [
+				{
+					"name": "markup.quote.thttil",
+					"begin": "%",
+					"end": "%",
+					"patterns": [
+						{
+							"name": "constant.character.escape.thttil",
+							"match": "\\\\."
+						}
+					]
+				},
+				{  
+					"name" : "comment.line.number-sign.thttil",
+					"match": "(#.*)"
+				}
+			]
+		},
+		"tokens": {
+			"patterns":[
+				{
+					"match": "([A-Z]+)\\s+",
+					"name": "entity.name.function.thttil"
+				},
+				{  
+					"name" : "variable.parameter.thttil",
+					"match": "\\$([\\w\\d\\._-]+)"
+				}
+			]
+		},
+		"capture_groups": {
+			"begin": "\\$\\(",
+			"end": "\\)",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.token.begin.thttil"
+				}
+			},
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.token.end.thttil"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#tokens"
+				},
+				{
+					"include": "#strings"
+				}
+			]
+		},
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.thttil",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.thttil",
+							"match": "\\\\."
+						}
+					]
+				}
+			]
+		}
+	},
+	"scopeName": "source.thttil"
+}
