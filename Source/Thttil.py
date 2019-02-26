@@ -55,6 +55,9 @@ class ArgParser:
     def _parseVariables(self, items: list = []):
         variables = {}
 
+        if not items:
+            return variables
+
         for item in items:
             if not '=' in item:
                 print(f"Error: invalid variable declaration \"{item}\"")

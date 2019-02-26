@@ -27,8 +27,10 @@ import antlr4
 
 from .ThttilLexer               import ThttilLexer
 from .ThttilParser              import ThttilParser
+from .ThttilCommand             import ThttilCommand
 from .ThttilVisitor             import ThttilVisitor
 from .ThttilVariablePool        import ThttilVariablePool
 from .ThttilTokenRewriter       import ThttilTokenRewriter
 from .ThttilCommandCollection   import ThttilCommandCollection
+from .ThttilCommandReturnType   import ThttilCommandReturnType
 from .ThttilCommandInterpreter  import ThttilCommandInterpreter

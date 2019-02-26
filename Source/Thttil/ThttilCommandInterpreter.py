@@ -25,30 +25,22 @@ from .ThttilParser               import ThttilParser
 from .ThttilVisitor              import ThttilVisitor
 from .ThttilVariablePool         import ThttilVariablePool
 from .ThttilCommandCollection    import ThttilCommandCollection
+from .ThttilCommandReturnType    import ThttilCommandReturnType
 
 import re
 
 class ThttilCommandInterpreter(ThttilVisitor):
 
-    def __init__(self):
+    def __init__(self, command_collection = ThttilCommandCollection()):
         self.output_stream     : str                         = ""
         self.variable_pool     : ThttilVariablePool          = ThttilVariablePool()
-        self.command_collection: ThttilCommandCollection     = ThttilCommandCollection(self)
+        self.command_collection: ThttilCommandCollection     = command_collection
 
-    def convertData(self, data, strict: bool = False) -> Union[str, List[str]]:
-        """ Converts any python data to Thttil readable data
-            If strict = True, the data returned will always be string
-        """
-        if (strict):
-            return str(data)
-
-        if (isinstance(data, str)):
-            return data
-
-        if (hasattr(data, '__iter__')):
-            return [str(item) for item in data]
-
-        return str(data)
+    def handleData(self, content: Any, push_to_steam: bool = False):
+        if push_to_steam:
+            self.output_stream += ThttilCommandCollection.ConvertData(content)
+            return ""
+        return content
 
     def visitArgument(self, ctx: ThttilParser.ArgumentContext, request_var: bool) -> str:
         """ Visits an argument and retuns it's content or name
@@ -65,6 +57,7 @@ class ThttilCommandInterpreter(ThttilVisitor):
             if request_var:
                 #requested a var name, got a variable name
                 return ctx.VARIABLE().getText()[1:]
+
             # Requested a data, got a variable content
             return self.variable_pool.GetVar(ctx.VARIABLE().getText()[1:])
 
@@ -88,21 +81,32 @@ class ThttilCommandInterpreter(ThttilVisitor):
         if (command == None):
             return ""
 
-        args     : List[str] = []
-        args_type: List[str] = [arg for arg in command.__annotations__.values() if arg != List[ThttilParser.CommandContext]]
+        # ctx.args are the received args from Thttil
+        args: List[Any] = []
+        if (len(ctx.args) < command.min_required_args):
+            print(f"Thttil runtime error: the function named \"{ctx.function.text}\""
+                  f" takes at least {command.min_required_args} argument(s), got {len(ctx.args)}")
+            return ""
 
-        if (len(ctx.args) != len(args_type) - 1):
-            print("Thttil runtime error: the function named", ctx.function.text,
-                "takes", str(len(args_type) - 1), "argument(s), got", len(ctx.args))
+        if (len(ctx.args) > command.max_args):
+            print(f"Thttil runtime error: the function named \"{ctx.function.text}\""
+                  f" takes maximum {command.max_args} argument(s), got {len(ctx.args)}")
             return ""
 
         for index, argument in enumerate(ctx.args):
-            args.append(self.visitArgument(argument, args_type[index] == 'var'))
+            args.append(self.visitArgument(argument, command.arguments[index].type == 'var'))
 
-        if (len(ctx.commands) > 0):
-            return command(self.command_collection, *args, ctx.commands)
+        if (command.require_instruction_block):
+            if (len(ctx.commands) == 0):
+                print(f"Thttil runtime error: the function named \"{ctx.function.text}\""
+                      f" requires an instruction block after it.")
+                exit(1)
+            args.append(ctx.commands)
 
-        return command(self.command_collection, *args)
+        push_to_stream: bool = command.return_type == ThttilCommandReturnType.STREAM_DATA
+        if command.requires_interpreter_instance:
+            return self.handleData(command(self, *args), push_to_stream)
+        return self.handleData(command(*args), push_to_stream)
 
     def visitProgram(self, ctx: ThttilParser.ProgramContext) -> str:
         """ Executes the program and returns the content result
