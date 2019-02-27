@@ -29,7 +29,9 @@ from .ThttilLexer               import ThttilLexer
 from .ThttilParser              import ThttilParser
 from .ThttilCommand             import ThttilCommand
 from .ThttilVisitor             import ThttilVisitor
+from .ThttilFileStream          import ThttilFileStream
 from .ThttilVariablePool        import ThttilVariablePool
+from .ThttilErrorHandler        import ThttilErrorHandler
 from .ThttilTokenRewriter       import ThttilTokenRewriter
 from .ThttilCommandCollection   import ThttilCommandCollection
 from .ThttilCommandReturnType   import ThttilCommandReturnType
