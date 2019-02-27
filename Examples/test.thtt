@@ -22,29 +22,20 @@
 
 %\nExtern variable test:   % $(OUT   $extern_var)
 %\nOUT     command test:   % $(OUT   "sample")
-%\nPRINT   command test:   % $(PRINT "sample")
-%\nUPPER   command test:   % $(UPPER "sample")
-%\nLOWER   command test:   % $(LOWER "SAMPLE")
-%\nTITLE   command test:   % $(TITLE "sample sample SAMPLE")
-%\nSHELL   command test:   % $(SHELL "cd")
+%\nPRINT   command test:   % $(OUT $(PRINT "sample"))
+%\nUPPER   command test:   % $(OUT $(UPPER "sample"))
+%\nLOWER   command test:   % $(OUT $(LOWER "SAMPLE"))
+%\nTITLE   command test:   % $(OUT $(TITLE "sample sample SAMPLE"))
+%\nSHELL   command test:   % $(OUT $(SHELL "cd"))
 %\nIFEQ    command test:   % $(IFEQ  "equal", "equal"){ $(OUT "I should be printed!"   ) } $(IFEQ  "equal", "not equal"){ $(OUT "I shouldn't be printed!") }
 %\nIFNEQ   command test:   % $(IFNEQ "equal", "equal"){ $(OUT "I shouldn't be printed!") } $(IFNEQ "equal", "not equal"){ $(OUT "I should be printed!"   ) }
 %\nCREATE  command test:   % $(CREATE "MyVariableName", "Content of MyVariableName") $(OUT $MyVariableName)
 %\nSET     command test:   % $(SET    $MyVariableName , "New content of MyVariableName") $(OUT $MyVariableName)
-%\nREPLACE command test:   % $(REPLACE $MyVariableName, "New", "Replaced")
-%\nJOIN    command test:   % $(JOIN $(SPLIT $MyVariableName, " "), "_")
+%\nREPLACE command test:   % $(OUT $(REPLACE $MyVariableName, "New", "Replaced"))
+%\nJOIN    command test:   % $(OUT $(JOIN $(SPLIT $MyVariableName, " "), "_"))
 %\nFOREACH command test: \n% $(FOREACH "iterator", $(SPLIT $MyVariableName, " "))
 {
     %   [% $(OUT $iterator.index.value) %/% $(OUT $iterator.index.max) %] % $(OUT $iterator.value) %\n%
-}
-%\nFOREACH command test: \n% $(FOREACH "iterator", $extern_class_array)
-{
-    %   [% $(OUT $iterator.index.value) %/% $(OUT $iterator.index.max) %] % $(OUT $iterator.value.name) % names : -> %
-    $(FOREACH "names", $iterator.value.names)
-    {
-        $(OUT $names.value) % - %
-    }
-    %\n%
 }
 # This is a comment
 %lol \\\\\n%

@@ -1,6 +1,15 @@
 # Thttil
 
-> todo
+<p align="center">
+  <a href="https://discord.gg/TpmPFM3">
+    <img alt="Logo" src="https://discordapp.com/api/guilds/550366032708108301/widget.png?style=banner2">
+  </a>
+</p>
+
+Thttil is an interpreted language made to generate files.  
+The power of Thttil is its extensibility. Since the language is hosted, you can  
+control everything from the file lexer/parser to the interpretation through the variable pool and  
+builtin features.
 
 # Contributing
 

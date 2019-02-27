@@ -55,6 +55,9 @@ class ArgParser:
     def _parseVariables(self, items: list = []):
         variables = {}
 
+        if not items:
+            return variables
+
         for item in items:
             if not '=' in item:
                 print(f"Error: invalid variable declaration \"{item}\"")
@@ -89,12 +92,21 @@ def main():
     if not os.path.exists(args.output_path):
         os.makedirs(args.output_path)
 
-    # Reading and parsing the template file
-    file      = Thttil.antlr4.FileStream(args.template)
-    lexer     = Thttil.ThttilLexer(file)
-    stream    = Thttil.antlr4.CommonTokenStream(lexer)
-    parser    = Thttil.ThttilParser(stream)
-    tree      = parser.program()
+    # Reading the file
+    file          = Thttil.ThttilFileStream(args.template)
+    error_handler = Thttil.ThttilErrorHandler(file)
+    lexer         = Thttil.ThttilLexer(file)
+    lexer.removeErrorListeners()
+    lexer.addErrorListener(error_handler)
+    stream        = Thttil.antlr4.CommonTokenStream(lexer)
+    parser        = Thttil.ThttilParser(stream)
+    parser.removeErrorListeners()
+    parser.addErrorListener(error_handler)
+    tree          = parser.program()
+
+    # If errors has been detected during parsing, stoping here
+    if (error_handler.handleHerrors()):
+        exit(1)
 
     # Passing True here since we are running on windows and we want to write the
     # output to a file (python considers both \r and \n as newlines so we are
