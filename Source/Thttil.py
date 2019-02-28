@@ -92,26 +92,13 @@ def main():
     if not os.path.exists(args.output_path):
         os.makedirs(args.output_path)
 
-    # Reading the file
-    file          = Thttil.ThttilFileStream(args.template)
-    error_handler = Thttil.ThttilErrorHandler(file)
-    lexer         = Thttil.ThttilLexer(file)
-    lexer.removeErrorListeners()
-    lexer.addErrorListener(error_handler)
-    stream        = Thttil.antlr4.CommonTokenStream(lexer)
-    parser        = Thttil.ThttilParser(stream)
-    parser.removeErrorListeners()
-    parser.addErrorListener(error_handler)
-    tree          = parser.program()
-
-    # If errors has been detected during parsing, stoping here
-    if (error_handler.handleHerrors()):
-        exit(1)
+    # Parsing the template file
+    tree_parser = Thttil.ThttilTreeParser(args.template)
 
     # Passing True here since we are running on windows and we want to write the
     # output to a file (python considers both \r and \n as newlines so we are
     # stripping the \r to have proper newlines in our files)
-    Thttil.ThttilTokenRewriter(stream).rewrite(True)
+    Thttil.ThttilTokenRewriter(tree_parser.token_stream).rewrite(True)
 
     # Creating the Thttil interpreter and adding
     # the predeclared variables to the interpreter pool
@@ -120,7 +107,7 @@ def main():
         interpreter.variable_pool.CreateVar(var_name, var_content)
 
     # Staring the interpretation
-    data = interpreter.interpret(tree, file)
+    data = interpreter.interpret(tree_parser.tree, tree_parser.file)
 
     # Writing the output to the file
     with open(f"{args.output_path}/{args.output_filename}", "wt+") as file:
