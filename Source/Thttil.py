@@ -120,7 +120,7 @@ def main():
         interpreter.variable_pool.CreateVar(var_name, var_content)
 
     # Staring the interpretation
-    data = interpreter.visit(tree)
+    data = interpreter.interpret(tree, file)
 
     # Writing the output to the file
     with open(f"{args.output_path}/{args.output_filename}", "wt+") as file:

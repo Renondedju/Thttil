@@ -31,7 +31,7 @@ SOFTWARE.
  */
 
 // Main rule, allows program parsing
-program             : commands+=command+ EOF ;
+program             : commands+=command* EOF ;
 
 // Argument: this may be any command argument
 // Syntax  : $var or @extern_var or "String" or $(COMMAND "args...")
@@ -45,7 +45,7 @@ print_command       : PRINT ;
 // Command    : this is anything that can execute something and be replaced by it's result
 // Syntax     : $(FUNCTION "Some arbitrary content", $some_more ...)
 // Replaced by: FUNCTION return value
-command             : '$(' function=FUNCTION (| args+=argument (',' args+=argument)*) ')' ('{' commands+=command+ '}')?
+command             : '$(' function=FUNCTION (| args+=argument (',' args+=argument)*) ')' ('{' commands+=command* '}')?
                     | print_command
                     ;
 
