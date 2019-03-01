@@ -39,8 +39,9 @@ class ArgParser:
         #Parsing arguments
         self.args       : dict = self.parser.parse_args()
 
-        self.output_path, self.output_filename = os.path.split(self.args.output)
         self.variables  : dict = self._parseVariables(self.args.variables)
+        self.outputs    : dict = self._parseOutputs  (self.args.outputs)
+        # self.output_path, self.output_filename = os.path.split(self.args.output)
         self.template   : str  = self.args.template
 
         self._checkArgs()
@@ -67,6 +68,21 @@ class ArgParser:
 
         return variables
 
+    def _parseOutputs(self, items: list = []):
+        outputs = {}
+
+        if not items:
+            return outputs
+
+        for item in items:
+            if not ':' in item:
+                print(f"Error: invalid output declaration \"{item}\"")
+                exit(1)
+            key, value = item.split(':', 1)
+            outputs[key] = value
+
+        return outputs
+
     def _declareArgs(self):
         #Generating argparse data
         self.parser = argparse.ArgumentParser("Thttil luncher", description="Default thttil luncher")
@@ -74,8 +90,8 @@ class ArgParser:
         self.required_args = self.parser.add_argument_group("required arguments")
         self.optional_args = self.parser.add_argument_group("optional arguments")
         
-        self.optional_args.add_argument('-o', '--output', type=str, metavar='output', default="./thttil.output.txt",
-            help="Name of the output file. (default: ./thttil.output.txt)")
+        self.optional_args.add_argument('-o', '--outputs', type=str, nargs='+', metavar='outputs', default=["default:Output/thttil.default.txt"],
+            help="Name of the stream, followed by the name of the output file. eg. 'default:default.txt' (default: default:./Output/thttil.default.txt)")
 
         self.optional_args.add_argument('-v', '--variables', type=str, nargs='+', metavar='variables',
             help="Variables to declare before the interpretation (format must be: var_name=value)")
@@ -87,10 +103,6 @@ def main():
 
     # Fetching args
     args = ArgParser()
-
-    # Creating the output dirrectory for the output file
-    if not os.path.exists(args.output_path):
-        os.makedirs(args.output_path)
 
     # Parsing the template file
     tree_parser = Thttil.ThttilTreeParser(args.template)
@@ -107,11 +119,19 @@ def main():
         interpreter.variable_pool.CreateVar(var_name, var_content)
 
     # Staring the interpretation
-    data = interpreter.interpret(tree_parser.tree, tree_parser.file)
+    interpreter.interpret(tree_parser.tree, tree_parser.file)
 
-    # Writing the output to the file
-    with open(f"{args.output_path}/{args.output_filename}", "wt+") as file:
-        file.write(data)
+    # Iterating over every output stream
+    for stream_name, file_name in args.outputs.items():
+        output_path, output_filename = os.path.split(file_name)
+
+        # Creating the output dirrectory for the output file
+        if not os.path.exists(f"./{output_path}"):
+            os.makedirs(f"./{output_path}")
+
+        # Writing data to the file
+        with open(file_name, "wt+") as file:
+            file.write(interpreter.stream_buffer.get(stream_name))
 
     # Clearing the variable pool and we are done !
     interpreter.variable_pool.Clear()

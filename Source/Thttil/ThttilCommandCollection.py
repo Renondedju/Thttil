@@ -186,7 +186,6 @@ class ThttilCommandCollection:
         interpreter.variable_pool.CreateVar(var_name, default_value)
         return
 
-
     @staticmethod
     @Command(pass_interpreter_instance = True)
     def DELETE(interpreter, var_name: 'var') -> None:

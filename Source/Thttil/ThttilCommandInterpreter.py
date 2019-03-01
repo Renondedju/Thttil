@@ -25,6 +25,7 @@ from .ThttilParser               import ThttilParser
 from .ThttilVisitor              import ThttilVisitor
 from .ThttilFileStream           import ThttilFileStream
 from .ThttilVariablePool         import ThttilVariablePool
+from .ThttilStreamBuffer         import ThttilStreamBuffer
 from .ThttilCommandCollection    import ThttilCommandCollection
 from .ThttilCommandReturnType    import ThttilCommandReturnType
 from .ThttilRuntimeErrorHandler  import ThttilRuntimeErrorHandler
@@ -34,15 +35,16 @@ import re
 class ThttilCommandInterpreter(ThttilVisitor):
 
     def __init__(self, command_collection: ThttilCommandCollection = ThttilCommandCollection()):
-        self.output_stream        : str                         = ""
         self.variable_pool        : ThttilVariablePool          = ThttilVariablePool()
+        self.stream_buffer        : ThttilStreamBuffer          = ThttilStreamBuffer()
         self.command_collection   : ThttilCommandCollection     = command_collection
         self.runtime_error_handler: ThttilRuntimeErrorHandler   = ThttilRuntimeErrorHandler()
 
     def handleData(self, content: Any, push_to_steam: bool = False):
         if push_to_steam:
-            self.output_stream += ThttilCommandCollection.ConvertData(content)
+            self.stream_buffer.append(ThttilCommandCollection.ConvertData(content))
             return ""
+
         return content
 
     def visitArgument(self, ctx: ThttilParser.ArgumentContext, request_var: bool) -> str:
@@ -72,7 +74,13 @@ class ThttilCommandInterpreter(ThttilVisitor):
         return self.visit(ctx.command())
 
     def visitPrint_command(self, ctx: ThttilParser.Print_commandContext):
-        self.output_stream += ctx.PRINT().getText()[1:-1]
+        self.stream_buffer.append(ctx.PRINT().getText()[1:-1])
+        return
+
+    def visitStream_tag(self, ctx: ThttilParser.Stream_tagContext):
+        if not self.stream_buffer.select(ctx.STREAM_TAG().getText()[1:]):
+            self.stream_buffer.create(ctx.STREAM_TAG().getText()[1:])
+            self.stream_buffer.select(ctx.STREAM_TAG().getText()[1:])
         return
 
     def visitCommand(self, ctx: ThttilParser.CommandContext) -> Any:
@@ -107,16 +115,16 @@ class ThttilCommandInterpreter(ThttilVisitor):
             return self.handleData(command(self, *args), push_to_stream)
         return self.handleData(command(*args), push_to_stream)
 
-    def visitProgram(self, ctx: ThttilParser.ProgramContext) -> str:
+    def visitProgram(self, ctx: ThttilParser.ProgramContext):
         """ Executes the program and returns the content result
         """
 
-        self.output_stream = ""
-        for command in ctx.commands:
-            self.visit(command)
+        for index in range(ctx.getChildCount()):
+            self.visit(ctx.getChild(index))
 
-        return self.output_stream
+        return
 
     def interpret(self, tree: ThttilParser.ProgramContext, template_file_stream: ThttilFileStream):
+        
         self.runtime_error_handler.setCurrentInterpretedTemplate(template_file_stream)
         return self.visit(tree)

@@ -31,11 +31,14 @@ SOFTWARE.
  */
 
 // Main rule, allows program parsing
-program             : commands+=command* EOF ;
+program             : stream_tag (command | stream_tag)* EOF ;
 
 // Argument: this may be any command argument
 // Syntax  : $var or @extern_var or "String" or $(COMMAND "args...")
 argument            : VARIABLE | STRING | command ;
+
+// Stream tag: 
+stream_tag          : STREAM_TAG ;
 
 // Print command: this allows for easier file reading
 // Syntax       :   %Some arbitrary content%
@@ -59,6 +62,7 @@ fragment CHAR               : [a-zA-Z] ;
 fragment PROTECTED_PRINT    : '\\\\' | '\\%' ;
 fragment PROTECTED_STRING   : '\\\\' | '\\"' ;
 
+STREAM_TAG          : '@' CHAR+ ;
 FUNCTION            : UPPERCASE+ ;
 PRINT               : '%' (PROTECTED_PRINT  | ~[%])*? '%' ;
 STRING              : '"' (PROTECTED_STRING | ~["])*? '"' ;

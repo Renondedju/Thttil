@@ -31,6 +31,7 @@ from .ThttilCommand             import ThttilCommand
 from .ThttilVisitor             import ThttilVisitor
 from .ThttilTreeParser          import ThttilTreeParser
 from .ThttilFileStream          import ThttilFileStream
+from .ThttilStreamBuffer        import ThttilStreamBuffer
 from .ThttilVariablePool        import ThttilVariablePool
 from .ThttilErrorHandler        import ThttilErrorHandler
 from .ThttilTokenRewriter       import ThttilTokenRewriter

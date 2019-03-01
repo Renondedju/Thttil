@@ -19,6 +19,11 @@ class ThttilVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by ThttilParser#stream_tag.
+    def visitStream_tag(self, ctx:ThttilParser.Stream_tagContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by ThttilParser#print_command.
     def visitPrint_command(self, ctx:ThttilParser.Print_commandContext):
         return self.visitChildren(ctx)

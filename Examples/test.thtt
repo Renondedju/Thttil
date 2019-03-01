@@ -20,9 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-%\nExtern variable test:   % $(OUT   $extern_var)
+@default
+
+%Extern variable test:   %   $(OUT   $extern_var)
 %\nOUT     command test:   % $(OUT   "sample")
-%\nPRINT   command test:   % $(OUT $(PRINT "sample"))
+%\nPRINT   command test:   % $(PRINT "sample")
 %\nUPPER   command test:   % $(OUT $(UPPER "sample"))
 %\nLOWER   command test:   % $(OUT $(LOWER "SAMPLE"))
 %\nTITLE   command test:   % $(OUT $(TITLE "sample sample SAMPLE"))
@@ -37,5 +39,7 @@
 {
     %   [% $(OUT $iterator.index.value) %/% $(OUT $iterator.index.max) %] % $(OUT $iterator.value) %\n%
 }
-# This is a comment
-%lol \\\\\n%
+
+@test
+
+%This should now be writing in the named 'test' stream%
