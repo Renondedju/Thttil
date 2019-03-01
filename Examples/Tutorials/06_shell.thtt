@@ -23,9 +23,9 @@
 # -----------------------------------------------------------------------------------
 
 # THTTIL can also execute shell commands and return the output of the command.
-# Be careful since no confiramtion is asked when executing a shell command.
+# Be careful since no confirmation is asked when executing a shell command.
 
-# This outputs the current dirrectory
+# This outputs the current directory
 $(OUT $(SHELL "cd"))
 
 # Please note that if you execute a command that requires a user interaction (eg. an installer)

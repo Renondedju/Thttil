@@ -22,24 +22,26 @@
 
 # -----------------------------------------------------------------------------------
 
-# Like any other good language, THTTIL has variables. But only one type: string !
-# To declare a new variable simply use the "CREATE" command:
+# Since you are susceptible to use arrays, here is the foreach loop !
 
-$(CREATE "MyVarName", "Default value\n")
+$(FOREACH "iterator", $(SPLIT "file1.txt file2.txt file3.txt file4.txt", " "))
+{
+    %[% $(OUT $iterator.index.value) %/% $(OUT $iterator.index.max) %] - % $(OUT $iterator.value) %\n%
+}
 
-# Now, you can use this variable like you would expect it:
+# Let's split this code line by line:
 
-$(OUT $MyVarName)
+# First we have the "SPLIT" commands that takes in a string and splits it into an array using the second parameter
+# The array returned is an extern variable owned by the host language.
+# -> ["file1.txt", "file2.txt", "file3.txt", "file4.txt"]
 
-# You can also modify the variable content with the "SET" command
+# Next we have the FOREACH command that takes in a variable name ("iterator") and an
+# array owned by the host language.
 
-$(SET $MyVarName, "New Content of MyVarName")
-$(OUT $MyVarName)
+# The variable iterator itself is a custom class object owned by the host language
+# this allows to access multiple fields within the same variable.
 
-# And you can delete it using the "DELETE" command
-
-$(DELETE $MyVarName)
-# $(OUT $MyVarName) calling this would cause a runtime error since the variable doesn't exists anymore
+# Look into the THTTIL language documentation for more details. 
 
 # You can run this file by executing the following command: 
-# python Source\Thttil.py -t Examples\Tutorials\03_variables.thtt -o default:03_variables.output.txt
+# python Source\Thttil.py -t Examples\Tutorials\08_foreach_loop.thtt -o default:08_foreach_loop.output.txt

@@ -27,7 +27,7 @@
 # by another language, we can use the underlying language types !
 
 # Introducing extern variables !
-# The only difference between thoses variables and "regular" variables is that extern
+# The only difference between those variables and "regular" variables is that extern
 # variables are declared by the host language (eg. Python 3).
 # To learn how to do this, please read the runtime THTTIL API documentation.
 
@@ -36,11 +36,11 @@
 $(OUT $ExternVar)
 
 # Extern variables can be of any type. If an extern variable isn't a string when
-# sent to an output stream, THTTIL will automaticly convert it. Read the runtime THTTIL API
-# for more informations about this conversion and how to customize it for your own objects
+# sent to an output stream, THTTIL will automatically convert it. Read the runtime THTTIL API
+# for more information about this conversion and how to customize it for your own objects
 
 # The default THTTIL interpreter (Thttil.py) can declare extern variables on the fly.
 # To do that, use the "-v" option. Usage: -v ExternVarName="Content of the extern variable"
 
 # You can run this file by executing the following command: 
-# python Source\Thttil.py -t Examples\Tutorials\03_variables.thtt -o default:04_extern_variables.output.txt -v ExternVar="Content of $ExternVar"
+# python Source\Thttil.py -t Examples\Tutorials\04_extern_variables.thtt -o default:04_extern_variables.output.txt -v ExternVar="Content of $ExternVar"

@@ -22,7 +22,7 @@
 
 # -----------------------------------------------------------------------------------
 
-# Here is a little intorduction to string manipulation commands:
+# Here is a little introduction to string manipulation commands:
 
 $(CREATE "content", "HELLO, my name IS ThTtIl !")
 
@@ -42,7 +42,7 @@ $(OUT $(TITLE $content))
 $(OUT $(REPLACE $content, "name", "new name"))
 %\n%
 
-# Note that thoses commands don't dirrectly send datas to the ouptut stream.
+# Note that those commands don't directly send data to the output stream.
 # Instead they return a string object (owned by the host language) that can be then used
 # by other commands as arguments. 
 

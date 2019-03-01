@@ -22,7 +22,9 @@
 
 # -----------------------------------------------------------------------------------
 
-# Every THTTIL program is compsed of tokens. You can think of theses as functions calls.
+# I strongly recommend that you try to run every file in this tutorial to see what happens 
+
+# Every THTTIL program is composed of tokens. You can think of theses as functions calls.
 # A THTTIL token looks like this:
 
 $(OUT "Hello :D\n")

@@ -31,7 +31,7 @@ SOFTWARE.
  */
 
 // Main rule, allows program parsing
-program             : stream_tag (command | stream_tag)* EOF ;
+program             : (command | stream_tag)* EOF ;
 
 // Argument: this may be any command argument
 // Syntax  : $var or @extern_var or "String" or $(COMMAND "args...")

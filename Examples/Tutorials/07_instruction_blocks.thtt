@@ -22,24 +22,23 @@
 
 # -----------------------------------------------------------------------------------
 
-# Like any other good language, THTTIL has variables. But only one type: string !
-# To declare a new variable simply use the "CREATE" command:
+# Some commands might requires instruction blocks like the IFEQ or IFNEQ commands.
+# Those commands can execute as much time as they like the given instruction block. 
 
-$(CREATE "MyVarName", "Default value\n")
+$(CREATE "FirstOperand" , "equal")
+$(CREATE "SecondOperand", "equal")
 
-# Now, you can use this variable like you would expect it:
+# as you would expect it, the IFEQ command executes the following instruction block
+# once if the 2 operand are equal
+$(IFEQ $FirstOperand, $SecondOperand)
+{
+    $(OUT "First and second operands are equals")
+}
 
-$(OUT $MyVarName)
-
-# You can also modify the variable content with the "SET" command
-
-$(SET $MyVarName, "New Content of MyVarName")
-$(OUT $MyVarName)
-
-# And you can delete it using the "DELETE" command
-
-$(DELETE $MyVarName)
-# $(OUT $MyVarName) calling this would cause a runtime error since the variable doesn't exists anymore
+$(IFNEQ $FirstOperand, $SecondOperand)
+{
+    $(OUT "First and second operands aren't equals")
+}
 
 # You can run this file by executing the following command: 
-# python Source\Thttil.py -t Examples\Tutorials\03_variables.thtt -o default:03_variables.output.txt
+# python Source\Thttil.py -t Examples\Tutorials\07_instruction_blocks.thtt -o default:07_instruction_blocks.output.txt
