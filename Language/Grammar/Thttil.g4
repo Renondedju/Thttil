@@ -48,9 +48,11 @@ print_command       : PRINT ;
 // Command    : this is anything that can execute something and be replaced by it's result
 // Syntax     : $(FUNCTION "Some arbitrary content", $some_more ...)
 // Replaced by: FUNCTION return value
-command             : '$(' function=FUNCTION (| args+=argument (',' args+=argument)*) ')' ('{' commands+=command* '}')?
+command             : '$(' function=FUNCTION (| args+=argument (',' args+=argument)*) ')' ('{' commands+=instruction_block_content* '}')?
                     | print_command
                     ;
+
+instruction_block_content   : (command | stream_tag) ;
 
 /*
  * Lexer Rules

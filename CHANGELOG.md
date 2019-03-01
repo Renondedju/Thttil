@@ -23,6 +23,7 @@ Versions use the following format: ``major.minor.patch-<release state>``
 * Added some documentations
 * Created the official discord server
 * Hidden the antlr4 dependency from the runtime API
+* Added multiple output streams
 
 ## [Pre-release 1 (v0.1.0-pre)](https://github.com/BasileCombet/Thttil/releases/tag/v0.1)
 

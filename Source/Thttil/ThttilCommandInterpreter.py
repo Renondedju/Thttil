@@ -77,6 +77,15 @@ class ThttilCommandInterpreter(ThttilVisitor):
         self.stream_buffer.append(ctx.PRINT().getText()[1:-1])
         return
 
+    def visitInstruction_block_content(self, ctx:ThttilParser.Instruction_block_contentContext):
+        
+        if ctx.command() != None:
+            self.visit(ctx.command())
+            return
+        
+        self.visit(ctx.stream_tag())
+        return
+
     def visitStream_tag(self, ctx: ThttilParser.Stream_tagContext):
         if not self.stream_buffer.select(ctx.STREAM_TAG().getText()[1:]):
             self.stream_buffer.create(ctx.STREAM_TAG().getText()[1:])

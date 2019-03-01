@@ -34,5 +34,10 @@ class ThttilVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by ThttilParser#instruction_block_content.
+    def visitInstruction_block_content(self, ctx:ThttilParser.Instruction_block_contentContext):
+        return self.visitChildren(ctx)
+
+
 
 del ThttilParser
