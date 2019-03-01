@@ -20,22 +20,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""" Thttil runtime API module.
-"""
+# -----------------------------------------------------------------------------------
 
-import antlr4
+# Some commands might requires instruction blocks like the IFEQ or IFNEQ commands.
+# Those commands can execute as much time as they like the given instruction block. 
 
-from .ThttilLexer               import ThttilLexer
-from .ThttilParser              import ThttilParser
-from .ThttilCommand             import ThttilCommand
-from .ThttilVisitor             import ThttilVisitor
-from .ThttilTreeParser          import ThttilTreeParser
-from .ThttilFileStream          import ThttilFileStream
-from .ThttilStreamBuffer        import ThttilStreamBuffer
-from .ThttilVariablePool        import ThttilVariablePool
-from .ThttilErrorHandler        import ThttilErrorHandler
-from .ThttilTokenRewriter       import ThttilTokenRewriter
-from .ThttilCommandCollection   import ThttilCommandCollection
-from .ThttilCommandReturnType   import ThttilCommandReturnType
-from .ThttilCommandInterpreter  import ThttilCommandInterpreter
-from .ThttilRuntimeErrorHandler import ThttilRuntimeErrorHandler
+$(CREATE "FirstOperand" , "equal")
+$(CREATE "SecondOperand", "equal")
+
+# as you would expect it, the IFEQ command executes the following instruction block
+# once if the 2 operand are equal
+$(IFEQ $FirstOperand, $SecondOperand)
+{
+    $(OUT "First and second operands are equals")
+}
+
+$(IFNEQ $FirstOperand, $SecondOperand)
+{
+    $(OUT "First and second operands aren't equals")
+}
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\07_instruction_blocks.thtt -o default:07_instruction_blocks.output.txt

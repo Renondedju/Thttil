@@ -20,22 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""" Thttil runtime API module.
-"""
+# -----------------------------------------------------------------------------------
 
-import antlr4
+# THTTIL can also execute shell commands and return the output of the command.
+# Be careful since no confirmation is asked when executing a shell command.
 
-from .ThttilLexer               import ThttilLexer
-from .ThttilParser              import ThttilParser
-from .ThttilCommand             import ThttilCommand
-from .ThttilVisitor             import ThttilVisitor
-from .ThttilTreeParser          import ThttilTreeParser
-from .ThttilFileStream          import ThttilFileStream
-from .ThttilStreamBuffer        import ThttilStreamBuffer
-from .ThttilVariablePool        import ThttilVariablePool
-from .ThttilErrorHandler        import ThttilErrorHandler
-from .ThttilTokenRewriter       import ThttilTokenRewriter
-from .ThttilCommandCollection   import ThttilCommandCollection
-from .ThttilCommandReturnType   import ThttilCommandReturnType
-from .ThttilCommandInterpreter  import ThttilCommandInterpreter
-from .ThttilRuntimeErrorHandler import ThttilRuntimeErrorHandler
+# This outputs the current directory
+$(OUT $(SHELL "cd"))
+
+# Please note that if you execute a command that requires a user interaction (eg. an installer)
+# the shell command will be permanently locked.
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\06_shell.thtt -o default:06_shell.output.txt

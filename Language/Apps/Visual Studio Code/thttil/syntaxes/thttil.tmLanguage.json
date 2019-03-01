@@ -9,44 +9,10 @@
 			"include": "#capture_groups"
 		},
 		{
-			"include": "#strings"
-		},
-		{
 			"include": "#global_tokens"
 		}
 	],
 	"repository": {
-		"global_tokens": {
-			"patterns": [
-				{
-					"name": "markup.quote.thttil",
-					"begin": "%",
-					"end": "%",
-					"patterns": [
-						{
-							"name": "constant.character.escape.thttil",
-							"match": "\\\\."
-						}
-					]
-				},
-				{  
-					"name" : "comment.line.number-sign.thttil",
-					"match": "(#.*)"
-				}
-			]
-		},
-		"tokens": {
-			"patterns":[
-				{
-					"match": "([A-Z]+)\\s+",
-					"name": "entity.name.function.thttil"
-				},
-				{  
-					"name" : "variable.parameter.thttil",
-					"match": "\\$([\\w\\d\\._-]+)"
-				}
-			]
-		},
 		"capture_groups": {
 			"begin": "\\$\\(",
 			"end": "\\)",
@@ -62,15 +28,43 @@
 			},
 			"patterns": [
 				{
-					"include": "#tokens"
-				},
-				{
-					"include": "#strings"
+					"include": "#command_tokens"
 				}
 			]
 		},
-		"strings": {
+		"global_tokens": {
 			"patterns": [
+				{
+					"name": "markup.quote.thttil",
+					"begin": "%",
+					"end": "%",
+					"patterns": [
+						{
+							"name" : "string.jade.thttil",
+							"match": "\\\\."
+						}
+					]
+				},
+				{  
+					"name" : "comment.line.number-sign.thttil",
+					"match": "(#.*)"
+				},
+				{
+					"name" : "entity.name.tag.thttil",
+					"match": "(@[\\w]+)"
+				}
+			]
+		},
+		"command_tokens": {
+			"patterns":[
+				{
+					"match": "([A-Z]+)",
+					"name": "entity.name.function.thttil"
+				},
+				{  
+					"name" : "variable.parameter.thttil",
+					"match": "\\$([\\w\\d\\._-]+)"
+				},
 				{
 					"name": "string.quoted.double.thttil",
 					"begin": "\"",

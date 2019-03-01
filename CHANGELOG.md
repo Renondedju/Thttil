@@ -9,13 +9,30 @@ Versions use the following format: ``major.minor.patch-<release state>``
 
 # Timeline
 
+01/03/2019 - `` v0.2.0-pre``  
 26/02/2019 - `` v0.1.0-pre``
 
 # Releases
 
 ---
 
+## [Pre-release 2 (v0.2.0-pre)](https://github.com/BasileCombet/Thttil/releases/tag/v0.2.0-pre)
+
+This version is incompatible with the v0.1.0-pre (language and runtime API). 
+
+* Added a proper error handler.
+* Reworked command collections.
+* Modified syntax to avoid errors when running empty programs.
+* Added some documentations.
+* Created the official discord server.
+* Hidden the antlr4 dependency from the runtime API.
+* Added multiple output streams.
+* Added basic tutorial scripts into https://github.com/BasileCombet/Thttil/tree/master/Examples/Tutorials
+
+*Known issues:*
+
+* The Sublime Text 3 syntax highlight hasn't been updated yet.
 
 ## [Pre-release 1 (v0.1.0-pre)](https://github.com/BasileCombet/Thttil/releases/tag/v0.1)
 
-* Created Thttil
+* Created Thttil.

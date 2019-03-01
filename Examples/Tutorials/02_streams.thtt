@@ -20,22 +20,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""" Thttil runtime API module.
-"""
+# -----------------------------------------------------------------------------------
 
-import antlr4
+# THTTIL uses a system called "streams" to send back (text) data
+# A stream has a name and every file uses by default the stream called "default"
+# To change the current stream, simply type
 
-from .ThttilLexer               import ThttilLexer
-from .ThttilParser              import ThttilParser
-from .ThttilCommand             import ThttilCommand
-from .ThttilVisitor             import ThttilVisitor
-from .ThttilTreeParser          import ThttilTreeParser
-from .ThttilFileStream          import ThttilFileStream
-from .ThttilStreamBuffer        import ThttilStreamBuffer
-from .ThttilVariablePool        import ThttilVariablePool
-from .ThttilErrorHandler        import ThttilErrorHandler
-from .ThttilTokenRewriter       import ThttilTokenRewriter
-from .ThttilCommandCollection   import ThttilCommandCollection
-from .ThttilCommandReturnType   import ThttilCommandReturnType
-from .ThttilCommandInterpreter  import ThttilCommandInterpreter
-from .ThttilRuntimeErrorHandler import ThttilRuntimeErrorHandler
+@stream_name
+
+# If the THTTIL interpreter sees this stream name for the first time
+# a new stream will automatically be created
+
+%I'm currently writing into the stream called "stream_name"\n%
+
+@default
+
+%And now we are back into the default stream !%
+
+# Also if you are using the default interpreter (Thttil.py), you can select the output file
+# for each stream by using the "-o" option, usage: -o stream_name:output_file.txt another_stream:another_file.txt ...
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\02_out.thtt -o default:02_streams.default.txt stream_name:02_streams.stream_name.txt

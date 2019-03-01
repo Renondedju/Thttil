@@ -31,11 +31,14 @@ SOFTWARE.
  */
 
 // Main rule, allows program parsing
-program             : commands+=command+ EOF ;
+program             : (command | stream_tag)* EOF ;
 
 // Argument: this may be any command argument
 // Syntax  : $var or @extern_var or "String" or $(COMMAND "args...")
 argument            : VARIABLE | STRING | command ;
+
+// Stream tag: 
+stream_tag          : STREAM_TAG ;
 
 // Print command: this allows for easier file reading
 // Syntax       :   %Some arbitrary content%
@@ -45,9 +48,11 @@ print_command       : PRINT ;
 // Command    : this is anything that can execute something and be replaced by it's result
 // Syntax     : $(FUNCTION "Some arbitrary content", $some_more ...)
 // Replaced by: FUNCTION return value
-command             : '$(' function=FUNCTION (| args+=argument (',' args+=argument)*) ')' ('{' commands+=command+ '}')?
+command             : '$(' function=FUNCTION (| args+=argument (',' args+=argument)*) ')' ('{' commands+=instruction_block_content* '}')?
                     | print_command
                     ;
+
+instruction_block_content   : (command | stream_tag) ;
 
 /*
  * Lexer Rules
@@ -59,6 +64,7 @@ fragment CHAR               : [a-zA-Z] ;
 fragment PROTECTED_PRINT    : '\\\\' | '\\%' ;
 fragment PROTECTED_STRING   : '\\\\' | '\\"' ;
 
+STREAM_TAG          : '@' CHAR+ ;
 FUNCTION            : UPPERCASE+ ;
 PRINT               : '%' (PROTECTED_PRINT  | ~[%])*? '%' ;
 STRING              : '"' (PROTECTED_STRING | ~["])*? '"' ;

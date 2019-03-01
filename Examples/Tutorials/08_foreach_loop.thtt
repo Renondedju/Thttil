@@ -1,0 +1,47 @@
+# MIT License
+
+# Copyright (c) 2019 Basile Combet
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# -----------------------------------------------------------------------------------
+
+# Since you are susceptible to use arrays, here is the foreach loop !
+
+$(FOREACH "iterator", $(SPLIT "file1.txt file2.txt file3.txt file4.txt", " "))
+{
+    %[% $(OUT $iterator.index.value) %/% $(OUT $iterator.index.max) %] - % $(OUT $iterator.value) %\n%
+}
+
+# Let's split this code line by line:
+
+# First we have the "SPLIT" commands that takes in a string and splits it into an array using the second parameter
+# The array returned is an extern variable owned by the host language.
+# -> ["file1.txt", "file2.txt", "file3.txt", "file4.txt"]
+
+# Next we have the FOREACH command that takes in a variable name ("iterator") and an
+# array owned by the host language.
+
+# The variable iterator itself is a custom class object owned by the host language
+# this allows to access multiple fields within the same variable.
+
+# Look into the THTTIL language documentation for more details. 
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\08_foreach_loop.thtt -o default:08_foreach_loop.output.txt

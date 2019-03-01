@@ -48,62 +48,11 @@ SOFTWARE. -->
       </dict>
       <dict>
         <key>include</key>
-        <string>#strings</string>
-      </dict>
-      <dict>
-        <key>include</key>
         <string>#global_tokens</string>
       </dict>
     </array>
     <key>repository</key>
     <dict>
-      <key>global_tokens</key>
-      <dict>
-        <key>patterns</key>
-        <array>
-          <dict>
-            <key>name</key>
-            <string>markup.quote.thttil</string>
-            <key>begin</key>
-            <string>%</string>
-            <key>end</key>
-            <string>%</string>
-            <key>patterns</key>
-            <array>
-              <dict>
-                <key>name</key>
-                <string>constant.character.escape.thttil</string>
-                <key>match</key>
-                <string>\\.</string>
-              </dict>
-            </array>
-          </dict>
-          <dict>
-            <key>name</key>
-            <string>comment.line.number-sign.thttil</string>
-            <key>match</key>
-            <string>(#.*)</string>
-          </dict>
-        </array>
-      </dict>
-      <key>tokens</key>
-      <dict>
-        <key>patterns</key>
-        <array>
-          <dict>
-            <key>match</key>
-            <string>([A-Z]+)\s+</string>
-            <key>name</key>
-            <string>entity.name.function.thttil</string>
-          </dict>
-          <dict>
-            <key>name</key>
-            <string>variable.parameter.thttil</string>
-            <key>match</key>
-            <string>\$([\w\d\._-]+)</string>
-          </dict>
-        </array>
-      </dict>
       <key>capture_groups</key>
       <dict>
         <key>begin</key>
@@ -130,18 +79,61 @@ SOFTWARE. -->
         <array>
           <dict>
             <key>include</key>
-            <string>#tokens</string>
-          </dict>
-          <dict>
-            <key>include</key>
-            <string>#strings</string>
+            <string>#command_tokens</string>
           </dict>
         </array>
       </dict>
-      <key>strings</key>
+      <key>global_tokens</key>
       <dict>
         <key>patterns</key>
         <array>
+          <dict>
+            <key>name</key>
+            <string>markup.quote.thttil</string>
+            <key>begin</key>
+            <string>%</string>
+            <key>end</key>
+            <string>%</string>
+            <key>patterns</key>
+            <array>
+              <dict>
+                <key>name</key>
+                <string>string.jade.thttil</string>
+                <key>match</key>
+                <string>\\.</string>
+              </dict>
+            </array>
+          </dict>
+          <dict>
+            <key>name</key>
+            <string>comment.line.number-sign.thttil</string>
+            <key>match</key>
+            <string>(#.*)</string>
+          </dict>
+          <dict>
+            <key>name</key>
+            <string>entity.name.tag.thttil</string>
+            <key>match</key>
+            <string>(@[\w]+)</string>
+          </dict>
+        </array>
+      </dict>
+      <key>command_tokens</key>
+      <dict>
+        <key>patterns</key>
+        <array>
+          <dict>
+            <key>match</key>
+            <string>([A-Z]+)</string>
+            <key>name</key>
+            <string>entity.name.function.thttil</string>
+          </dict>
+          <dict>
+            <key>name</key>
+            <string>variable.parameter.thttil</string>
+            <key>match</key>
+            <string>\$([\w\d\._-]+)</string>
+          </dict>
           <dict>
             <key>name</key>
             <string>string.quoted.double.thttil</string>

@@ -6,10 +6,32 @@
   </a>
 </p>
 
+[Link](https://github.com/BasileCombet/Thttil/releases) to the latest release.  
+  
 Thttil is an interpreted language made to generate files.  
 The power of Thttil is its extensibility. Since the language is hosted, you can  
 control everything from the file lexer/parser to the interpretation through the variable pool and  
-builtin features.
+builtin features.  
+  
+**Mhhh ok but why should I use Thttil instead of using any other technology ?**  
+  
+Thttil will probably be way more maintainable and readable than any other solution.  
+Also since this is an interpreted language, no compilation time is required to make changes to your project.  
+Thttil is conceived to be intuitive and easy to use so you don't need to be a technical person things to edit template files.  
+Finally if your project requires very specific algorithms that are not included in the builtin commands, you can easily extend the language in 5 minutes.  
+
+**Here are some use cases:**
+* Automatic language binding generation (eg. Lua binding with C++ using [Sol2](https://github.com/ThePhD/sol2/))
+* Custom documentation generator by combining doxygen XML and the python lib [lxml](https://lxml.de/)
+* Configuration file generator
+* C++ header tool to add reflection to the language (eg. [Unreal Header Tool](https://docs.unrealengine.com/en-us/Programming/BuildTools))  
+The real limit here is your imagination. 
+
+**Ok nice, you convicted me, where do I learn how to use Thttil ?**
+
+Here is a link to the [wiki](https://github.com/BasileCombet/Thttil/wiki), everything you need to know about Thttil is in here !
+
+We also have syntax highlight support for your favorite code editor over [here](https://github.com/BasileCombet/Thttil/tree/master/Language/Apps).
 
 # Contributing
 

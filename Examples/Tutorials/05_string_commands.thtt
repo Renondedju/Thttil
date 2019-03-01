@@ -20,22 +20,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""" Thttil runtime API module.
-"""
+# -----------------------------------------------------------------------------------
 
-import antlr4
+# Here is a little introduction to string manipulation commands:
 
-from .ThttilLexer               import ThttilLexer
-from .ThttilParser              import ThttilParser
-from .ThttilCommand             import ThttilCommand
-from .ThttilVisitor             import ThttilVisitor
-from .ThttilTreeParser          import ThttilTreeParser
-from .ThttilFileStream          import ThttilFileStream
-from .ThttilStreamBuffer        import ThttilStreamBuffer
-from .ThttilVariablePool        import ThttilVariablePool
-from .ThttilErrorHandler        import ThttilErrorHandler
-from .ThttilTokenRewriter       import ThttilTokenRewriter
-from .ThttilCommandCollection   import ThttilCommandCollection
-from .ThttilCommandReturnType   import ThttilCommandReturnType
-from .ThttilCommandInterpreter  import ThttilCommandInterpreter
-from .ThttilRuntimeErrorHandler import ThttilRuntimeErrorHandler
+$(CREATE "content", "HELLO, my name IS ThTtIl !")
+
+# Lowers the content
+$(OUT $(LOWER $content))
+%\n%
+
+# Uppers the content
+$(OUT $(UPPER $content))
+%\n%
+
+# Titles the content
+$(OUT $(TITLE $content))
+%\n%
+
+# Replaces some content by some other content
+$(OUT $(REPLACE $content, "name", "new name"))
+%\n%
+
+# Note that those commands don't directly send data to the output stream.
+# Instead they return a string object (owned by the host language) that can be then used
+# by other commands as arguments. 
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\05_string_commands.thtt -o default:05_string_commands.output.txt

@@ -23,32 +23,37 @@
 from  typing                     import Callable, List, Union, Any
 from .ThttilParser               import ThttilParser
 from .ThttilVisitor              import ThttilVisitor
+from .ThttilFileStream           import ThttilFileStream
 from .ThttilVariablePool         import ThttilVariablePool
+from .ThttilStreamBuffer         import ThttilStreamBuffer
 from .ThttilCommandCollection    import ThttilCommandCollection
 from .ThttilCommandReturnType    import ThttilCommandReturnType
+from .ThttilRuntimeErrorHandler  import ThttilRuntimeErrorHandler
 
 import re
 
 class ThttilCommandInterpreter(ThttilVisitor):
 
-    def __init__(self, command_collection = ThttilCommandCollection()):
-        self.output_stream     : str                         = ""
-        self.variable_pool     : ThttilVariablePool          = ThttilVariablePool()
-        self.command_collection: ThttilCommandCollection     = command_collection
+    def __init__(self, command_collection: ThttilCommandCollection = ThttilCommandCollection()):
+        self.variable_pool        : ThttilVariablePool          = ThttilVariablePool()
+        self.stream_buffer        : ThttilStreamBuffer          = ThttilStreamBuffer()
+        self.command_collection   : ThttilCommandCollection     = command_collection
+        self.runtime_error_handler: ThttilRuntimeErrorHandler   = ThttilRuntimeErrorHandler()
 
     def handleData(self, content: Any, push_to_steam: bool = False):
         if push_to_steam:
-            self.output_stream += ThttilCommandCollection.ConvertData(content)
+            self.stream_buffer.append(ThttilCommandCollection.ConvertData(content))
             return ""
+
         return content
 
     def visitArgument(self, ctx: ThttilParser.ArgumentContext, request_var: bool) -> str:
-        """ Visits an argument and retuns it's content or name
+        """ Visits an argument and returns it's content or name
         """
 
         if (ctx.STRING() != None):
             if request_var:
-                # Requested a variable but we only carry a string ERROR
+                self.runtime_error_handler.incompatibleArgumentTypeError(ctx)
                 return ""
             # Requested a data, got a string
             return ctx.STRING().getText()[1:-1]
@@ -62,14 +67,29 @@ class ThttilCommandInterpreter(ThttilVisitor):
             return self.variable_pool.GetVar(ctx.VARIABLE().getText()[1:])
 
         if request_var:
-            # Requested a variable name, got a token to parse ERROR
+            self.runtime_error_handler.incompatibleArgumentTypeError(ctx)
             return ""
 
         # Requested a data, got a token to parse
         return self.visit(ctx.command())
 
     def visitPrint_command(self, ctx: ThttilParser.Print_commandContext):
-        self.output_stream += ctx.PRINT().getText()[1:-1]
+        self.stream_buffer.append(ctx.PRINT().getText()[1:-1])
+        return
+
+    def visitInstruction_block_content(self, ctx:ThttilParser.Instruction_block_contentContext):
+        
+        if ctx.command() != None:
+            self.visit(ctx.command())
+            return
+        
+        self.visit(ctx.stream_tag())
+        return
+
+    def visitStream_tag(self, ctx: ThttilParser.Stream_tagContext):
+        if not self.stream_buffer.select(ctx.STREAM_TAG().getText()[1:]):
+            self.stream_buffer.create(ctx.STREAM_TAG().getText()[1:])
+            self.stream_buffer.select(ctx.STREAM_TAG().getText()[1:])
         return
 
     def visitCommand(self, ctx: ThttilParser.CommandContext) -> Any:
@@ -84,13 +104,11 @@ class ThttilCommandInterpreter(ThttilVisitor):
         # ctx.args are the received args from Thttil
         args: List[Any] = []
         if (len(ctx.args) < command.min_required_args):
-            print(f"Thttil runtime error: the function named \"{ctx.function.text}\""
-                  f" takes at least {command.min_required_args} argument(s), got {len(ctx.args)}")
+            self.runtime_error_handler.notEnoughArgumentsError(ctx, command.min_required_args, len(ctx.args))
             return ""
 
         if (len(ctx.args) > command.max_args):
-            print(f"Thttil runtime error: the function named \"{ctx.function.text}\""
-                  f" takes maximum {command.max_args} argument(s), got {len(ctx.args)}")
+            self.runtime_error_handler.tooMuchArgumentsError(ctx, command.max_args, len(ctx.args))
             return ""
 
         for index, argument in enumerate(ctx.args):
@@ -98,9 +116,7 @@ class ThttilCommandInterpreter(ThttilVisitor):
 
         if (command.require_instruction_block):
             if (len(ctx.commands) == 0):
-                print(f"Thttil runtime error: the function named \"{ctx.function.text}\""
-                      f" requires an instruction block after it.")
-                exit(1)
+                self.runtime_error_handler.instructionBlockRequiredError(ctx)
             args.append(ctx.commands)
 
         push_to_stream: bool = command.return_type == ThttilCommandReturnType.STREAM_DATA
@@ -108,12 +124,16 @@ class ThttilCommandInterpreter(ThttilVisitor):
             return self.handleData(command(self, *args), push_to_stream)
         return self.handleData(command(*args), push_to_stream)
 
-    def visitProgram(self, ctx: ThttilParser.ProgramContext) -> str:
+    def visitProgram(self, ctx: ThttilParser.ProgramContext):
         """ Executes the program and returns the content result
         """
 
-        self.output_stream = ""
-        for command in ctx.commands:
-            self.visit(command)
+        for index in range(ctx.getChildCount()):
+            self.visit(ctx.getChild(index))
 
-        return self.output_stream
+        return
+
+    def interpret(self, tree: ThttilParser.ProgramContext, template_file_stream: ThttilFileStream):
+        
+        self.runtime_error_handler.setCurrentInterpretedTemplate(template_file_stream)
+        return self.visit(tree)

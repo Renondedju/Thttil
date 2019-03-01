@@ -14,7 +14,7 @@ class ThttilErrorHandler(ErrorListener):
             self.error_str         = error_str
 
         def toString(self, handler_instance) -> str:
-            error_line, start, end = handler_instance.getErrorLine(self.line, self.start)
+            error_line, start, end = handler_instance.getErrorLine(self.line - 1, self.start)
             error_output =  f"Thttil parsing error: {self.error_str} on line {self.line}:{self.start}\n"
             error_output += f"{error_line}\n{' '*(self.start - start)}^{'~'*min(self.end - self.start, end - self.start)}"
             return error_output

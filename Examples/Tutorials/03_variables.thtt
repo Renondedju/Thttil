@@ -1,5 +1,3 @@
-%YAML 1.2
-
 # MIT License
 
 # Copyright (c) 2019 Basile Combet
@@ -22,49 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
----
-name: Thttil
-file_extensions:
-  - thtt
-  - thttil
-  - t
-scope: source.thttil
-contexts:
-  main:
-    - include: capture_groups
-    - include: strings
-    - include: global_tokens
-  capture_groups:
-    - match: \$\(
-      captures:
-        0: punctuation.definition.token.begin.thttil
-      push:
-        - match: \)
-          captures:
-            0: punctuation.definition.token.end.thttil
-          pop: true
-        - include: tokens
-        - include: strings
-  global_tokens:
-    - match: "%"
-      push:
-        - meta_scope: markup.quote.thttil
-        - match: "%"
-          pop: true
-        - match: \\.
-          scope: constant.character.escape.thttil
-    - match: (#.*)
-      scope: comment.line.number-sign.thttil
-  strings:
-    - match: '"'
-      push:
-        - meta_scope: string.quoted.double.thttil
-        - match: '"'
-          pop: true
-        - match: \\.
-          scope: constant.character.escape.thttil
-  tokens:
-    - match: '([A-Z]+)\s+'
-      scope: entity.name.function.thttil
-    - match: '\$([\w\d\._-]+)'
-      scope: variable.parameter.thttil
+# -----------------------------------------------------------------------------------
+
+# Like any other good language, THTTIL has variables. But only one type: string !
+# To declare a new variable simply use the "CREATE" command:
+
+$(CREATE "MyVarName", "Default value\n")
+
+# Now, you can use this variable like you would expect it:
+
+$(OUT $MyVarName)
+
+# You can also modify the variable content with the "SET" command
+
+$(SET $MyVarName, "New Content of MyVarName")
+$(OUT $MyVarName)
+
+# And you can delete it using the "DELETE" command
+
+$(DELETE $MyVarName)
+# $(OUT $MyVarName) calling this would cause a runtime error since the variable doesn't exists anymore
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\03_variables.thtt -o default:03_variables.output.txt

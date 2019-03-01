@@ -20,22 +20,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""" Thttil runtime API module.
-"""
+# -----------------------------------------------------------------------------------
 
-import antlr4
+# I strongly recommend that you try to run every file in this tutorial to see what happens 
 
-from .ThttilLexer               import ThttilLexer
-from .ThttilParser              import ThttilParser
-from .ThttilCommand             import ThttilCommand
-from .ThttilVisitor             import ThttilVisitor
-from .ThttilTreeParser          import ThttilTreeParser
-from .ThttilFileStream          import ThttilFileStream
-from .ThttilStreamBuffer        import ThttilStreamBuffer
-from .ThttilVariablePool        import ThttilVariablePool
-from .ThttilErrorHandler        import ThttilErrorHandler
-from .ThttilTokenRewriter       import ThttilTokenRewriter
-from .ThttilCommandCollection   import ThttilCommandCollection
-from .ThttilCommandReturnType   import ThttilCommandReturnType
-from .ThttilCommandInterpreter  import ThttilCommandInterpreter
-from .ThttilRuntimeErrorHandler import ThttilRuntimeErrorHandler
+# Every THTTIL program is composed of tokens. You can think of theses as functions calls.
+# A THTTIL token looks like this:
+
+$(OUT "Hello :D\n")
+
+# Here, this token is composed of a command "OUT" and an argument, "Hello :D"
+
+# OUT is the most basic command of THTTIL, it allows you to write something into the output stream.
+# Since you are gonna use a lot of OUT commands in your program, here is an alternative version
+# that makes it a bit more readable:
+
+%Hello :D\n%
+
+# This does exactly the same thing as before, the only difference is that the %% syntax
+# considers everything in between the '%' as a string
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\01_out.thtt -o default:01_out.output.txt
