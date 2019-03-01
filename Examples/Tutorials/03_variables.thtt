@@ -20,6 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-@default
+# -----------------------------------------------------------------------------------
 
-%Hello world !\n%
+# Like any other good langauge, THTTIL has variables. But only one type: string !
+# To declare a new variable simply use the "CREATE" command:
+
+$(CREATE "MyVarName", "Default value\n")
+
+# Now, you can use this variable like you would expect it:
+
+$(OUT $MyVarName)
+
+# You can also modify the variable content with the "SET" command
+
+$(SET $MyVarName, "New Content of MyVarName")
+$(OUT $MyVarName)
+
+# And you can delete it using the "DELETE" command
+
+$(DELETE $MyVarName)
+# $(OUT $MyVarName) calling this would cause a runtime error since the variable doesn't exists anymore
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\03_variables.thtt -o default:03_variables.output.txt

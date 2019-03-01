@@ -20,6 +20,25 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# -----------------------------------------------------------------------------------
+
+# THTTIL uses a system called "streams" to send back (text) data
+# A stream has a name and every file uses by default the stream called "default"
+# To change the current stream, simply type
+
+@stream_name
+
+# If the THTTIL interpreter sees this stream name for the first time
+# a new stream will automaticly be created
+
+%I'm currently writing into the stream called "stream_name"\n%
+
 @default
 
-%Hello world !\n%
+%And now we are back into the default stream !%
+
+# Also if you are using the default interpreter (Thttil.py), you can select the output file
+# for each stream by using the "-o" option, usage: -o stream_name:output_file.txt another_stream:antother_file.txt ...
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\02_out.thtt -o default:02_streams.default.txt stream_name:02_streams.stream_name.txt

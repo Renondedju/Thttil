@@ -20,6 +20,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-@default
+# -----------------------------------------------------------------------------------
 
-%Hello world !\n%
+# Here is a little intorduction to string manipulation commands:
+
+$(CREATE "content", "HELLO, my name IS ThTtIl !")
+
+# Lowers the content
+$(OUT $(LOWER $content))
+%\n%
+
+# Uppers the content
+$(OUT $(UPPER $content))
+%\n%
+
+# Titles the content
+$(OUT $(TITLE $content))
+%\n%
+
+# Replaces some content by some other content
+$(OUT $(REPLACE $content, "name", "new name"))
+%\n%
+
+# Note that thoses commands don't dirrectly send datas to the ouptut stream.
+# Instead they return a string object (owned by the host language) that can be then used
+# by other commands as arguments. 
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\05_string_commands.thtt -o default:05_string_commands.output.txt

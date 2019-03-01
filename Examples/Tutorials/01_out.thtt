@@ -20,6 +20,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-@default
+# -----------------------------------------------------------------------------------
 
-%Hello world !\n%
+# Every THTTIL program is compsed of tokens. You can think of theses as functions calls.
+# A THTTIL token looks like this:
+
+$(OUT "Hello :D\n")
+
+# Here, this token is composed of a command "OUT" and an argument, "Hello :D"
+
+# OUT is the most basic command of THTTIL, it allows you to write something into the output stream.
+# Since you are gonna use a lot of OUT commands in your program, here is an alternative version
+# that makes it a bit more readable:
+
+%Hello :D\n%
+
+# This does exactly the same thing as before, the only difference is that the %% syntax
+# considers everything in between the '%' as a string
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\01_out.thtt -o default:01_out.output.txt
