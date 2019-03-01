@@ -6,6 +6,8 @@
   </a>
 </p>
 
+[Link](https://github.com/BasileCombet/Thttil/releases) to the latest release.  
+  
 Thttil is an interpreted language made to generate files.  
 The power of Thttil is its extensibility. Since the language is hosted, you can  
 control everything from the file lexer/parser to the interpretation through the variable pool and  
