@@ -16,6 +16,10 @@ Versions use the following format: ``major.minor.patch-<release state>``
 
 ---
 
+## [Pre-release 3 (v0.3.0-pre)](https://github.com/BasileCombet/Thttil/releases/tag/v0.3.0-pre)
+
+* Added callbacks
+
 ## [Pre-release 2 (v0.2.0-pre)](https://github.com/BasileCombet/Thttil/releases/tag/v0.2.0-pre)
 
 This version is incompatible with the v0.1.0-pre (language and runtime API). 

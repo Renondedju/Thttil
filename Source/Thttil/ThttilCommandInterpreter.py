@@ -26,6 +26,7 @@ from .ThttilVisitor              import ThttilVisitor
 from .ThttilFileStream           import ThttilFileStream
 from .ThttilVariablePool         import ThttilVariablePool
 from .ThttilStreamBuffer         import ThttilStreamBuffer
+from .ThttilCallbackManager      import ThttilCallbackManager
 from .ThttilCommandCollection    import ThttilCommandCollection
 from .ThttilCommandReturnType    import ThttilCommandReturnType
 from .ThttilRuntimeErrorHandler  import ThttilRuntimeErrorHandler
@@ -37,6 +38,7 @@ class ThttilCommandInterpreter(ThttilVisitor):
     def __init__(self, command_collection: ThttilCommandCollection = ThttilCommandCollection()):
         self.variable_pool        : ThttilVariablePool          = ThttilVariablePool()
         self.stream_buffer        : ThttilStreamBuffer          = ThttilStreamBuffer()
+        self.callback_manager     : ThttilCallbackManager       = ThttilCallbackManager()
         self.command_collection   : ThttilCommandCollection     = command_collection
         self.runtime_error_handler: ThttilRuntimeErrorHandler   = ThttilRuntimeErrorHandler()
 
@@ -64,7 +66,7 @@ class ThttilCommandInterpreter(ThttilVisitor):
                 return ctx.VARIABLE().getText()[1:]
 
             # Requested a data, got a variable content
-            return self.variable_pool.GetVar(ctx.VARIABLE().getText()[1:])
+            return self.variable_pool.getVar(ctx.VARIABLE().getText()[1:])
 
         if request_var:
             self.runtime_error_handler.incompatibleArgumentTypeError(ctx)
@@ -74,6 +76,9 @@ class ThttilCommandInterpreter(ThttilVisitor):
         return self.visit(ctx.command())
 
     def visitPrint_command(self, ctx: ThttilParser.Print_commandContext):
+        """ Outputs some data to the current output stream
+        """
+        
         self.stream_buffer.append(ctx.PRINT().getText()[1:-1])
         return
 

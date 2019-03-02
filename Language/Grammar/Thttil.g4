@@ -37,7 +37,8 @@ program             : (command | stream_tag)* EOF ;
 // Syntax  : $var or @extern_var or "String" or $(COMMAND "args...")
 argument            : VARIABLE | STRING | command ;
 
-// Stream tag: 
+// Stream tag: Allows to change the current output stream
+// Syntax    : @StreamName
 stream_tag          : STREAM_TAG ;
 
 // Print command: this allows for easier file reading
@@ -52,7 +53,7 @@ command             : '$(' function=FUNCTION (| args+=argument (',' args+=argume
                     | print_command
                     ;
 
-instruction_block_content   : (command | stream_tag) ;
+instruction_block_content : (command | stream_tag) ;
 
 /*
  * Lexer Rules

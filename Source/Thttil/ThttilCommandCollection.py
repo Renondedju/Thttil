@@ -103,7 +103,7 @@ class ThttilCommandCollection:
     def SET(interpreter, var_name: 'var', value: 'content' = "") -> None:
         """ Sets the content of a variable
         """
-        interpreter.variable_pool.SetVar(var_name, value)
+        interpreter.variable_pool.setVar(var_name, value)
         return
 
     @staticmethod
@@ -151,6 +151,14 @@ class ThttilCommandCollection:
         return
 
     @staticmethod
+    @Command(pass_interpreter_instance = True)
+    def CALL(interpreter, callback_name: 'content') -> None:
+        """ Invokes a callback from the callback manager of the interpreter
+        """
+        interpreter.callback_manager.invoke(callback_name, interpreter)
+        return
+
+    @staticmethod
     @Command
     def UPPER(content: 'content') -> None:
         """ Returns the input content to upper
@@ -183,7 +191,7 @@ class ThttilCommandCollection:
     def CREATE(interpreter, var_name: 'content', default_value: 'content' = "") -> None:
         """ Creates a variable and sets it's default value
         """
-        interpreter.variable_pool.CreateVar(var_name, default_value)
+        interpreter.variable_pool.createVar(var_name, default_value)
         return
 
     @staticmethod
@@ -202,15 +210,15 @@ class ThttilCommandCollection:
         if (isinstance(array, str)):
             array = [array]
 
-        interpreter.variable_pool.CreateVar(temp_var_name, ThttilCommandCollection.ForeachIterator("", "0", str(len(array) - 1)))
+        interpreter.variable_pool.createVar(temp_var_name, ThttilCommandCollection.ForeachIterator("", "0", str(len(array) - 1)))
 
         for index, value in enumerate(array):
-            interpreter.variable_pool.SetVar(temp_var_name + '.value', value)
-            interpreter.variable_pool.SetVar(temp_var_name + '.index.value', str(index))
+            interpreter.variable_pool.setVar(temp_var_name + '.value', value)
+            interpreter.variable_pool.setVar(temp_var_name + '.index.value', str(index))
             for command in commands:
                 interpreter.visit(command)
 
-        interpreter.variable_pool.DeleteVar(temp_var_name)
+        interpreter.variable_pool.deleteVar(temp_var_name)
         return
 
     @staticmethod

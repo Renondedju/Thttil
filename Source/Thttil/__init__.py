@@ -35,6 +35,7 @@ from .ThttilStreamBuffer        import ThttilStreamBuffer
 from .ThttilVariablePool        import ThttilVariablePool
 from .ThttilErrorHandler        import ThttilErrorHandler
 from .ThttilTokenRewriter       import ThttilTokenRewriter
+from .ThttilCallbackManager     import ThttilCallbackManager
 from .ThttilCommandCollection   import ThttilCommandCollection
 from .ThttilCommandReturnType   import ThttilCommandReturnType
 from .ThttilCommandInterpreter  import ThttilCommandInterpreter

@@ -67,11 +67,11 @@ class ThttilVariablePool:
 
         return hasattr(current_instance, sub_attributes[-1])
 
-    def Clear(self):
+    def clear(self):
         for var in list(self.__register):
-            self.DeleteVar(var)
+            self.deleteVar(var)
 
-    def SetVar(self, name: str, value: Any):
+    def setVar(self, name: str, value: Any):
         if (not self.__hasattr(self, name)):
             print("Thttil runtime error: cannot set a variable that doesn't exists.", name)
             return
@@ -79,14 +79,14 @@ class ThttilVariablePool:
         self.__setattr(self, name, value)
         return
 
-    def GetVar(self, name: str) -> Union[str, List[str]]:
+    def getVar(self, name: str) -> Union[str, List[str]]:
         if (not self.__hasattr(self, name)):
             print("Thttil runtime error: cannot get a variable that doesn't exists:", name)
             return ""
 
         return self.__getattr(self, name)
 
-    def CreateVar(self, name: str, init_value: Any = None):
+    def createVar(self, name: str, init_value: Any = None):
         if (self.__hasattr(self, name)):
             print("Thttil runtime error: cannot create a variable already defined.", name)
             return
@@ -95,7 +95,7 @@ class ThttilVariablePool:
         setattr(self, name, init_value)
         return
 
-    def DeleteVar(self, name: str):
+    def deleteVar(self, name: str):
         if (not self.__hasattr(self, name)):
             print("Thttil runtime error: cannot delete a variable that doesn't exists.", name)
             return

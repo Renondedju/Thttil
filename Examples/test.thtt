@@ -24,6 +24,7 @@
 
 %Extern variable test:   %   $(OUT   $extern_var)
 %\nOUT     command test:   % $(OUT   "sample")
+%\nCALL    command test:   % $(CALL  "inspect")
 %\nPRINT   command test:   % $(PRINT "sample")
 %\nUPPER   command test:   % $(OUT $(UPPER "sample"))
 %\nLOWER   command test:   % $(OUT $(LOWER "SAMPLE"))

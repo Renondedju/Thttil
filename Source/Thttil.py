@@ -99,6 +99,11 @@ class ArgParser:
         self.required_args.add_argument('-t', '--template', type=str, metavar='template',
             help="Template file to interpret (*.t, *.thtt, *.thttil file)", required=True)
 
+# This is a callback that prints all the variables of the interpreter pool.
+def inspect(interpreter: Thttil.ThttilCommandInterpreter) -> None:
+    for var in interpreter.variable_pool._ThttilVariablePool__register:
+        print(var, ":", getattr(interpreter.variable_pool, var))
+
 def main():
 
     # Fetching args
@@ -116,7 +121,9 @@ def main():
     # the predeclared variables to the interpreter pool
     interpreter = Thttil.ThttilCommandInterpreter()
     for var_name, var_content in args.variables.items():
-        interpreter.variable_pool.CreateVar(var_name, var_content)
+        interpreter.variable_pool.createVar(var_name, var_content)
+
+    interpreter.callback_manager.registerCallback(inspect, inspect.__name__)
 
     # Staring the interpretation
     interpreter.interpret(tree_parser.tree, tree_parser.file)
@@ -134,7 +141,7 @@ def main():
             file.write(interpreter.stream_buffer.get(stream_name))
 
     # Clearing the variable pool and we are done !
-    interpreter.variable_pool.Clear()
+    interpreter.variable_pool.clear()
 
 if __name__ == '__main__':
     main()
