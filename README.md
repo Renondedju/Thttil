@@ -17,7 +17,7 @@ builtin features.
   
 Thttil will probably be way more maintainable and readable than any other solution.  
 Also since this is an interpreted language, no compilation time is required to make changes to your project.  
-Thttil is conceived to be intuitive and easy to use so you don't need to be a technical person things to edit template files.  
+Thttil is conceived to be intuitive and easy to use so you don't need to be a technical person to edit template files.  
 Finally if your project requires very specific algorithms that are not included in the builtin commands, you can easily extend the language in 5 minutes.  
 
 **Here are some use cases:**
