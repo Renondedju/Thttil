@@ -1,0 +1,57 @@
+# MIT License
+
+# Copyright (c) 2019 Basile Combet
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+# -----------------------------------------------------------------------------------
+
+# Soo, you might wonder how the hell can you debug a Thttil program ?
+# Well, there is 3 main methods:
+
+# The classic print for quick checks
+$(PRINT "I'm a debug log\n")
+
+# The debug stream:
+@debug
+
+# Any data written to this stream will be printed onto the console.
+%Hello, I'm writing into the debug stream !\n%
+
+# Or the callback method.
+$(CREATE "MyVar", "Content of MyVar")
+$(CALL "inspect")
+
+# Let me explain what are callbacks:
+# Callbacks are functions defined by the host language that are callable from Thttil.
+# In this example I'm calling a function called "inspect".
+
+# This allows for better and more in-depth debugging.
+# Of course, this can also be used for non debugging purposes.
+
+# You might wonder what is the difference between a custom command and a callback then ?
+
+# - Well callbacks cannot return any value or take arguments,
+# they cannot write to the interpreter streams, but they can interact with the rest of your program.
+
+# - On the other hand, custom commands can return values and take arguments.
+# They also can write to the interpreter streams, but cannot interact with the rest of your program.
+
+# You can run this file by executing the following command: 
+# python Source\Thttil.py -t Examples\Tutorials\09_debug.thtt -o default:09_debug.output.txt
