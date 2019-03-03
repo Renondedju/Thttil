@@ -101,8 +101,10 @@ class ArgParser:
 
 # This is a callback that prints all the variables of the interpreter pool.
 def inspect(interpreter: Thttil.ThttilCommandInterpreter) -> None:
-    for var in interpreter.variable_pool._ThttilVariablePool__register:
-        print(var, ":", getattr(interpreter.variable_pool, var))
+    print("Inspecting the current variables in the interpreter variable pool at", hex(id(interpreter.variable_pool)))
+
+    for var in interpreter.variable_pool.getVarList():
+        print("\t-", var, ":", getattr(interpreter.variable_pool, var))
 
 def main():
 

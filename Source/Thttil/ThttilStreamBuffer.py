@@ -26,6 +26,9 @@ class ThttilStreamBuffer:
             return False
 
         self.__streams[stream_name] = ""
+        if (stream_name == "debug"):
+            print("Thttil runtime warning: Debug stream enabled.")
+
         return True
 
     def append(self, content: str, stream_name: str = None) -> None:
@@ -34,6 +37,9 @@ class ThttilStreamBuffer:
         """
         if stream_name == None:
             stream_name = self.__current_stream
+
+        if stream_name == "debug":
+            print(content)
 
         if stream_name in self.__streams:
             self.__streams[stream_name] += content

@@ -71,6 +71,9 @@ class ThttilVariablePool:
         for var in list(self.__register):
             self.deleteVar(var)
 
+    def getVarList(self) -> set:
+        return self.__register
+
     def setVar(self, name: str, value: Any):
         if (not self.__hasattr(self, name)):
             print("Thttil runtime error: cannot set a variable that doesn't exists.", name)
