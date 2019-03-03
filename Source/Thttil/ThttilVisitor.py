@@ -24,8 +24,18 @@ class ThttilVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by ThttilParser#stream_redirection.
+    def visitStream_redirection(self, ctx:ThttilParser.Stream_redirectionContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by ThttilParser#print_command.
     def visitPrint_command(self, ctx:ThttilParser.Print_commandContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ThttilParser#using.
+    def visitUsing(self, ctx:ThttilParser.UsingContext):
         return self.visitChildren(ctx)
 
 

@@ -17,6 +17,12 @@ class ThttilRuntimeErrorHandler:
         print(f"{self.current_interpreted_template.fileName}:{line_index + 1}:{offending_token.start.start - content_start}")
         print(f"{content[start:end + 1]}\n{' '*(offending_token.start.start - content_start)}^{'~'*(min(offending_token.stop.stop - offending_token.start.start, len(content)))}")
 
+    def undeclaredStreamWarning(self, offending_token, stream_name):
+        """ Usage of an undeclared stream in a stream redirection
+        """
+        print(f"Thttil runtime warning: Usage of an undeclared stream (\"{stream_name}\") in a stream redirection")
+        self._printOffendingTokenReport(offending_token)
+
     def undefinedVariableError(self, var_name):
         """ Trigerred when an undefined variable is required
             this error is recoverable.

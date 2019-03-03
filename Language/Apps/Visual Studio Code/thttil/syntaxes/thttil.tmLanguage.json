@@ -45,13 +45,22 @@
 						}
 					]
 				},
+				{
+					"name": "storage.type.module.thttil",
+					"match": "(using|as)"
+				},
+				{
+					"name": "header.thttil",
+					"begin": "<",
+					"end": ">"
+				},
 				{  
 					"name" : "comment.line.number-sign.thttil",
 					"match": "(#.*)"
 				},
 				{
 					"name" : "entity.name.tag.thttil",
-					"match": "(@[\\w]+)"
+					"match": "(@[\\w]*\\.?[\\w]+)"
 				}
 			]
 		},

@@ -75,6 +75,14 @@ class ThttilCommandInterpreter(ThttilVisitor):
         # Requested a data, got a token to parse
         return self.visit(ctx.command())
 
+    def visitStream_redirection(self, ctx: ThttilParser.Stream_redirectionContext):
+        
+        if (ctx.input_stream.text[1:] not in self.stream_buffer.names()):
+            self.runtime_error_handler.undeclaredStreamWarning(ctx, ctx.input_stream.text)
+
+        self.stream_buffer.append(self.stream_buffer.get(ctx.input_stream.text[1:]), ctx.output_stream.text[1:])
+        return
+
     def visitPrint_command(self, ctx: ThttilParser.Print_commandContext):
         """ Outputs some data to the current output stream
         """

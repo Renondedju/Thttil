@@ -31,44 +31,72 @@ SOFTWARE.
  */
 
 // Main rule, allows program parsing
-program             : (command | stream_tag)* EOF ;
+program             : using* (command | stream_tag | stream_redirection)* EOF ;
 
 // Argument: this may be any command argument
 // Syntax  : $var or @extern_var or "String" or $(COMMAND "args...")
-argument            : VARIABLE | STRING | command ;
+argument            : (VARIABLE | STRING)
+                    | command ;
 
 // Stream tag: Allows to change the current output stream
-// Syntax    : @StreamName
+// Syntax    : @StreamName or @namespace.StreamName
 stream_tag          : STREAM_TAG ;
+
+// Stream redirection: Allows to write the content of one stream into another
+// Syntax            : @test.default -> @default
+stream_redirection  : input_stream=STREAM_TAG ARROW output_stream=STREAM_TAG ;
 
 // Print command: this allows for easier file reading
 // Syntax       :   %Some arbitrary content%
 // Translated to:   $(OUT "Some arbitrary content")
 print_command       : PRINT ;
 
+using               : USING BEGIN_USING_STRING FILENAME END_USING_STRING (| AS BEGIN_USING_STRING ALIAS END_USING_STRING) ;
+
 // Command    : this is anything that can execute something and be replaced by it's result
 // Syntax     : $(FUNCTION "Some arbitrary content", $some_more ...)
 // Replaced by: FUNCTION return value
-command             : '$(' function=FUNCTION (| args+=argument (',' args+=argument)*) ')' ('{' commands+=instruction_block_content* '}')?
+command             : BEGIN_TOKEN function=FUNCTION (| args+=argument (ARGUMENT_SEPARATOR args+=argument)*) END_TOKEN
+                      (BEGIN_INSTRUCTION_BLOCK commands+=instruction_block_content* END_INSTRUCTION_BLOCK)?
                     | print_command
                     ;
 
-instruction_block_content : (command | stream_tag) ;
+instruction_block_content : (command | stream_tag | stream_redirection) ;
 
 /*
  * Lexer Rules
  */
 
+// Fragments
 fragment LOWERCASE          : [a-z] ;
 fragment UPPERCASE          : [A-Z] ;
 fragment CHAR               : [a-zA-Z] ;
-fragment PROTECTED_PRINT    : '\\\\' | '\\%' ;
-fragment PROTECTED_STRING   : '\\\\' | '\\"' ;
 
-STREAM_TAG          : '@' CHAR+ ;
-FUNCTION            : UPPERCASE+ ;
-PRINT               : '%' (PROTECTED_PRINT  | ~[%])*? '%' ;
-STRING              : '"' (PROTECTED_STRING | ~["])*? '"' ;
+// Keywords
+USING                   : 'using' ;
+AS                      : 'as' ;
+ARROW                   : '->' ;
+END_USING_STRING        : '>' ;
+BEGIN_USING_STRING      : '<' ;
+BEGIN_TOKEN             : '$(' ;
+END_TOKEN               : ')' ;
+ARGUMENT_SEPARATOR      : ',' ;
+BEGIN_INSTRUCTION_BLOCK : '{' ;
+END_INSTRUCTION_BLOCK   : '}' ;
+
+// Literals
+PRINT               : '%' ('\\\\' | '\\%' | ~[%])*? '%' ;
+STRING              : '"' ('\\\\' | '\\"' | ~["])*? '"' ;
+
+// Objects
+STREAM_TAG          : '@' (CHAR+? '.')? CHAR+ ;
 VARIABLE            : '$' (CHAR | '_' | '-' | '.')+ ;
+
+// Identifiers
+FUNCTION            : UPPERCASE+ ;
+ALIAS               : CHAR+ ;
+FILENAME            : (CHAR | '_' | '-' | '.')+ ;
+
+// Skipped tokens
 COMMENT             : '#' ~( '\r' | '\n' )* -> skip ;
 WHITESPACE          : [ \t\n\r]+ -> skip ;

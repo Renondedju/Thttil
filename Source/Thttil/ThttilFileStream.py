@@ -19,7 +19,8 @@ class ThttilFileStream(FileStream):
         while index != -1:
 
             index = self.strdata.find('\n', start, end)
-            if index == -1:
+            if (index == -1):
+                self.lines.append(ThttilFileStream.Line(start, end))
                 continue
 
             self.lines.append(ThttilFileStream.Line(start, index))

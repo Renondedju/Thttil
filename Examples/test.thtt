@@ -20,6 +20,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+using <test.thtt> as <test>
+using <Lol.thtt>  as <Lol>
+
 @default
 
 %Extern variable test:   %   $(OUT   $extern_var)
@@ -44,3 +47,6 @@
 @test
 
 %This should now be writing in the named 'test' stream%
+
+# Writes the current content of @test into @default 
+@test -> @default
