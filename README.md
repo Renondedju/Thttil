@@ -6,7 +6,7 @@
   </a>
 </p>
 
-[Link](https://github.com/BasileCombet/Thttil/releases) to the latest release.  
+[Link](https://github.com/Renondedju/Thttil/releases) to the latest release.  
   
 Thttil is an interpreted language made to generate files.  
 The power of Thttil is its extensibility. Since the language is hosted, you can  
@@ -29,9 +29,9 @@ The real limit here is your imagination.
 
 **Ok nice, you convicted me, where do I learn how to use Thttil ?**
 
-Here is a link to the [wiki](https://github.com/BasileCombet/Thttil/wiki), everything you need to know about Thttil is in here !
+Here is a link to the [wiki](https://github.com/Renondedju/Thttil/wiki), everything you need to know about Thttil is in here !
 
-We also have syntax highlight support for your favorite code editor over [here](https://github.com/BasileCombet/Thttil/tree/master/Language/Apps).
+We also have syntax highlight support for your favorite code editor over [here](https://github.com/Renondedju/Thttil/tree/master/Language/Apps).
 
 # Contributing
 

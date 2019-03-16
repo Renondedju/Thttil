@@ -16,14 +16,14 @@ Versions use the following format: ``major.minor.patch-<release state>``
 
 ---
 
-## [Pre-release 3 (v0.3.0-pre)](https://github.com/BasileCombet/Thttil/releases/tag/v0.3.0-pre)
+## [Pre-release 3 (v0.3.0-pre)](https://github.com/Renondedju/Thttil/releases/tag/v0.3.0-pre)
 
 * Added callbacks
 * Optimized lexer/parser rules
 * Added stream redirection
 * Updated syntax highlight for Visual Studio Code
 
-## [Pre-release 2 (v0.2.0-pre)](https://github.com/BasileCombet/Thttil/releases/tag/v0.2.0-pre)
+## [Pre-release 2 (v0.2.0-pre)](https://github.com/Renondedju/Thttil/releases/tag/v0.2.0-pre)
 
 This version is incompatible with the v0.1.0-pre (language and runtime API). 
 
@@ -34,12 +34,12 @@ This version is incompatible with the v0.1.0-pre (language and runtime API).
 * Created the official discord server.
 * Hidden the antlr4 dependency from the runtime API.
 * Added multiple output streams.
-* Added basic tutorial scripts into https://github.com/BasileCombet/Thttil/tree/master/Examples/Tutorials
+* Added basic tutorial scripts into https://github.com/Renondedju/Thttil/tree/master/Examples/Tutorials
 
 *Known issues:*
 
 * The Sublime Text 3 syntax highlight hasn't been updated yet.
 
-## [Pre-release 1 (v0.1.0-pre)](https://github.com/BasileCombet/Thttil/releases/tag/v0.1)
+## [Pre-release 1 (v0.1.0-pre)](https://github.com/Renondedju/Thttil/releases/tag/v0.1)
 
 * Created Thttil.
