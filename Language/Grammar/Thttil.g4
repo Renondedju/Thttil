@@ -1,5 +1,7 @@
 grammar Thttil;
 
+// **** THIS GRAMMAR FILE IS NOW DEPRECATED SINCE WE DO NOT USE ANTLR4 ANYMORE ****
+
 /*
 
 MIT License

@@ -37,13 +37,6 @@ We also have syntax highlight support for your favorite code editor over [here](
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) to know what to do.
 
-# Dependencies
-
-## Antlr4 by Terence Parr
-
-What is ANTLR?  
-ANTLR (ANother Tool for Language Recognition) is a powerful parser generator for reading, processing, executing, or translating structured text or binary files. It's widely used to build languages, tools, and frameworks. From a grammar, ANTLR generates a parser that can build and walk parse trees. From the [Antlr website](https://www.antlr.org/)
-
 # Licence
 
 MIT Licence
