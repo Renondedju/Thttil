@@ -1,0 +1,4 @@
+-cp Sources
+-lib hxparse
+-cpp Targets\C++
+-main Main

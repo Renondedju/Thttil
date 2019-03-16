@@ -1,0 +1,32 @@
+# JavaScript build
+Build\build-js.hxml
+
+--next
+
+# Python build
+Build\build-py.hxml
+
+--next
+
+# C# build
+Build\build-cs.hxml
+
+--next
+
+# Java build
+Build\build-java.hxml
+
+--next
+
+# C++ build
+Build\build-cpp.hxml
+
+--next
+
+# Lua build
+Build\build-lua.hxml
+
+--next
+
+# ActionScript 3 build
+Build\build-as3.hxml

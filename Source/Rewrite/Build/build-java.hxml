@@ -1,0 +1,4 @@
+-cp Sources
+-lib hxparse
+-java Targets\Java\
+-main Main

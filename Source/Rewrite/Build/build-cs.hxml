@@ -1,0 +1,4 @@
+-cp Sources
+-lib hxparse
+-cs Targets\C#\
+-main Main

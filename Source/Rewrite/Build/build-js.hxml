@@ -1,0 +1,4 @@
+-cp Sources
+-lib hxparse
+-js Targets\JavaScript\Thttil.js
+-main Main

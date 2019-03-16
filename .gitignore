@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# 
+!*.hxml
+
 # C extensions
 *.so
 
@@ -15,7 +18,7 @@ Release/
 
 # Distribution / packaging
 .Python
-build/
+build/*
 develop-eggs/
 dist/
 downloads/
