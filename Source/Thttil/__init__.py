@@ -1,6 +1,6 @@
 # MIT License
 
-# Copyright (c) 2019 Basile Combet
+# Copyright (c) 2019 Renondedju
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +35,7 @@ from .ThttilStreamBuffer        import ThttilStreamBuffer
 from .ThttilVariablePool        import ThttilVariablePool
 from .ThttilErrorHandler        import ThttilErrorHandler
 from .ThttilTokenRewriter       import ThttilTokenRewriter
+from .ThttilTreeCollection      import ThttilTreeCollection
 from .ThttilCallbackManager     import ThttilCallbackManager
 from .ThttilCommandCollection   import ThttilCommandCollection
 from .ThttilCommandReturnType   import ThttilCommandReturnType

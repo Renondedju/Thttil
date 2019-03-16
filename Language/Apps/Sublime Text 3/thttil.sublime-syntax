@@ -1,6 +1,8 @@
+%YAML 1.2
+
 # MIT License
 
-# Copyright (c) 2019 Basile Combet
+# Copyright (c) 2019 Renondedju
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,51 +22,49 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-%YAML 1.2
 ---
-# http://www.sublimetext.com/docs/3/syntax.html
 name: Thttil
-file_extensions:
-  - thtt
-  - thttil
-  - t
-scope: source.thttil
+fileTypes:
+    - thtt
+    - thttil
+    - t
+scopeName: source.thttil
+foldingStartMarker: '\{\s*$'
+foldingStopMarker: '^\s*\}'
 contexts:
-  main:
-    - include: capture_groups
-    - include: strings
-    - include: global_tokens
-  capture_groups:
-    - match: \$\(
-      captures:
-        0: punctuation.definition.token.begin.thttil
-      push:
-        - match: \)
-          captures:
-            0: punctuation.definition.token.end.thttil
-          pop: true
-        - include: tokens
-        - include: strings
-  global_tokens:
-    - match: "%"
-      push:
-        - meta_scope: markup.quote.thttil
-        - match: "%"
-          pop: true
-        - match: \\.
-          scope: constant.character.escape.thttil
-    - match: (#.*)
-      scope: comment.line.number-sign.thttil
-  strings:
-    - match: '"'
-      push:
-        - meta_scope: string.quoted.double.thttil
-        - match: '"'
-          pop: true
-        - match: \\.
-          scope: constant.character.escape.thttil
-  tokens:
-    - match: '([A-Z]+)\s+'
-      scope: entity.name.function.thttil
-    - match: '\$([\w\d\._-]+)'
-      scope: variable.parameter.thttil
+    main:
+        - include: capture_groups
+        - include: global_tokens
+    capture_groups:
+        begin: \$\(
+        end: \)
+        beginCaptures:
+            '0':
+                name: punctuation.definition.token.begin.thttil
+        endCaptures:
+            '0':
+                name: punctuation.definition.token.end.thttil
+        patterns:
+            - include: command_tokens
+    global_tokens:
+        patterns:
+            -   name: markup.quote.thttil
+                begin: '%'
+                end: '%'
+                patterns:
+                    - {name: string.jade.thttil, match: \\.}
+            -   name: comment.line.number-sign.thttil
+                match: '(#.*)'
+            -   name: entity.name.tag.thttil
+                match: '(@[\w]+)'
+    command_tokens:
+        patterns:
+            -   match: '([A-Z]+)'
+                name: entity.name.function.thttil
+            -   name: variable.parameter.thttil
+                match: '\$([\w\d\._-]+)'
+            -   name: string.quoted.double.thttil
+                begin: '"'
+                end: '"'
+                patterns:
+                    - {name: constant.character.escape.thttil, match: \\.}

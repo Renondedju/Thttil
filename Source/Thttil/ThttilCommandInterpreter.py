@@ -1,6 +1,6 @@
 # MIT License
 
-# Copyright (c) 2019 Basile Combet
+# Copyright (c) 2019 Renondedju
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -74,6 +74,9 @@ class ThttilCommandInterpreter(ThttilVisitor):
 
         # Requested a data, got a token to parse
         return self.visit(ctx.command())
+
+    def visitUsing(self, ctx : ThttilParser.UsingContext):
+        print(ctx.FILENAME(), ctx.ALIAS())
 
     def visitStream_redirection(self, ctx: ThttilParser.Stream_redirectionContext):
         
