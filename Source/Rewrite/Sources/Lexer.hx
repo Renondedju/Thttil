@@ -4,7 +4,7 @@ class ThttilLexer extends hxparse.Lexer implements hxparse.RuleBuilder
 {
 	// This buffer is used to read strings 
     static var temp_buffer: StringBuf;
-	static var identifier : String = "_*[a-z][a-zA-Z0-9_]*|_+[0-9][_a-zA-Z0-9]*";
+	static var identifier : String = "_*[a-zA-Z][a-zA-Z0-9_]*|_+[0-9][_a-zA-Z0-9]*";
 
 	// Main token rule
     public static var tokens = @:rule [

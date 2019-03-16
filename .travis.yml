@@ -1,0 +1,11 @@
+language: haxe
+
+haxe:
+ - "3.4.7"
+ - "stable"
+
+install:
+ - haxelib install hxparse
+
+script:
+ - cd Source\Rewrite && haxe Build\test.hxml

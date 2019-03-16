@@ -1,5 +1,7 @@
 # Thttil
 
+[![Build Status](https://travis-ci.org/Renondedju/Thttil.svg?branch=master)](https://travis-ci.org/Renondedju/Thttil)
+
 <p align="center">
   <a href="https://discord.gg/TpmPFM3">
     <img alt="Logo" src="https://discordapp.com/api/guilds/550366032708108301/widget.png?style=banner2">

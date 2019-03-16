@@ -1,0 +1,4 @@
+-cp Sources
+-lib hxparse
+-main Test
+--interp
