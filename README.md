@@ -1,6 +1,6 @@
 # Thttil
 
-[![Build Status](https://travis-ci.org/Renondedju/Thttil.svg?branch=master)](https://travis-ci.org/Renondedju/Thttil)
+[![Build Status](https://travis-ci.org/Renondedju/Thttil.svg?branch=dev)](https://travis-ci.org/Renondedju/Thttil)
 
 <p align="center">
   <a href="https://discord.gg/TpmPFM3">
