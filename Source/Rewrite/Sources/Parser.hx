@@ -1,5 +1,6 @@
 import Lexer;
 import Tokens;
+import Symbols;
 
 class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, TokenDef>
 {
@@ -10,18 +11,55 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
 		super(token_source);
 	}
 
-    public function parseProgram(): String
+    public function parseProgram(): ThttilProgram
     {
-        return hxparse.Parser.parse(switch stream
+        var program: ThttilProgram = new ThttilProgram();
+        var token  : ThttilToken   = null;
+
+        // Looking for all the tokens in the file.
+        // If parseToken() return null, then the End Of File is reached and our
+        // program has been successfully parsed.
+        do
         {
-            case [TDot, TDot, TEOF]:
-                return "Dot-EOF";
+            token = parseToken();
+            if (token != null)
+                program.tokens.push(token)
+        }
+        while (token != null)
+
+        return program;
+    }
+
+    /**
+     * Looks for a token to create
+     * @return ThttilToken The parsed token or null if EOF has been reached.
+     */
+    public function parseToken(): ThttilToken
+    {
+        return hxparse.Parse.parse(switch stream
+        {
+            // Found a classic token: $(COMMAND "args...")
+            case [TBeginToken]:
+                null; // TODO parse token
+
+            // Found a print token
+            // TODO rename TPrintCommand to TPrintToken
+            case [TPrintCommand(content)]:
+                null; // TODO parse token
+
+            // End of file. Not more tokens to parse.
             case [TEOF]:
-                return "EOF";
+                null;
+            
+            // TODO Error, unexpected token.
+            case _:
+                null;
         });
     }
 
 	/**
+     * @deprecated Test function.
+     * 
 	 * Returns the string representation of the current parsed file or input
 	 * @return String tree representation
 	 */
@@ -72,10 +110,4 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
             }
         }
 	}
-
-    public function composeVariable(): Void
-    {
-        
-    }
-
 }
