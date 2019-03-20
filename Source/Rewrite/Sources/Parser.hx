@@ -11,6 +11,10 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
 		super(token_source);
 	}
 
+    /**
+     * Parses a thttil program
+     * @return ThttilProgram
+     */
     public function parseProgram(): ThttilProgram
     {
         var program: ThttilProgram = new ThttilProgram();
@@ -23,9 +27,9 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
         {
             token = parseToken();
             if (token != null)
-                program.tokens.push(token)
+                program.tokens.push(token);
         }
-        while (token != null)
+        while (token != null);
 
         return program;
     }
@@ -36,24 +40,89 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
      */
     public function parseToken(): ThttilToken
     {
-        return hxparse.Parse.parse(switch stream
+        return hxparse.Parser.parse(switch stream
         {
             // Found a classic token: $(COMMAND "args...")
-            case [TBeginToken]:
-                null; // TODO parse token
+            case [TBeginToken, TConst(CIdent(command_name)), arguments = parseTokenArguments([]), block = parseTokenInstructionBlock()]:
+                new ThttilToken(new ThttilCommand(), arguments, block);
 
             // Found a print token
-            // TODO rename TPrintCommand to TPrintToken
-            case [TPrintCommand(content)]:
-                null; // TODO parse token
-
+            case [TPrintToken(content)]:
+                new ThttilToken(new ThttilCommand(), [new ThttilString(content)], null);
+            
             // End of file. Not more tokens to parse.
             case [TEOF]:
                 null;
-            
-            // TODO Error, unexpected token.
-            case _:
-                null;
+        });
+    }
+
+    /**
+     * Parses a token instruction block
+     * @return ThttilTokenList a token list or null if nothing has been found
+     */
+    public function parseTokenInstructionBlock(): Array<ThttilToken>
+    {
+        if (peek(0) != TBeginInstructionBlock)
+            return null;
+
+        junk();
+        return parseTokenInstructionBlockContent([]);
+    }
+
+    /**
+     * Parses the content of an instruction block
+     * @param accumulator 
+     * @return Array<ThttilToken> instruction block
+     */
+    public function parseTokenInstructionBlockContent(accumulator: Array<ThttilToken>): Array<ThttilToken>
+    {
+        return hxparse.Parser.parse(switch stream{
+            case [TEndInstructionBlock]: accumulator;
+            case [token = parseToken()]:
+                accumulator.push(token);
+                switch stream{
+                    case [TEndInstructionBlock]: accumulator;
+                    case _: parseTokenInstructionBlockContent(accumulator);
+                }
+        });
+    }
+
+    /**
+     * Parses token arguments.
+     * @param accumulator 
+     * @return Array<ThttilArgument> arguments
+     */
+    public function parseTokenArguments(accumulator: Array<ThttilArgument>): Array<ThttilArgument>
+    {
+        return hxparse.Parser.parse(switch stream
+        {
+            case [TEndToken]: accumulator;
+            case [arg = parseTokenArgumentContent()]:
+                accumulator.push(arg);
+                switch stream
+                {
+                    case [TEndToken]: accumulator;
+                    case [TArgumentSeparator]: parseTokenArguments(accumulator);
+                }
+        });
+    }
+
+    /**
+     * Parses a token argument content
+     * @return ThttilArgument argument
+     */
+    public function parseTokenArgumentContent(): ThttilArgument
+    {
+        return hxparse.Parser.parse(switch stream
+        {
+            case [TBeginVariable, TConst(CIdent(identifier))]:
+                new ThttilVariable(identifier, null);
+            case [TConst(CString(content))]:
+                new ThttilString(content);
+            case [TBeginStream, TConst(CIdent(identifier))]:
+                new ThttilStream(identifier);
+            case [token = parseToken()]:
+                token;
         });
     }
 
@@ -68,7 +137,7 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
 		var tree: String = "";
         while (true)
         {
-            switch stream.token()
+            switch (stream.token())
             {
                 case TDot:
                     tree += "Dot ";
@@ -92,8 +161,8 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
                     tree += "EndInstructionBlock ";
                 case TBeginInstructionBlock:
                     tree += "BeginInstructionBlock ";
-                case TPrintCommand(content):
-                    tree += "PrintCommand (" + content + ") ";
+                case TPrintToken(content):
+                    tree += "TPrintToken (" + content + ") ";
                 case TConst(CString(content)):
                     tree += "String (" + content + ") ";
                 case TConst(CIdent(name)):

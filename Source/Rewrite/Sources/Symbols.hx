@@ -32,6 +32,7 @@ class ThttilProgram extends ThttilSymbol
 
     public function new(const: Bool = false)
     {
+        this.tokens = [];
         super(const);
     }
 }
@@ -68,7 +69,7 @@ class ThttilCommand extends ThttilSymbol
  */
 interface ThttilArgument
 {
-    public function getValue(): Dynamic
+    public function getValue(): Dynamic;
 }
 
 class ThttilToken extends ThttilSymbol implements ThttilArgument
@@ -77,8 +78,13 @@ class ThttilToken extends ThttilSymbol implements ThttilArgument
     public var arguments        : Array<ThttilArgument>;
     public var instruction_block: Array<ThttilToken>;
 
-    public function new(const: Bool = false)
+    public function new(command: ThttilCommand, arguments: Array<ThttilArgument>,
+                        instruction_block: Array<ThttilToken>, const: Bool = false)
     {
+        this.command            = command;
+        this.arguments          = arguments;
+        this.instruction_block  = instruction_block;
+
         super(const);
     }
 
@@ -86,18 +92,28 @@ class ThttilToken extends ThttilSymbol implements ThttilArgument
     {
         if (command != null)
             return command.execute();
+
         return null;
     }
 }
 
-class ThttilTokenList extends ThttilSymbol
+class ThttilStream extends ThttilSymbol implements ThttilArgument
 {
-    public var tokens: Array<ThttilToken>
+    private var name   : String;
+    public  var content: String;
 
-    public function new()
+    public function new(name: String)
     {
-        // A token list cannot be constant
+        // A stream cannot be contant
         super(false);
+
+        this.name    = name;
+        this.content = "";
+    }
+
+    public function getValue(): String
+    {
+        return content;
     }
 }
 

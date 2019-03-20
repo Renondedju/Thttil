@@ -19,7 +19,7 @@ class ThttilLexer extends hxparse.Lexer implements hxparse.RuleBuilder
 		"%"	=> {
 			temp_buffer = new StringBuf();
 			lexer.token(print);
-			TPrintCommand(temp_buffer.toString());
+			TPrintToken(temp_buffer.toString());
 		},
 
 		"[\r\n\t ]+" 			=> lexer.token(tokens), 			  // Passing whitespaces

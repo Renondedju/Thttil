@@ -5,15 +5,17 @@ class Main
     public static function main(): Void
     {
 		var parser = new ThttilParser(byte.ByteData.ofString("
-        using <Lol.thtt>  as <Lol>
-
-@default
-
-%Extern variable test:   %   $(OUT   $extern_var)
-%\nOUT     command test:   % $(OUT   \"sample\")
-%\nCALL    command test:   % $(CALL  \"inspect\")
-%\nPRINT   command test:   % $(PRINT \"sample\")
+        $(OUT \"sample\")
+        {
+            %Lol%
+            %Lol%
+            %Lol%
+            %Lol%
+            %Lol%
+            %Lol%
+        }
 "), "String test");
-        trace(parser.toString());
+
+        trace(parser.parseProgram());
     }
 }
