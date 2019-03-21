@@ -83,7 +83,7 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
             case [TEndInstructionBlock]: accumulator;
             case [token = parseToken()]:
                 accumulator.push(token);
-                switch stream{
+                switch stream {
                     case [TEndInstructionBlock]: accumulator;
                     case _: parseTokenInstructionBlockContent(accumulator);
                 }
@@ -118,14 +118,24 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
     {
         return hxparse.Parser.parse(switch stream
         {
-            case [TBeginVariable, TConst(CIdent(identifier))]:
-                new ThttilVariable(identifier, null);
+            case [TBeginVariable, TConst(CIdent(identifier)), sub_scopes = parseVariableSubScopes([])]:
+                new ThttilVariable(identifier, null, sub_scopes);
             case [TConst(CString(content))]:
                 new ThttilString(content);
             case [TBeginStream, TConst(CIdent(identifier))]:
                 new ThttilStream(identifier);
             case [token = parseToken()]:
                 token;
+        });
+    }
+
+    public function parseVariableSubScopes(accumulator: Array<String>): Array<String>
+    {
+        return hxparse.Parser.parse(switch stream{
+            case [TDot, TConst(CIdent(identifier))]:
+                accumulator.push(identifier);
+                parseVariableSubScopes(accumulator);
+            case _: accumulator;
         });
     }
 

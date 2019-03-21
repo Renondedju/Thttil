@@ -119,15 +119,17 @@ class ThttilStream extends ThttilSymbol implements ThttilArgument
 
 class ThttilVariable extends ThttilSymbol implements ThttilArgument
 {
-    private var name : String;
-    public  var value: Dynamic;
+    private var name        : String;
+    public  var value       : Dynamic;
+    private var sub_scopes  : Array<String>;
 
-    public function new(name: String, value: Dynamic, const: Bool = false)
+    public function new(name: String, value: Dynamic, sub_scopes: Array<String>,const: Bool = false)
     {
         super(const);
 
-        this.name  = name;
-        this.value = value;
+        this.name       = name;
+        this.value      = value;
+        this.sub_scopes = sub_scopes;
     }
 
     public function getValue(): Dynamic
