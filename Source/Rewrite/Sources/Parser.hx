@@ -42,15 +42,18 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
     {
         return hxparse.Parser.parse(switch stream
         {
-            // Found a classic token: $(COMMAND "args...")
+            case [TBeginStream, TConst(CIdent(istream))]:
+                switch stream
+                {
+                    case [TStreamRedirection, TBeginStream, TConst(CIdent(ostream))]:
+                        new ThttilToken(new ThttilCommand(), [new ThttilStream(istream), new ThttilStream(ostream)], null);
+                    case _:
+                        new ThttilToken(new ThttilCommand(), [new ThttilStream(istream)], null);
+                }
             case [TBeginToken, TConst(CIdent(command_name)), arguments = parseTokenArguments([]), block = parseTokenInstructionBlock()]:
                 new ThttilToken(new ThttilCommand(), arguments, block);
-
-            // Found a print token
             case [TPrintToken(content)]:
                 new ThttilToken(new ThttilCommand(), [new ThttilString(content)], null);
-            
-            // End of file. Not more tokens to parse.
             case [TEOF]:
                 null;
         });

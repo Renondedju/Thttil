@@ -10,8 +10,8 @@ class Test
         var parser = new ThttilParser(byte.ByteData.ofString("
         $(OUT \"test\")
         {
-            %This is a simple test !%
-            $(COMMAND $Variable, \"String\")
+            @stream
+            @stream->@other_stream
         }"), "Test program");
         trace(parser.parseProgram());
     }
