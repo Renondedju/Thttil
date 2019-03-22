@@ -1,6 +1,9 @@
 import Lexer;
 import Tokens;
-import Symbols;
+
+// Parser symbols are not the same as the "executable" symbols that we are gonna use
+// to create and interpret the program.
+import ParserSymbols;
 
 class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, TokenDef>
 {
@@ -13,12 +16,12 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
 
     /**
      * Parses a thttil program
-     * @return ThttilProgram
+     * @return ParserProgram
      */
-    public function parseProgram(): ThttilProgram
+    public function parseProgram(): ParserProgram
     {
-        var program: ThttilProgram = new ThttilProgram();
-        var token  : ThttilToken   = null;
+        var program: ParserProgram = new ParserProgram([]);
+        var token  : ParserToken   = null;
 
         // Looking for all the tokens in the file.
         // If parseToken() return null, then the End Of File is reached and our
@@ -27,7 +30,7 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
         {
             token = parseToken();
             if (token != null)
-                program.tokens.push(token);
+                program.instructions.push(token);
         }
         while (token != null);
 
@@ -36,24 +39,40 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
 
     /**
      * Looks for a token to create
-     * @return ThttilToken The parsed token or null if EOF has been reached.
+     * @return ParserToken The parsed token or null if EOF has been reached.
      */
-    public function parseToken(): ThttilToken
+    public function parseToken(): ParserToken
     {
         return hxparse.Parser.parse(switch stream
         {
+            // If we found the following pattern : @SomeStreamName
             case [TBeginStream, TConst(CIdent(istream))]:
                 switch stream
                 {
+                    // And next to the previous pattern there is "->@SomeOtherStreamName"
                     case [TStreamRedirection, TBeginStream, TConst(CIdent(ostream))]:
-                        new ThttilToken(new ThttilCommand(), [new ThttilStream(istream), new ThttilStream(ostream)], null);
+
+                        // This is a stream redirection from istream to ostream
+                        new ParserToken("REDIRECTION", [new ParserStream(istream), new ParserStream(ostream)], null);
+
+                    // Otherwise, this is a simple stream selection
                     case _:
-                        new ThttilToken(new ThttilCommand(), [new ThttilStream(istream)], null);
+                        new ParserToken("SELECT", [new ParserStream(istream)], null);
                 }
+
+            // If there is the following pattern : $(COMMAND_NAME "Arg1", $arg2, @arg3, [...])
             case [TBeginToken, TConst(CIdent(command_name)), arguments = parseTokenArguments([]), block = parseTokenInstructionBlock()]:
-                new ThttilToken(new ThttilCommand(), arguments, block);
+
+                // This is a token in it's most basic form
+                new ParserToken(command_name, arguments, block);
+
+            // If there is the following pattern: %Some random content ...%
             case [TPrintToken(content)]:
-                new ThttilToken(new ThttilCommand(), [new ThttilString(content)], null);
+
+                // This is a simplified OUT token
+                new ParserToken("OUT", [new ParserString(content)], null);
+
+            // And if this is the end of the file, returning 'null'.
             case [TEOF]:
                 null;
         });
@@ -61,30 +80,44 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
 
     /**
      * Parses a token instruction block
-     * @return ThttilTokenList a token list or null if nothing has been found
+     * @return Array<ParserToken> a token list or null if nothing has been found
      */
-    public function parseTokenInstructionBlock(): Array<ThttilToken>
+    public function parseTokenInstructionBlock(): Array<ParserToken>
     {
+        // If we don't found a '{' then there is no instruction block following.
         if (peek(0) != TBeginInstructionBlock)
             return null;
 
         junk();
+
+        // Parsing all the instructions in the block ...
         return parseTokenInstructionBlockContent([]);
     }
 
     /**
      * Parses the content of an instruction block
-     * @param accumulator 
+     * @param accumulator This allows the compilator to do some optimizations since we are doing recursive calls :/
      * @return Array<ThttilToken> instruction block
      */
-    public function parseTokenInstructionBlockContent(accumulator: Array<ThttilToken>): Array<ThttilToken>
+    public function parseTokenInstructionBlockContent(accumulator: Array<ParserToken>): Array<ParserToken>
     {
         return hxparse.Parser.parse(switch stream{
+
+            // If we found '}', this means that this is the end of the block.
             case [TEndInstructionBlock]: accumulator;
+
+            // Otherwise this means that there must be a token to parse here !
             case [token = parseToken()]:
+
+                // Adding the parsed token to the list
                 accumulator.push(token);
                 switch stream {
+
+                    // Then checking again if there is '}' to tell
+                    // us if this is the end of the block or not
                     case [TEndInstructionBlock]: accumulator;
+
+                    // Otherwise, there is another token to parse ...
                     case _: parseTokenInstructionBlockContent(accumulator);
                 }
         });
@@ -92,19 +125,28 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
 
     /**
      * Parses token arguments.
-     * @param accumulator 
-     * @return Array<ThttilArgument> arguments
+     * @param accumulator This allows the compilator to do some optimizations since we are doing recursive calls :/
+     * @return Array<ParserTokenArgument> arguments
      */
-    public function parseTokenArguments(accumulator: Array<ThttilArgument>): Array<ThttilArgument>
+    public function parseTokenArguments(accumulator: Array<ParserTokenArgument>): Array<ParserTokenArgument>
     {
-        return hxparse.Parser.parse(switch stream
-        {
+        return hxparse.Parser.parse(switch stream {
+
+            // If there is a ')', then this is the end of the token.
             case [TEndToken]: accumulator;
+
+            // Otherwise, there is still other arguments to parse !
             case [arg = parseTokenArgumentContent()]:
+
+                // Adding the parsed argument to the list
                 accumulator.push(arg);
-                switch stream
-                {
+                switch stream {
+
+                    // Then checking again if there is ')' to tell
+                    // us if this is the end of the token or not
                     case [TEndToken]: accumulator;
+
+                    // Otherwise, there is another argument to parse ...
                     case [TArgumentSeparator]: parseTokenArguments(accumulator);
                 }
         });
@@ -114,27 +156,56 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<TokenDef>, To
      * Parses a token argument content
      * @return ThttilArgument argument
      */
-    public function parseTokenArgumentContent(): ThttilArgument
+    public function parseTokenArgumentContent(): ParserTokenArgument
     {
         return hxparse.Parser.parse(switch stream
         {
+            // If the argument looks like this : $SomeName or like this $This.is.also.a.variable
             case [TBeginVariable, TConst(CIdent(identifier)), sub_scopes = parseVariableSubScopes([])]:
-                new ThttilVariable(identifier, null, sub_scopes);
+
+                // Then we found a variable
+                new ParserVariable(identifier, sub_scopes);
+
+            // If the argument looks like this: "Some string content"
             case [TConst(CString(content))]:
-                new ThttilString(content);
+
+                // Then we found a string
+                new ParserString(content);
+
+            // If the argument looks like this: @StreamName
             case [TBeginStream, TConst(CIdent(identifier))]:
-                new ThttilStream(identifier);
+
+                // Then we found a stream
+                new ParserStream(identifier);
+
+            // And finally if the argument looks like this: $(COMMAND "Args...")
             case [token = parseToken()]:
+
+                // Then we found a token.
                 token;
         });
     }
 
+    /**
+     * A variable sub scope is simply the name of a sub object of that variable
+     * eg. $Person.job or $Song.length
+     * @param accumulator This allows the compilator to do some optimizations since we are doing recursive calls :/
+     * @return Array<String> sub scopes
+     */
     public function parseVariableSubScopes(accumulator: Array<String>): Array<String>
     {
         return hxparse.Parser.parse(switch stream{
+
+            // If there is the following pattern: .some_name
             case [TDot, TConst(CIdent(identifier))]:
+
+                // Then we found a sub scope
                 accumulator.push(identifier);
+
+                // Looking for the next sub scope
                 parseVariableSubScopes(accumulator);
+
+            // Otherwise, we found everything that we could.
             case _: accumulator;
         });
     }
