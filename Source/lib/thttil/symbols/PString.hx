@@ -6,7 +6,7 @@ import thttil.symbols.Argument;
  * Simple string
  * "Some Content"
  */
-class String extends Argument
+class PString extends Argument
 {
     public var content: String;
 

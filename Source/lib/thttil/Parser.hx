@@ -4,8 +4,8 @@ import thttil.Tokens;
 
 import thttil.symbols.InstructionBlock;
 import thttil.symbols.Argument;
+import thttil.symbols.PString;
 import thttil.symbols.Program;
-import thttil.symbols.String;
 import thttil.symbols.Stream;
 import thttil.symbols.Token;
 
@@ -74,7 +74,7 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Tokens
             case [TPrintToken(content)]:
 
                 // This is a simplified OUT token
-                new thttil.symbols.Token("OUT", [new thttil.symbols.String(content)], null);
+                new thttil.symbols.Token("OUT", [new thttil.symbols.PString(content)], null);
 
             // And if this is the end of the file, returning 'null'.
             case [TEOF]:
@@ -174,7 +174,7 @@ class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Tokens
             case [TConst(CString(content))]:
 
                 // Then we found a string
-                new thttil.symbols.String(content);
+                new thttil.symbols.PString(content);
 
             // If the argument looks like this: @StreamName
             case [TBeginStream, TConst(CIdent(identifier))]:
