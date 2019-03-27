@@ -1,4 +1,3 @@
--cp Sources
 -lib hxparse
 -python Targets\Python\Thttil.py
--main Main
+-main Thttil

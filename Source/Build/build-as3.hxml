@@ -1,4 +1,3 @@
--cp Sources
 -lib hxparse
 -as3 Targets\ActionScript3\Thttil.as3
--main Main
+-main Thttil

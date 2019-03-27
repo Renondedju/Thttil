@@ -1,6 +1,11 @@
-import Parser;
+import thttil.Parser.ThttilParser as ThttilParser;
 
-class Main
+/**
+ * This is the default interperter class.
+ * 
+ * (Not implemented yet)
+ */
+class Thttil
 {
     public static function main(): Void
     {

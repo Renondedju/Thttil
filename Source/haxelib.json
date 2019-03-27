@@ -1,0 +1,13 @@
+{
+    "name": "thttil",
+    "url" : "https://github.com/Renondedju/Thttil",
+    "license": "MIT",
+    "tags": ["cross", "thttil", "runtime", "API", "lang"],
+    "description": "Runtime API of the THTTIL language",
+    "version": "0.3.0-alpha",
+    "releasenote": "Initial release, everything is working correctly.",
+    "contributors": ["Renondedju"],
+    "dependencies": {
+      "hxparse": "4.0.0"
+    }
+}

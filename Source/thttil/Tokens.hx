@@ -1,3 +1,5 @@
+package thttil;
+
 import haxe.macro.Expr;
 
 enum Keyword

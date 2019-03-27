@@ -1,4 +1,3 @@
--cp Sources
 -lib hxparse
 -lua Targets\Lua\Thttil.lua
--main Main
+-main Thttil

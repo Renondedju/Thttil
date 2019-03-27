@@ -1,3 +1,5 @@
+package thttil;
+
 /**
  * This file contains a list of all the symbols required to make a THTTIL program
  * 

@@ -29,7 +29,7 @@ Finally if your project requires very specific algorithms that are not included 
 * C++ header tool to add reflection to the language (eg. [Unreal Header Tool](https://docs.unrealengine.com/en-us/Programming/BuildTools))  
 The real limit here is your imagination. 
 
-**Ok nice, you convicted me, where do I learn how to use Thttil ?**
+**Ok nice, you convinced me, where do I learn how to use Thttil ?**
 
 Here is a link to the [wiki](https://github.com/Renondedju/Thttil/wiki), everything you need to know about Thttil is in here !
 

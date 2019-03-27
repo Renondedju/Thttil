@@ -1,4 +1,4 @@
-import Tokens;
+package thttil;
 
 class ThttilLexer extends hxparse.Lexer implements hxparse.RuleBuilder
 {
@@ -13,39 +13,39 @@ class ThttilLexer extends hxparse.Lexer implements hxparse.RuleBuilder
 		'"'	=> {
 			temp_buffer = new StringBuf();
 			lexer.token(string);
-			TConst(CString(temp_buffer.toString()));
+			thttil.Tokens.TokenDef.TConst(CString(temp_buffer.toString()));
 		},
 
 		"%"	=> {
 			temp_buffer = new StringBuf();
 			lexer.token(print);
-			TPrintToken(temp_buffer.toString());
+			thttil.Tokens.TokenDef.TPrintToken(temp_buffer.toString());
 		},
 
 		"[\r\n\t ]+" 			=> lexer.token(tokens), 			  // Passing whitespaces
 		"#[^\n\r]*"  			=> {
 			#if keep_comments
-			TComment(lexer.current.substr(1)); // Passing comments
+			thttil.Tokens.TokenDef.TComment(lexer.current.substr(1)); // Passing comments
 			#else
 			lexer.token(tokens);
 			#end
 		},
 
-		"as"					=> TKeyword(KwdAs),
-		"using"					=> TKeyword(KwdUsing),
+		"as"					=> Tokens.TokenDef.TKeyword(Tokens.Keyword.KwdAs),
+		"using"					=> Tokens.TokenDef.TKeyword(Tokens.Keyword.KwdUsing),
 		
-		"\\."					=> TDot,
-		"\\)"					=> TEndToken,
-		"\\$\\("				=> TBeginToken,
-		"@"						=> TBeginStream,
-		"\\$"					=> TBeginVariable,
-		">"						=> TEndUsingString,
-		"<"						=> TBeginUsingString,
-		"->"					=> TStreamRedirection,
-		","						=> TArgumentSeparator,
-		"}"						=> TEndInstructionBlock,
-		"{"						=> TBeginInstructionBlock,
-		identifier				=> TConst(CIdent(lexer.current)),
+		"\\."					=> Tokens.TokenDef.TDot,
+		"\\)"					=> Tokens.TokenDef.TEndToken,
+		"\\$\\("				=> Tokens.TokenDef.TBeginToken,
+		"@"						=> Tokens.TokenDef.TBeginStream,
+		"\\$"					=> Tokens.TokenDef.TBeginVariable,
+		">"						=> Tokens.TokenDef.TEndUsingString,
+		"<"						=> Tokens.TokenDef.TBeginUsingString,
+		"->"					=> Tokens.TokenDef.TStreamRedirection,
+		","						=> Tokens.TokenDef.TArgumentSeparator,
+		"}"						=> Tokens.TokenDef.TEndInstructionBlock,
+		"{"						=> Tokens.TokenDef.TBeginInstructionBlock,
+		identifier				=> Tokens.TokenDef.TConst(CIdent(lexer.current)),
 
 		"" => TEOF
 	];
