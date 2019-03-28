@@ -23,20 +23,18 @@
  */
  
 import thttil.Parser.ThttilParser as ThttilParser;
+import utest.Assert;
 
-/**
- * Main test class
- */
-class Test
+class Test extends utest.Test
 {
     public static function main(): Void
     {
-        var parser = new ThttilParser(byte.ByteData.ofString("
-        $(OUT \"test\")
-        {
-            @stream
-            @stream->@other_stream
-        }"), "Test program");
-        trace(parser.parseProgram());
+        utest.UTest.run([new Test()]);
+    }
+
+    public function testParse()
+    {
+        // TODO
+        Assert.isTrue(true);
     }
 }

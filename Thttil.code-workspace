@@ -4,5 +4,12 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"haxeTestExplorer.testCommand": [
+			"${haxe}",
+			"Source/Build/test.hxml",
+			"-lib",
+			"test-adapter"
+		]
+	}
 }

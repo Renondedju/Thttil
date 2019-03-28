@@ -4,3 +4,6 @@
 
 # Binaries and generated code
 Source/Targets/*
+
+# Utest folders
+.unittest/*
