@@ -6,7 +6,7 @@ haxe:
 
 install:
  - haxelib install hxparse
- - haxelib dev Source/lib
+ - haxelib dev thttil Source/lib
 
 script:
  - haxe Source/Build/test.hxml
