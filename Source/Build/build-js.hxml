@@ -22,5 +22,5 @@
 
 -lib hxparse
 -lib thttil
--js Targets/JavaScript/Thttil.js
+-js Runtime/JavaScript/ThttilGenerated.js
 thttil

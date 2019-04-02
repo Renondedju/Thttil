@@ -22,5 +22,5 @@
 
 -lib hxparse
 -lib thttil
--python Targets/Python/Thttil.py
+-python Runtime/Python/ThttilGenerated.py
 thttil

@@ -21,21 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- 
-package thttil.symbols;
 
-/**
- * Variable
- * $MyVarName
- */
-class Variable extends Argument
+package thttil;
+
+import thttil.Stream;
+
+@:keep
+class StreamCollection
 {
-    public var name      : String;
-    public var sub_scopes: Array<String>;
+    private var streams: Map<String, thttil.Stream>;
 
-    public function new(name: String, sub_scopes: Array<String>)
+    public function new()
     {
-        this.name       = name;
-        this.sub_scopes = sub_scopes;
+        streams = new Map<String, thttil.Stream>();
+    }
+
+    public function getNamedStream(name: String): thttil.Stream
+    {
+        if (!streams.exists(name))
+            streams.set(name, new thttil.Stream(name));
+    
+        return streams.get(name);
+    }
+
+    public function clearStreams()
+    {
+        streams = new Map<String, thttil.Stream>();
     }
 }

@@ -22,5 +22,5 @@
 
 -lib hxparse
 -lib thttil
--as3 Targets/ActionScript3/Thttil.as3
+-as3 Runtime/ActionScript3/ThttilGenerated.as3
 thttil

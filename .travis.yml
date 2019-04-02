@@ -8,4 +8,4 @@ install:
  - haxelib install hxparse
 
 script:
- - cd Source/Rewrite && haxe Build/test.hxml
+ - haxe Source/Build/test.hxml

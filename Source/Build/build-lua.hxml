@@ -22,5 +22,5 @@
 
 -lib hxparse
 -lib thttil
--lua Targets/Lua/Thttil.lua
+-lua Runtime/Lua/ThttilGenerated.lua
 thttil

@@ -22,5 +22,5 @@
 
 -lib hxparse
 -lib thttil
--cs Targets/CSharp/
+-cs Runtime/CSharp/
 thttil

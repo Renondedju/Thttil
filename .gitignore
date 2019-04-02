@@ -7,3 +7,7 @@ Source/Targets/*
 
 # Utest folders
 .unittest/*
+
+# Python
+__pycache__/*
+*.pyc

@@ -21,21 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- 
-package thttil.symbols;
 
-/**
- * Variable
- * $MyVarName
- */
-class Variable extends Argument
+package thttil;
+
+@:keep
+class Stream
 {
-    public var name      : String;
-    public var sub_scopes: Array<String>;
+    private var content: String;
+    private var name   : String;
 
-    public function new(name: String, sub_scopes: Array<String>)
+    public function new(name: String)
     {
-        this.name       = name;
-        this.sub_scopes = sub_scopes;
+        this.name    = name;
+        this.content = "";
+    }
+
+    public function append(content: String)
+    {
+        this.content += content;
+    }
+
+    public function set(content: String)
+    {
+        this.content = content; 
+    }
+
+    public function get(): String
+    {
+        return content;
+    }
+
+    public function getName(): String
+    {
+        return name;
+    }
+
+    public function toString(): String
+    {
+        return "Stream (name = '" + name + "', content = '" + content + "')";
     }
 }
