@@ -24,7 +24,7 @@
  
 package thttil;
 
-class ThttilLexer extends hxparse.Lexer implements hxparse.RuleBuilder
+class Lexer extends hxparse.Lexer implements hxparse.RuleBuilder
 {
 	// This buffer is used to read strings 
     static var temp_buffer: StringBuf;

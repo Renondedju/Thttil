@@ -25,6 +25,7 @@
 package thttil;
 
 import thttil.Tokens;
+import thttil.Lexer;
 
 import thttil.symbols.InstructionBlock;
 import thttil.symbols.Argument;
@@ -33,12 +34,12 @@ import thttil.symbols.Program;
 import thttil.symbols.Stream;
 import thttil.symbols.Token;
 
-class ThttilParser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Tokens.TokenDef>, thttil.Tokens.TokenDef>
+class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Tokens.TokenDef>, thttil.Tokens.TokenDef>
 {
     public function new(input: byte.ByteData, source_name: String)
     {
-		var lexer        = new Lexer.ThttilLexer(input, source_name);
-		var token_source = new hxparse.LexerTokenSource(lexer, Lexer.ThttilLexer.tokens);
+		var lexer        = new Lexer.Lexer(input, source_name);
+		var token_source = new hxparse.LexerTokenSource(lexer, Lexer.Lexer.tokens);
 		super(token_source);
 	}
 
