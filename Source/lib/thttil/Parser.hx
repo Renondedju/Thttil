@@ -24,22 +24,27 @@
  
 package thttil;
 
-import thttil.Tokens;
 import thttil.Lexer;
 
 import thttil.symbols.InstructionBlock;
+import thttil.symbols.Definitions;
 import thttil.symbols.Argument;
 import thttil.symbols.PString;
 import thttil.symbols.Program;
 import thttil.symbols.Stream;
 import thttil.symbols.Token;
 
-class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Tokens.TokenDef>, thttil.Tokens.TokenDef>
+class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Token>, thttil.Token>
 {
+    private var source_name: String;
+
     public function new(input: byte.ByteData, source_name: String)
     {
-		var lexer        = new Lexer.Lexer(input, source_name);
-		var token_source = new hxparse.LexerTokenSource(lexer, Lexer.Lexer.tokens);
+		var lexer        = new thttil.Lexer(input, source_name);
+		var token_source = new hxparse.LexerTokenSource(lexer, thttil.Lexer.tokens);
+
+        this.source_name = source_name;
+
 		super(token_source);
 	}
 
@@ -49,7 +54,7 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Tokens.Token
      */
     public function parseProgram(): thttil.symbols.Program
     {
-        var program: thttil.symbols.Program = new thttil.symbols.Program([]);
+        var program: thttil.symbols.Program = new thttil.symbols.Program([], new hxparse.Position(source_name, 0, 0));
         var token  : thttil.symbols.Token   = null;
 
         // Looking for all the tokens in the file.
@@ -59,7 +64,10 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Tokens.Token
         {
             token = parseToken();
             if (token != null)
+            {
                 program.instructions.push(token);
+                program.position.pmax = token.position.pmax;
+            }
         }
         while (token != null);
 
@@ -75,7 +83,7 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Tokens.Token
         return hxparse.Parser.parse(switch stream
         {
             // If we found the following pattern : @SomeStreamName
-            case [TBeginStream, TConst(CIdent(istream))]:
+            case [{token: TBeginStream, position: pos}, {token: TConst(CIdent(istream)), position: pos}]:
                 switch stream
                 {
                     // And next to the previous pattern there is "->@SomeOtherStreamName"

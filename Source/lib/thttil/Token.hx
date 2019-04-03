@@ -22,22 +22,19 @@
  * SOFTWARE.
  */
 
-package thttil.symbols;
+package thttil;
 
-import thttil.symbols.Token;
+import hxparse.Position;
+import thttil.symbols.Definitions;
 
-/**
- * A simple list of instructions
- * '{' TOKEN* '}'
- */ 
-class InstructionBlock
+class Token
 {
-    public var instructions: Array<Token>;
-    public var position    : hxparse.Position; 
+	public var token    : TokenDefinition;
+	public var position : hxparse.Position;
 
-    public function new(instructions: Array<Token>, position: hxparse.Position)
+	public function new(token: TokenDefinition, position: hxparse.Position)
     {
-        this.instructions   = instructions;
-        this.position       = position;
-    }
+		this.token      = token;
+		this.position   = position;
+	}
 }

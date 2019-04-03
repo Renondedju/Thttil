@@ -22,22 +22,19 @@
  * SOFTWARE.
  */
 
-package thttil.symbols;
+package thttil.error;
 
-import thttil.symbols.Token;
+import hxparse.Position;
+import thttil.error.LexerErrorMessage;
 
-/**
- * A simple list of instructions
- * '{' TOKEN* '}'
- */ 
-class InstructionBlock
+class LexerError
 {
-    public var instructions: Array<Token>;
-    public var position    : hxparse.Position; 
-
-    public function new(instructions: Array<Token>, position: hxparse.Position)
+	public var message : LexerErrorMessage;
+	public var position: hxparse.Position;
+	
+    public function new(message: LexerErrorMessage, position: hxparse.Position)
     {
-        this.instructions   = instructions;
-        this.position       = position;
-    }
+		this.message  = message;
+		this.position = position;
+	}
 }

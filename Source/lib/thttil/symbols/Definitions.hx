@@ -24,20 +24,31 @@
 
 package thttil.symbols;
 
-import thttil.symbols.Token;
+import haxe.macro.Expr;
 
-/**
- * A simple list of instructions
- * '{' TOKEN* '}'
- */ 
-class InstructionBlock
+enum Keyword
 {
-    public var instructions: Array<Token>;
-    public var position    : hxparse.Position; 
+    KwdAs;    // as
+    KwdUsing; // using
+}
 
-    public function new(instructions: Array<Token>, position: hxparse.Position)
-    {
-        this.instructions   = instructions;
-        this.position       = position;
-    }
+enum TokenDefinition
+{
+    TPrintToken(content: String);                   // %Some random content%
+    TKeyword   (keyword: Keyword);                  // Cound be "as" or "using"
+    TComment   (content: String);                   // A comment (# Hello :D)  
+    TConst     (const  : haxe.macro.Expr.Constant); // Could be a string or an identifier
+
+    TDot;                    // .
+    TEndToken;               // )
+    TBeginToken;             // $(
+    TBeginStream;            // @
+    TBeginVariable;          // $
+    TEndUsingString;         // >
+    TBeginUsingString;       // <
+    TStreamRedirection;      // ->
+    TArgumentSeparator;      // ,
+    TEndInstructionBlock;    // }
+    TBeginInstructionBlock;  // {
+    TEOF;                    // <EOF>
 }

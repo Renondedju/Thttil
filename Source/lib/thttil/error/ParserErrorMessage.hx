@@ -21,23 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+ 
+package thttil.error;
 
-package thttil.symbols;
-
-import thttil.symbols.Token;
-
-/**
- * A simple list of instructions
- * '{' TOKEN* '}'
- */ 
-class InstructionBlock
+enum ParserErrorMessage
 {
-    public var instructions: Array<Token>;
-    public var position    : hxparse.Position; 
-
-    public function new(instructions: Array<Token>, position: hxparse.Position)
-    {
-        this.instructions   = instructions;
-        this.position       = position;
-    }
+    Unexpected(details: String);
+    Custom    (details: String);
 }

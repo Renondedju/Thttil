@@ -21,34 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+ 
+package thttil.error;
 
-package thttil;
+import hxparse.Position;
+import thttil.error.ParserErrorMessage;
 
-import haxe.macro.Expr;
-
-enum Keyword
+class ParserError
 {
-    KwdAs;    // as
-    KwdUsing; // using
-}
-
-enum TokenDef
-{
-    TPrintToken(content: String);                   // %Some random content%
-    TKeyword   (keyword: Keyword);                  // Cound be "as" or "using"
-    TComment   (content: String);                   // A comment (# Hello :D)  
-    TConst     (const  : haxe.macro.Expr.Constant); // Could be a string or an identifier
-
-    TDot;                    // .
-    TEndToken;               // )
-    TBeginToken;             // $(
-    TBeginStream;            // @
-    TBeginVariable;          // $
-    TEndUsingString;         // >
-    TBeginUsingString;       // <
-    TStreamRedirection;      // ->
-    TArgumentSeparator;      // ,
-    TEndInstructionBlock;    // }
-    TBeginInstructionBlock;  // {
-    TEOF;                    // <EOF>
+	public var message : ParserErrorMessage;
+	public var position: hxparse.Position;
+	
+    public function new(message:ParserErrorMessage, position: hxparse.Position)
+    {
+		this.message  = message;
+		this.position = position;
+	}
 }

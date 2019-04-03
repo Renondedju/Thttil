@@ -30,8 +30,8 @@ package thttil.symbols;
  */
 class Stream extends Variable
 {
-    public function new(name: String)
+    public function new(name: String, position: hxparse.Position)
     {
-        super(name, []);
+        super(name, [], position);
     }
 }

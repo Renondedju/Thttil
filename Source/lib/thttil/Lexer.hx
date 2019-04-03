@@ -24,11 +24,19 @@
  
 package thttil;
 
+import thttil.error.LexerError;
+import thttil.symbols.Definitions;
+
 class Lexer extends hxparse.Lexer implements hxparse.RuleBuilder
 {
 	// This buffer is used to read strings 
     static var temp_buffer: StringBuf;
 	static var identifier : String = "_*[a-zA-Z][a-zA-Z0-9_]*|_+[0-9][_a-zA-Z0-9]*";
+
+	static function make(lexer: hxparse.Lexer, token_definition: TokenDefinition): Token
+	{
+		return new Token(token_definition, lexer.curPos());
+	}
 
 	// Main token rule
     public static var tokens = @:rule [
@@ -36,42 +44,48 @@ class Lexer extends hxparse.Lexer implements hxparse.RuleBuilder
 		// Litterals
 		'"'	=> {
 			temp_buffer = new StringBuf();
-			lexer.token(string);
-			thttil.Tokens.TokenDef.TConst(CString(temp_buffer.toString()));
+
+			var position_min = lexer.curPos();
+			var position_max = try lexer.token(string) catch (exception: haxe.io.Eof) throw new LexerError(UnterminatedString, position_min);
+
+			var token = make(lexer, thttil.symbols.TokenDefinition.TConst(CString(temp_buffer.toString())));
+
+			token.position.pmin = position_min.pmin;
+			token;
 		},
 
 		"%"	=> {
 			temp_buffer = new StringBuf();
-			lexer.token(print);
-			thttil.Tokens.TokenDef.TPrintToken(temp_buffer.toString());
+
+			var position_min = lexer.curPos();
+			var position_max = try lexer.token(print) catch (exception: haxe.io.Eof) throw new LexerError(UnterminatedPrintToken, position_min);
+
+			var token = make(lexer, thttil.symbols.TokenDefinition.TPrintToken(temp_buffer.toString()));
+
+			token.position.pmin = position_min.pmin;
+			token;
 		},
 
-		"[\r\n\t ]+" 			=> lexer.token(tokens), 			  // Passing whitespaces
-		"#[^\n\r]*"  			=> {
-			#if keep_comments
-			thttil.Tokens.TokenDef.TComment(lexer.current.substr(1)); // Passing comments
-			#else
-			lexer.token(tokens);
-			#end
-		},
+		"[\r\n\t ]+" 			=> lexer.token(tokens), // Ignoring whitespaces
+		"#[^\n\r]*"  			=> lexer.token(tokens), // Ignoring comments
 
-		"as"					=> Tokens.TokenDef.TKeyword(Tokens.Keyword.KwdAs),
-		"using"					=> Tokens.TokenDef.TKeyword(Tokens.Keyword.KwdUsing),
+		"as"					=> make(lexer, thttil.symbols.TokenDefinition.TKeyword(thttil.symbols.Keyword.KwdAs)),
+		"using"					=> make(lexer, thttil.symbols.TokenDefinition.TKeyword(thttil.symbols.Keyword.KwdUsing)),
 		
-		"\\."					=> Tokens.TokenDef.TDot,
-		"\\)"					=> Tokens.TokenDef.TEndToken,
-		"\\$\\("				=> Tokens.TokenDef.TBeginToken,
-		"@"						=> Tokens.TokenDef.TBeginStream,
-		"\\$"					=> Tokens.TokenDef.TBeginVariable,
-		">"						=> Tokens.TokenDef.TEndUsingString,
-		"<"						=> Tokens.TokenDef.TBeginUsingString,
-		"->"					=> Tokens.TokenDef.TStreamRedirection,
-		","						=> Tokens.TokenDef.TArgumentSeparator,
-		"}"						=> Tokens.TokenDef.TEndInstructionBlock,
-		"{"						=> Tokens.TokenDef.TBeginInstructionBlock,
-		identifier				=> Tokens.TokenDef.TConst(CIdent(lexer.current)),
+		"\\."					=> make(lexer, thttil.symbols.TokenDefinition.TDot),
+		"\\)"					=> make(lexer, thttil.symbols.TokenDefinition.TEndToken),
+		"\\$\\("				=> make(lexer, thttil.symbols.TokenDefinition.TBeginToken),
+		"@"						=> make(lexer, thttil.symbols.TokenDefinition.TBeginStream),
+		"\\$"					=> make(lexer, thttil.symbols.TokenDefinition.TBeginVariable),
+		">"						=> make(lexer, thttil.symbols.TokenDefinition.TEndUsingString),
+		"<"						=> make(lexer, thttil.symbols.TokenDefinition.TBeginUsingString),
+		"->"					=> make(lexer, thttil.symbols.TokenDefinition.TStreamRedirection),
+		","						=> make(lexer, thttil.symbols.TokenDefinition.TArgumentSeparator),
+		"}"						=> make(lexer, thttil.symbols.TokenDefinition.TEndInstructionBlock),
+		"{"						=> make(lexer, thttil.symbols.TokenDefinition.TBeginInstructionBlock),
+		identifier				=> make(lexer, thttil.symbols.TokenDefinition.TConst(CIdent(lexer.current))),
 
-		"" => TEOF
+		"" => make(lexer, TEOF)
 	];
 
 	static var string = @:rule [

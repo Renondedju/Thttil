@@ -37,10 +37,11 @@ class Token extends Argument
     public var arguments        : Array<Argument>;
     public var instruction_block: Array<Token>;
 
-    public function new(command_name: String, arguments: Array<Argument>, instruction_block: Array<Token> = null)
+    public function new(command_name: String, arguments: Array<Argument>, position: hxparse.Position, instruction_block: Array<Token> = null)
     {
         this.instruction_block  = instruction_block;
         this.command_name       = command_name;
         this.arguments          = arguments;
+        super(position);
     }
 }

@@ -22,22 +22,10 @@
  * SOFTWARE.
  */
 
-package thttil.symbols;
+package thttil.error;
 
-import thttil.symbols.Token;
-
-/**
- * A simple list of instructions
- * '{' TOKEN* '}'
- */ 
-class InstructionBlock
+enum LexerErrorMessage
 {
-    public var instructions: Array<Token>;
-    public var position    : hxparse.Position; 
-
-    public function new(instructions: Array<Token>, position: hxparse.Position)
-    {
-        this.instructions   = instructions;
-        this.position       = position;
-    }
+	UnterminatedString;
+	UnterminatedPrintToken;
 }

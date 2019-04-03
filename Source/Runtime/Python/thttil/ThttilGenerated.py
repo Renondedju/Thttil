@@ -2341,6 +2341,29 @@ class thttil_StreamCollection:
 
 
 
+class thttil_error_ParserError:
+    _hx_class_name = "thttil.error.ParserError"
+    __slots__ = ("message", "position")
+    _hx_fields = ["message", "position"]
+
+    def __init__(self,message,position):
+        self.message = message
+        self.position = position
+
+
+class thttil_error_ParserErrorMessage(Enum):
+    __slots__ = ()
+    _hx_class_name = "thttil.error.ParserErrorMessage"
+
+    @staticmethod
+    def Unexpected(details):
+        return thttil_error_ParserErrorMessage("Unexpected", 0, [details])
+
+    @staticmethod
+    def Custom(details):
+        return thttil_error_ParserErrorMessage("Custom", 1, [details])
+
+
 class thttil_symbols_Argument:
     _hx_class_name = "thttil.symbols.Argument"
     __slots__ = ()
@@ -2439,6 +2462,7 @@ python_Boot.prefixLength = len("_hx_")
 thttil_Lexer.identifier = "_*[a-zA-Z][a-zA-Z0-9_]*|_+[0-9][_a-zA-Z0-9]*"
 def _hx_init_thttil_Lexer_tokens():
     def _hx_local_0(lexer):
+        print(str(hxparse_Position(lexer.source,(lexer.pos - len(lexer.current)),lexer.pos)))
         thttil_Lexer.temp_buffer = StringBuf()
         lexer.token(thttil_Lexer.string)
         return thttil_TokenDef.TConst(haxe_macro_Constant.CString(thttil_Lexer.temp_buffer.b.getvalue()))

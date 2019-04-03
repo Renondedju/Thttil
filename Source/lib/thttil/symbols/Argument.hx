@@ -28,4 +28,11 @@ package thttil.symbols;
  * This is just a parent class
  */
 class Argument
-{}
+{
+    public var position: hxparse.Position;
+
+    public function new(position: hxparse.Position)
+    {
+        this.position = position;
+    }
+}

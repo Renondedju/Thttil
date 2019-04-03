@@ -34,8 +34,8 @@ import thttil.symbols.Token;
  */
 class Program extends InstructionBlock
 {
-    public function new(instructions: Array<Token>)
+    public function new(instructions: Array<Token>, position: hxparse.Position)
     {
-        super(instructions);
+        super(instructions, position);
     }
 }

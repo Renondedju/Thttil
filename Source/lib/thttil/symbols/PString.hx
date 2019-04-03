@@ -34,8 +34,9 @@ class PString extends Argument
 {
     public var content: String;
 
-    public function new(content: String)
+    public function new(content: String, position: hxparse.Position)
     {
         this.content = content;
+        super(position);
     }
 }
