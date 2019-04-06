@@ -25,6 +25,7 @@
 package thttil.symbols;
 
 import thttil.symbols.Argument;
+import thttil.symbols.InstructionBlock;
 
 /**
  * Parser representation of a token
@@ -35,13 +36,14 @@ class Token extends Argument
 {
     public var command_name     : String;
     public var arguments        : Array<Argument>;
-    public var instruction_block: Array<Token>;
+    public var instruction_block: InstructionBlock;
 
-    public function new(command_name: String, arguments: Array<Argument>, position: hxparse.Position, instruction_block: Array<Token> = null)
+    public function new(command_name: String, arguments: Array<Argument>, position: hxparse.Position, instruction_block: InstructionBlock = null)
     {
         this.instruction_block  = instruction_block;
         this.command_name       = command_name;
         this.arguments          = arguments;
+        
         super(position);
     }
 }

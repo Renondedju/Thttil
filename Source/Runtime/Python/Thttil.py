@@ -2,21 +2,19 @@ import thttil
 
 def main():
 
-    collection = thttil.StreamCollection()
-    collection.getNamedStream("default").append("Test")
-
-    print(collection.getNamedStream("default").get())
-
-    parser = thttil.Parser(thttil.Bytes.ofString(
+    content = thttil.Bytes.ofString(
 """
 @test
 @test->@test
 %test%
 $(OUT "test")
-"""), "Test Source")
+$(UPPER $variable)
+""")
+
+    parser = thttil.Parser(content, "Test.thtt")
 
     for instruction in parser.parseProgram().instructions:
-        print(instruction.command_name, "\t", instruction.arguments)
+        print("{0.command_name:<15} @{0.position.psource}:{0.position.pmin:<5} {1}".format(instruction, content.getString(instruction.position.pmin, instruction.position.pmax - instruction.position.pmin)))
 
 if __name__ == "__main__":
     main()

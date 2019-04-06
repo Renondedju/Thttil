@@ -1057,8 +1057,8 @@ class hxparse_Parser:
 
 
 
-class hxparse_Parser_hxparse_LexerTokenSource_thttil_TokenDef_thttil_TokenDef:
-    _hx_class_name = "hxparse.Parser_hxparse_LexerTokenSource_thttil_TokenDef_thttil_TokenDef"
+class hxparse_Parser_hxparse_LexerTokenSource_thttil_Token_thttil_Token:
+    _hx_class_name = "hxparse.Parser_hxparse_LexerTokenSource_thttil_Token_thttil_Token"
     __slots__ = ("last", "stream", "token")
     _hx_fields = ["last", "stream", "token"]
     _hx_methods = ["peek", "junk", "curPos", "parseSeparated", "parseOptional", "parseRepeat", "parseExpect", "noMatch", "unexpected"]
@@ -1979,43 +1979,71 @@ class HxString:
                 return ""
             return s[startIndex:(startIndex + _hx_len)]
 
-class thttil_TokenDef(Enum):
+class thttil_error_LexerErrorMessage(Enum):
     __slots__ = ()
-    _hx_class_name = "thttil.TokenDef"
+    _hx_class_name = "thttil.error.LexerErrorMessage"
+thttil_error_LexerErrorMessage.UnterminatedString = thttil_error_LexerErrorMessage("UnterminatedString", 0, list())
+thttil_error_LexerErrorMessage.UnterminatedPrintToken = thttil_error_LexerErrorMessage("UnterminatedPrintToken", 1, list())
+
+
+class thttil_error_LexerError:
+    _hx_class_name = "thttil.error.LexerError"
+    __slots__ = ("message", "position")
+    _hx_fields = ["message", "position"]
+
+    def __init__(self,message,position):
+        self.message = message
+        self.position = position
+
+
+
+class thttil_Token:
+    _hx_class_name = "thttil.Token"
+    __slots__ = ("token", "position")
+    _hx_fields = ["token", "position"]
+
+    def __init__(self,token,position):
+        self.token = token
+        self.position = position
+
+
+class thttil_symbols_TokenDefinition(Enum):
+    __slots__ = ()
+    _hx_class_name = "thttil.symbols.TokenDefinition"
 
     @staticmethod
     def TPrintToken(content):
-        return thttil_TokenDef("TPrintToken", 0, [content])
+        return thttil_symbols_TokenDefinition("TPrintToken", 0, [content])
 
     @staticmethod
     def TKeyword(keyword):
-        return thttil_TokenDef("TKeyword", 1, [keyword])
+        return thttil_symbols_TokenDefinition("TKeyword", 1, [keyword])
 
     @staticmethod
     def TComment(content):
-        return thttil_TokenDef("TComment", 2, [content])
+        return thttil_symbols_TokenDefinition("TComment", 2, [content])
 
     @staticmethod
     def TConst(const):
-        return thttil_TokenDef("TConst", 3, [const])
-thttil_TokenDef.TDot = thttil_TokenDef("TDot", 4, list())
-thttil_TokenDef.TEndToken = thttil_TokenDef("TEndToken", 5, list())
-thttil_TokenDef.TBeginToken = thttil_TokenDef("TBeginToken", 6, list())
-thttil_TokenDef.TBeginStream = thttil_TokenDef("TBeginStream", 7, list())
-thttil_TokenDef.TBeginVariable = thttil_TokenDef("TBeginVariable", 8, list())
-thttil_TokenDef.TEndUsingString = thttil_TokenDef("TEndUsingString", 9, list())
-thttil_TokenDef.TBeginUsingString = thttil_TokenDef("TBeginUsingString", 10, list())
-thttil_TokenDef.TStreamRedirection = thttil_TokenDef("TStreamRedirection", 11, list())
-thttil_TokenDef.TArgumentSeparator = thttil_TokenDef("TArgumentSeparator", 12, list())
-thttil_TokenDef.TEndInstructionBlock = thttil_TokenDef("TEndInstructionBlock", 13, list())
-thttil_TokenDef.TBeginInstructionBlock = thttil_TokenDef("TBeginInstructionBlock", 14, list())
-thttil_TokenDef.TEOF = thttil_TokenDef("TEOF", 15, list())
+        return thttil_symbols_TokenDefinition("TConst", 3, [const])
+thttil_symbols_TokenDefinition.TDot = thttil_symbols_TokenDefinition("TDot", 4, list())
+thttil_symbols_TokenDefinition.TEndToken = thttil_symbols_TokenDefinition("TEndToken", 5, list())
+thttil_symbols_TokenDefinition.TBeginToken = thttil_symbols_TokenDefinition("TBeginToken", 6, list())
+thttil_symbols_TokenDefinition.TBeginStream = thttil_symbols_TokenDefinition("TBeginStream", 7, list())
+thttil_symbols_TokenDefinition.TBeginVariable = thttil_symbols_TokenDefinition("TBeginVariable", 8, list())
+thttil_symbols_TokenDefinition.TEndUsingString = thttil_symbols_TokenDefinition("TEndUsingString", 9, list())
+thttil_symbols_TokenDefinition.TBeginUsingString = thttil_symbols_TokenDefinition("TBeginUsingString", 10, list())
+thttil_symbols_TokenDefinition.TStreamRedirection = thttil_symbols_TokenDefinition("TStreamRedirection", 11, list())
+thttil_symbols_TokenDefinition.TArgumentSeparator = thttil_symbols_TokenDefinition("TArgumentSeparator", 12, list())
+thttil_symbols_TokenDefinition.TEndInstructionBlock = thttil_symbols_TokenDefinition("TEndInstructionBlock", 13, list())
+thttil_symbols_TokenDefinition.TBeginInstructionBlock = thttil_symbols_TokenDefinition("TBeginInstructionBlock", 14, list())
+thttil_symbols_TokenDefinition.TEOF = thttil_symbols_TokenDefinition("TEOF", 15, list())
 
-class thttil_Keyword(Enum):
+class thttil_symbols_Keyword(Enum):
     __slots__ = ()
-    _hx_class_name = "thttil.Keyword"
-thttil_Keyword.KwdAs = thttil_Keyword("KwdAs", 0, list())
-thttil_Keyword.KwdUsing = thttil_Keyword("KwdUsing", 1, list())
+    _hx_class_name = "thttil.symbols.Keyword"
+thttil_symbols_Keyword.KwdAs = thttil_symbols_Keyword("KwdAs", 0, list())
+thttil_symbols_Keyword.KwdUsing = thttil_symbols_Keyword("KwdUsing", 1, list())
 
 
 class thttil_Lexer(hxparse_Lexer):
@@ -2023,7 +2051,7 @@ class thttil_Lexer(hxparse_Lexer):
     __slots__ = ()
     _hx_fields = []
     _hx_methods = []
-    _hx_statics = ["temp_buffer", "identifier", "tokens", "string", "print", "generatedRulesets"]
+    _hx_statics = ["temp_buffer", "identifier", "make", "tokens", "string", "print", "generatedRulesets"]
     _hx_super = hxparse_Lexer
 
 
@@ -2031,81 +2059,96 @@ class thttil_Lexer(hxparse_Lexer):
         super().__init__(input,sourceName)
     temp_buffer = None
 
+    @staticmethod
+    def make(lexer,token_definition):
+        return thttil_Token(token_definition,hxparse_Position(lexer.source,(lexer.pos - len(lexer.current)),lexer.pos))
 
-class thttil_Parser(hxparse_Parser_hxparse_LexerTokenSource_thttil_TokenDef_thttil_TokenDef):
+
+class thttil_Parser(hxparse_Parser_hxparse_LexerTokenSource_thttil_Token_thttil_Token):
     _hx_class_name = "thttil.Parser"
-    __slots__ = ()
-    _hx_fields = []
+    __slots__ = ("source_name",)
+    _hx_fields = ["source_name"]
     _hx_methods = ["parseProgram", "parseToken", "parseTokenInstructionBlock", "parseTokenInstructionBlockContent", "parseTokenArguments", "parseTokenArgumentContent", "parseVariableSubScopes", "toString"]
-    _hx_statics = []
-    _hx_super = hxparse_Parser_hxparse_LexerTokenSource_thttil_TokenDef_thttil_TokenDef
+    _hx_statics = ["punion"]
+    _hx_super = hxparse_Parser_hxparse_LexerTokenSource_thttil_Token_thttil_Token
 
 
     def __init__(self,input,source_name):
         lexer = thttil_Lexer(input,source_name)
         token_source = hxparse_LexerTokenSource(lexer,thttil_Lexer.tokens)
+        self.source_name = source_name
         super().__init__(token_source)
 
     def parseProgram(self):
-        program = thttil_symbols_Program([])
+        program = thttil_symbols_Program([],hxparse_Position(self.source_name,0,0))
         token = None
         while True:
             token = self.parseToken()
             if (token is not None):
                 _this = program.instructions
                 _this.append(token)
+                program.position.pmax = token.position.pmax
             if (not ((token is not None))):
                 break
         return program
 
     def parseToken(self):
         _g = self.peek(0)
-        _g1 = _g.index
-        if (_g1 == 0):
-            content = _g.params[0]
+        tmp = _g.token.index
+        if (tmp == 0):
+            pos = _g.position
+            content = _g.token.params[0]
             self.last = self.token.elt
             self.token = self.token.next
-            return thttil_symbols_Token("OUT",[thttil_symbols_PString(content)],None)
-        elif (_g1 == 6):
+            return thttil_symbols_Token("OUT",[thttil_symbols_PString(content,pos)],pos,None)
+        elif (tmp == 6):
+            pos1 = _g.position
             self.last = self.token.elt
             self.token = self.token.next
-            _g2 = self.peek(0)
-            if (_g2.index == 3):
-                if (_g2.params[0].index == 3):
-                    command_name = _g2.params[0].params[0]
+            _g1 = self.peek(0)
+            if (_g1.token.index == 3):
+                if (_g1.token.params[0].index == 3):
+                    command_name = _g1.token.params[0].params[0]
                     self.last = self.token.elt
                     self.token = self.token.next
-                    arguments = self.parseTokenArguments([])
+                    arguments = self.parseTokenArguments(_hx_AnonObject({'array': [], 'max': 0}))
                     block = self.parseTokenInstructionBlock()
-                    return thttil_symbols_Token(command_name,arguments,block)
+                    pos1.pmax = arguments.max
+                    if (block.instructions is not None):
+                        pos1 = thttil_Parser.punion(pos1,block.position)
+                    return thttil_symbols_Token(command_name,arguments.array,pos1,block)
                 else:
                     raise _HxException(hxparse_Unexpected(self.peek(0),self.stream.curPos()))
             else:
                 raise _HxException(hxparse_Unexpected(self.peek(0),self.stream.curPos()))
-        elif (_g1 == 7):
+        elif (tmp == 7):
+            pos11 = _g.position
             self.last = self.token.elt
             self.token = self.token.next
-            _g3 = self.peek(0)
-            if (_g3.index == 3):
-                if (_g3.params[0].index == 3):
-                    istream = _g3.params[0].params[0]
+            _g2 = self.peek(0)
+            if (_g2.token.index == 3):
+                if (_g2.token.params[0].index == 3):
+                    pos2 = _g2.position
+                    istream = _g2.token.params[0].params[0]
                     self.last = self.token.elt
                     self.token = self.token.next
-                    _g4 = self.peek(0)
-                    if (_g4.index == 11):
+                    _g3 = self.peek(0)
+                    if (_g3.token.index == 11):
                         self.last = self.token.elt
                         self.token = self.token.next
-                        _g5 = self.peek(0)
-                        if (_g5.index == 7):
+                        _g4 = self.peek(0)
+                        if (_g4.token.index == 7):
+                            pos3 = _g4.position
                             self.last = self.token.elt
                             self.token = self.token.next
-                            _g6 = self.peek(0)
-                            if (_g6.index == 3):
-                                if (_g6.params[0].index == 3):
-                                    ostream = _g6.params[0].params[0]
+                            _g5 = self.peek(0)
+                            if (_g5.token.index == 3):
+                                if (_g5.token.params[0].index == 3):
+                                    pos4 = _g5.position
+                                    ostream = _g5.token.params[0].params[0]
                                     self.last = self.token.elt
                                     self.token = self.token.next
-                                    return thttil_symbols_Token("REDIRECTION",[thttil_symbols_Stream(istream), thttil_symbols_Stream(ostream)],None)
+                                    return thttil_symbols_Token("REDIRECTION",[thttil_symbols_Stream(istream,thttil_Parser.punion(pos11,pos2)), thttil_symbols_Stream(ostream,thttil_Parser.punion(pos3,pos4))],thttil_Parser.punion(pos11,pos4),None)
                                 else:
                                     raise _HxException(hxparse_Unexpected(self.peek(0),self.stream.curPos()))
                             else:
@@ -2113,12 +2156,12 @@ class thttil_Parser(hxparse_Parser_hxparse_LexerTokenSource_thttil_TokenDef_thtt
                         else:
                             raise _HxException(hxparse_Unexpected(self.peek(0),self.stream.curPos()))
                     else:
-                        return thttil_symbols_Token("SELECT",[thttil_symbols_Stream(istream)],None)
+                        return thttil_symbols_Token("SELECT",[thttil_symbols_Stream(istream,thttil_Parser.punion(pos11,pos2))],thttil_Parser.punion(pos11,pos2),None)
                 else:
                     raise _HxException(hxparse_Unexpected(self.peek(0),self.stream.curPos()))
             else:
                 raise _HxException(hxparse_Unexpected(self.peek(0),self.stream.curPos()))
-        elif (_g1 == 15):
+        elif (tmp == 15):
             self.last = self.token.elt
             self.token = self.token.next
             return None
@@ -2126,45 +2169,60 @@ class thttil_Parser(hxparse_Parser_hxparse_LexerTokenSource_thttil_TokenDef_thtt
             raise _HxException(hxparse_NoMatch(self.stream.curPos(),self.peek(0)))
 
     def parseTokenInstructionBlock(self):
-        if (self.peek(0) != thttil_TokenDef.TBeginInstructionBlock):
-            return None
-        self.last = self.token.elt
-        self.token = self.token.next
-        return self.parseTokenInstructionBlockContent([])
+        _g = self.peek(0)
+        if (_g.token.index == 14):
+            pos = _g.position
+            self.last = self.token.elt
+            self.token = self.token.next
+            content = self.parseTokenInstructionBlockContent(_hx_AnonObject({'array': [], 'max': 0}))
+            pos.pmax = content.max
+            return thttil_symbols_InstructionBlock(content.array,pos)
+        else:
+            return thttil_symbols_InstructionBlock(None,None)
 
     def parseTokenInstructionBlockContent(self,accumulator):
         _g = self.peek(0)
-        if (_g.index == 13):
+        if (_g.token.index == 13):
+            pos = _g.position
             self.last = self.token.elt
             self.token = self.token.next
+            accumulator.max = pos.pmax
             return accumulator
         else:
             token = self.parseToken()
-            accumulator.append(token)
+            _this = accumulator.array
+            _this.append(token)
             _g1 = self.peek(0)
-            if (_g1.index == 13):
+            if (_g1.token.index == 13):
+                pos1 = _g1.position
                 self.last = self.token.elt
                 self.token = self.token.next
+                accumulator.max = pos1.pmax
                 return accumulator
             else:
                 return self.parseTokenInstructionBlockContent(accumulator)
 
     def parseTokenArguments(self,accumulator):
         _g = self.peek(0)
-        if (_g.index == 5):
+        if (_g.token.index == 5):
+            pos = _g.position
             self.last = self.token.elt
             self.token = self.token.next
+            accumulator.max = pos.pmax
             return accumulator
         else:
             arg = self.parseTokenArgumentContent()
-            accumulator.append(arg)
+            _this = accumulator.array
+            _this.append(arg)
             _g1 = self.peek(0)
-            _g2 = _g1.index
-            if (_g2 == 5):
+            tmp = _g1.token.index
+            if (tmp == 5):
+                pos1 = _g1.position
                 self.last = self.token.elt
                 self.token = self.token.next
+                accumulator.max = pos1.pmax
                 return accumulator
-            elif (_g2 == 12):
+            elif (tmp == 12):
                 self.last = self.token.elt
                 self.token = self.token.next
                 return self.parseTokenArguments(accumulator)
@@ -2173,41 +2231,46 @@ class thttil_Parser(hxparse_Parser_hxparse_LexerTokenSource_thttil_TokenDef_thtt
 
     def parseTokenArgumentContent(self):
         _g = self.peek(0)
-        _g1 = _g.index
-        if (_g1 == 3):
-            if (_g.params[0].index == 2):
-                content = _g.params[0].params[0]
+        tmp = _g.token.index
+        if (tmp == 3):
+            if (_g.token.params[0].index == 2):
+                pos = _g.position
+                content = _g.token.params[0].params[0]
                 self.last = self.token.elt
                 self.token = self.token.next
-                return thttil_symbols_PString(content)
+                return thttil_symbols_PString(content,pos)
             else:
                 token = self.parseToken()
                 return token
-        elif (_g1 == 7):
+        elif (tmp == 7):
+            pos1 = _g.position
             self.last = self.token.elt
             self.token = self.token.next
-            _g2 = self.peek(0)
-            if (_g2.index == 3):
-                if (_g2.params[0].index == 3):
-                    identifier = _g2.params[0].params[0]
+            _g1 = self.peek(0)
+            if (_g1.token.index == 3):
+                if (_g1.token.params[0].index == 3):
+                    pos2 = _g1.position
+                    identifier = _g1.token.params[0].params[0]
                     self.last = self.token.elt
                     self.token = self.token.next
-                    return thttil_symbols_Stream(identifier)
+                    return thttil_symbols_Stream(identifier,thttil_Parser.punion(pos1,pos2))
                 else:
                     raise _HxException(hxparse_Unexpected(self.peek(0),self.stream.curPos()))
             else:
                 raise _HxException(hxparse_Unexpected(self.peek(0),self.stream.curPos()))
-        elif (_g1 == 8):
+        elif (tmp == 8):
+            pos3 = _g.position
             self.last = self.token.elt
             self.token = self.token.next
-            _g3 = self.peek(0)
-            if (_g3.index == 3):
-                if (_g3.params[0].index == 3):
-                    identifier1 = _g3.params[0].params[0]
+            _g2 = self.peek(0)
+            if (_g2.token.index == 3):
+                if (_g2.token.params[0].index == 3):
+                    identifier1 = _g2.token.params[0].params[0]
                     self.last = self.token.elt
                     self.token = self.token.next
-                    sub_scopes = self.parseVariableSubScopes([])
-                    return thttil_symbols_Variable(identifier1,sub_scopes)
+                    sub_scopes = self.parseVariableSubScopes(_hx_AnonObject({'array': [], 'max': 0}))
+                    pos3.pmax = sub_scopes.max
+                    return thttil_symbols_Variable(identifier1,sub_scopes.array,pos3)
                 else:
                     raise _HxException(hxparse_Unexpected(self.peek(0),self.stream.curPos()))
             else:
@@ -2218,16 +2281,19 @@ class thttil_Parser(hxparse_Parser_hxparse_LexerTokenSource_thttil_TokenDef_thtt
 
     def parseVariableSubScopes(self,accumulator):
         _g = self.peek(0)
-        if (_g.index == 4):
+        if (_g.token.index == 4):
             self.last = self.token.elt
             self.token = self.token.next
             _g1 = self.peek(0)
-            if (_g1.index == 3):
-                if (_g1.params[0].index == 3):
-                    identifier = _g1.params[0].params[0]
+            if (_g1.token.index == 3):
+                if (_g1.token.params[0].index == 3):
+                    pos = _g1.position
+                    identifier = _g1.token.params[0].params[0]
                     self.last = self.token.elt
                     self.token = self.token.next
-                    accumulator.append(identifier)
+                    accumulator.max = pos.pmax
+                    _this = accumulator.array
+                    _this.append(identifier)
                     return self.parseVariableSubScopes(accumulator)
                 else:
                     raise _HxException(hxparse_Unexpected(self.peek(0),self.stream.curPos()))
@@ -2240,53 +2306,57 @@ class thttil_Parser(hxparse_Parser_hxparse_LexerTokenSource_thttil_TokenDef_thtt
         tree = ""
         while True:
             _g = self.stream.token()
-            _g1 = _g.index
-            if (_g1 == 0):
-                content = _g.params[0]
+            tmp = _g.token.index
+            if (tmp == 0):
+                content = _g.token.params[0]
                 tree = (("null" if tree is None else tree) + HxOverrides.stringOrNull(((("TPrintToken (" + ("null" if content is None else content)) + ") "))))
-            elif (_g1 == 1):
-                keyword = _g.params[0]
+            elif (tmp == 1):
+                keyword = _g.token.params[0]
                 tree = (("null" if tree is None else tree) + ((("Keyword (" + Std.string(keyword)) + ") ")))
-            elif (_g1 == 2):
-                content1 = _g.params[0]
+            elif (tmp == 2):
+                content1 = _g.token.params[0]
                 tree = (("null" if tree is None else tree) + HxOverrides.stringOrNull(((("Comment (" + ("null" if content1 is None else content1)) + ") "))))
-            elif (_g1 == 3):
-                tmp = _g.params[0].index
-                if (tmp == 2):
-                    content2 = _g.params[0].params[0]
+            elif (tmp == 3):
+                tmp1 = _g.token.params[0].index
+                if (tmp1 == 2):
+                    content2 = _g.token.params[0].params[0]
                     tree = (("null" if tree is None else tree) + HxOverrides.stringOrNull(((("String (" + ("null" if content2 is None else content2)) + ") "))))
-                elif (tmp == 3):
-                    name = _g.params[0].params[0]
+                elif (tmp1 == 3):
+                    name = _g.token.params[0].params[0]
                     tree = (("null" if tree is None else tree) + HxOverrides.stringOrNull(((("Identifier (" + ("null" if name is None else name)) + ") "))))
                 else:
                     return (("null" if tree is None else tree) + "! UNEXPECTED !")
-            elif (_g1 == 4):
+            elif (tmp == 4):
                 tree = (("null" if tree is None else tree) + "Dot ")
-            elif (_g1 == 5):
+            elif (tmp == 5):
                 tree = (("null" if tree is None else tree) + "EndToken ")
-            elif (_g1 == 6):
+            elif (tmp == 6):
                 tree = (("null" if tree is None else tree) + "BeginToken ")
-            elif (_g1 == 7):
+            elif (tmp == 7):
                 tree = (("null" if tree is None else tree) + "BeginStream ")
-            elif (_g1 == 8):
+            elif (tmp == 8):
                 tree = (("null" if tree is None else tree) + "BeginVariable ")
-            elif (_g1 == 9):
+            elif (tmp == 9):
                 tree = (("null" if tree is None else tree) + "EndUsingString ")
-            elif (_g1 == 10):
+            elif (tmp == 10):
                 tree = (("null" if tree is None else tree) + "BeginUsingString ")
-            elif (_g1 == 11):
+            elif (tmp == 11):
                 tree = (("null" if tree is None else tree) + "StreamRedirection ")
-            elif (_g1 == 12):
+            elif (tmp == 12):
                 tree = (("null" if tree is None else tree) + "ArgumentSeparator ")
-            elif (_g1 == 13):
+            elif (tmp == 13):
                 tree = (("null" if tree is None else tree) + "EndInstructionBlock ")
-            elif (_g1 == 14):
+            elif (tmp == 14):
                 tree = (("null" if tree is None else tree) + "BeginInstructionBlock ")
-            elif (_g1 == 15):
+            elif (tmp == 15):
                 tree = (("null" if tree is None else tree) + "EOF")
                 return tree
             else:
                 pass
+
+    @staticmethod
+    def punion(position1,position2):
+        return hxparse_Position(position1.psource,(position1.pmin if ((position1.pmin < position2.pmin)) else position2.pmin),(position1.pmax if ((position1.pmax > position2.pmax)) else position2.pmax))
 
 
 
@@ -2366,16 +2436,22 @@ class thttil_error_ParserErrorMessage(Enum):
 
 class thttil_symbols_Argument:
     _hx_class_name = "thttil.symbols.Argument"
-    __slots__ = ()
+    __slots__ = ("position",)
+    _hx_fields = ["position"]
+
+    def __init__(self,position):
+        self.position = position
+
 
 
 class thttil_symbols_InstructionBlock:
     _hx_class_name = "thttil.symbols.InstructionBlock"
-    __slots__ = ("instructions",)
-    _hx_fields = ["instructions"]
+    __slots__ = ("instructions", "position")
+    _hx_fields = ["instructions", "position"]
 
-    def __init__(self,instructions):
+    def __init__(self,instructions,position):
         self.instructions = instructions
+        self.position = position
 
 
 
@@ -2388,8 +2464,9 @@ class thttil_symbols_PString(thttil_symbols_Argument):
     _hx_super = thttil_symbols_Argument
 
 
-    def __init__(self,content):
+    def __init__(self,content,position):
         self.content = content
+        super().__init__(position)
 
 
 
@@ -2402,8 +2479,8 @@ class thttil_symbols_Program(thttil_symbols_InstructionBlock):
     _hx_super = thttil_symbols_InstructionBlock
 
 
-    def __init__(self,instructions):
-        super().__init__(instructions)
+    def __init__(self,instructions,position):
+        super().__init__(instructions,position)
 
 
 class thttil_symbols_Variable(thttil_symbols_Argument):
@@ -2415,9 +2492,10 @@ class thttil_symbols_Variable(thttil_symbols_Argument):
     _hx_super = thttil_symbols_Argument
 
 
-    def __init__(self,name,sub_scopes):
+    def __init__(self,name,sub_scopes,position):
         self.name = name
         self.sub_scopes = sub_scopes
+        super().__init__(position)
 
 
 
@@ -2430,8 +2508,8 @@ class thttil_symbols_Stream(thttil_symbols_Variable):
     _hx_super = thttil_symbols_Variable
 
 
-    def __init__(self,name):
-        super().__init__(name,[])
+    def __init__(self,name,position):
+        super().__init__(name,[],position)
 
 
 class thttil_symbols_Token(thttil_symbols_Argument):
@@ -2443,10 +2521,11 @@ class thttil_symbols_Token(thttil_symbols_Argument):
     _hx_super = thttil_symbols_Argument
 
 
-    def __init__(self,command_name,arguments,instruction_block = None):
+    def __init__(self,command_name,arguments,position,instruction_block = None):
         self.instruction_block = instruction_block
         self.command_name = command_name
         self.arguments = arguments
+        super().__init__(position)
 
 
 Math.NEGATIVE_INFINITY = float("-inf")
@@ -2462,48 +2541,71 @@ python_Boot.prefixLength = len("_hx_")
 thttil_Lexer.identifier = "_*[a-zA-Z][a-zA-Z0-9_]*|_+[0-9][_a-zA-Z0-9]*"
 def _hx_init_thttil_Lexer_tokens():
     def _hx_local_0(lexer):
-        print(str(hxparse_Position(lexer.source,(lexer.pos - len(lexer.current)),lexer.pos)))
         thttil_Lexer.temp_buffer = StringBuf()
-        lexer.token(thttil_Lexer.string)
-        return thttil_TokenDef.TConst(haxe_macro_Constant.CString(thttil_Lexer.temp_buffer.b.getvalue()))
+        position_min = hxparse_Position(lexer.source,(lexer.pos - len(lexer.current)),lexer.pos)
+        position_max = None
+        try:
+            position_max = lexer.token(thttil_Lexer.string)
+        except Exception as _hx_e:
+            _hx_e1 = _hx_e.val if isinstance(_hx_e, _HxException) else _hx_e
+            if isinstance(_hx_e1, haxe_io_Eof):
+                exception = _hx_e1
+                raise _HxException(thttil_error_LexerError(thttil_error_LexerErrorMessage.UnterminatedString,position_min))
+            else:
+                raise _hx_e
+        token = thttil_Lexer.make(lexer,thttil_symbols_TokenDefinition.TConst(haxe_macro_Constant.CString(thttil_Lexer.temp_buffer.b.getvalue())))
+        token.position.pmin = position_min.pmin
+        return token
     def _hx_local_1(lexer1):
         thttil_Lexer.temp_buffer = StringBuf()
-        lexer1.token(thttil_Lexer.print)
-        return thttil_TokenDef.TPrintToken(thttil_Lexer.temp_buffer.b.getvalue())
+        position_min1 = hxparse_Position(lexer1.source,(lexer1.pos - len(lexer1.current)),lexer1.pos)
+        position_max1 = None
+        try:
+            position_max1 = lexer1.token(thttil_Lexer.print)
+        except Exception as _hx_e:
+            _hx_e1 = _hx_e.val if isinstance(_hx_e, _HxException) else _hx_e
+            if isinstance(_hx_e1, haxe_io_Eof):
+                exception1 = _hx_e1
+                raise _HxException(thttil_error_LexerError(thttil_error_LexerErrorMessage.UnterminatedPrintToken,position_min1))
+            else:
+                raise _hx_e
+        token1 = thttil_Lexer.make(lexer1,thttil_symbols_TokenDefinition.TPrintToken(thttil_Lexer.temp_buffer.b.getvalue()))
+        token1.position.pmin = position_min1.pmin
+        return token1
     def _hx_local_2(lexer2):
         return lexer2.token(thttil_Lexer.tokens)
     def _hx_local_3(lexer3):
         return lexer3.token(thttil_Lexer.tokens)
     def _hx_local_4(lexer4):
-        return thttil_TokenDef.TKeyword(thttil_Keyword.KwdAs)
+        return thttil_Lexer.make(lexer4,thttil_symbols_TokenDefinition.TKeyword(thttil_symbols_Keyword.KwdAs))
     def _hx_local_5(lexer5):
-        return thttil_TokenDef.TKeyword(thttil_Keyword.KwdUsing)
+        return thttil_Lexer.make(lexer5,thttil_symbols_TokenDefinition.TKeyword(thttil_symbols_Keyword.KwdUsing))
     def _hx_local_6(lexer6):
-        return thttil_TokenDef.TDot
+        return thttil_Lexer.make(lexer6,thttil_symbols_TokenDefinition.TDot)
     def _hx_local_7(lexer7):
-        return thttil_TokenDef.TEndToken
+        return thttil_Lexer.make(lexer7,thttil_symbols_TokenDefinition.TEndToken)
     def _hx_local_8(lexer8):
-        return thttil_TokenDef.TBeginToken
+        return thttil_Lexer.make(lexer8,thttil_symbols_TokenDefinition.TBeginToken)
     def _hx_local_9(lexer9):
-        return thttil_TokenDef.TBeginStream
+        return thttil_Lexer.make(lexer9,thttil_symbols_TokenDefinition.TBeginStream)
     def _hx_local_10(lexer10):
-        return thttil_TokenDef.TBeginVariable
+        return thttil_Lexer.make(lexer10,thttil_symbols_TokenDefinition.TBeginVariable)
     def _hx_local_11(lexer11):
-        return thttil_TokenDef.TEndUsingString
+        return thttil_Lexer.make(lexer11,thttil_symbols_TokenDefinition.TEndUsingString)
     def _hx_local_12(lexer12):
-        return thttil_TokenDef.TBeginUsingString
+        return thttil_Lexer.make(lexer12,thttil_symbols_TokenDefinition.TBeginUsingString)
     def _hx_local_13(lexer13):
-        return thttil_TokenDef.TStreamRedirection
+        return thttil_Lexer.make(lexer13,thttil_symbols_TokenDefinition.TStreamRedirection)
     def _hx_local_14(lexer14):
-        return thttil_TokenDef.TArgumentSeparator
+        return thttil_Lexer.make(lexer14,thttil_symbols_TokenDefinition.TArgumentSeparator)
     def _hx_local_15(lexer15):
-        return thttil_TokenDef.TEndInstructionBlock
+        return thttil_Lexer.make(lexer15,thttil_symbols_TokenDefinition.TEndInstructionBlock)
     def _hx_local_16(lexer16):
-        return thttil_TokenDef.TBeginInstructionBlock
+        return thttil_Lexer.make(lexer16,thttil_symbols_TokenDefinition.TBeginInstructionBlock)
     def _hx_local_17(lexer17):
-        return thttil_TokenDef.TConst(haxe_macro_Constant.CIdent(lexer17.current))
+        return thttil_Lexer.make(lexer17,thttil_symbols_TokenDefinition.TConst(haxe_macro_Constant.CIdent(lexer17.current)))
     def _hx_local_18(lexer18):
-        return thttil_TokenDef.TEOF
+        return thttil_Lexer.make(lexer18,thttil_symbols_TokenDefinition.TEOF)
     return hxparse_Lexer.buildRuleset([_hx_AnonObject({'rule': "\"", 'func': _hx_local_0}), _hx_AnonObject({'rule': "%", 'func': _hx_local_1}), _hx_AnonObject({'rule': "[\r\n\t ]+", 'func': _hx_local_2}), _hx_AnonObject({'rule': "#[^\n\r]*", 'func': _hx_local_3}), _hx_AnonObject({'rule': "as", 'func': _hx_local_4}), _hx_AnonObject({'rule': "using", 'func': _hx_local_5}), _hx_AnonObject({'rule': "\\.", 'func': _hx_local_6}), _hx_AnonObject({'rule': "\\)", 'func': _hx_local_7}), _hx_AnonObject({'rule': "\\$\\(", 'func': _hx_local_8}), _hx_AnonObject({'rule': "@", 'func': _hx_local_9}), _hx_AnonObject({'rule': "\\$", 'func': _hx_local_10}), _hx_AnonObject({'rule': ">", 'func': _hx_local_11}), _hx_AnonObject({'rule': "<", 'func': _hx_local_12}), _hx_AnonObject({'rule': "->", 'func': _hx_local_13}), _hx_AnonObject({'rule': ",", 'func': _hx_local_14}), _hx_AnonObject({'rule': "}", 'func': _hx_local_15}), _hx_AnonObject({'rule': "{", 'func': _hx_local_16}), _hx_AnonObject({'rule': "_*[a-zA-Z][a-zA-Z0-9_]*|_+[0-9][_a-zA-Z0-9]*", 'func': _hx_local_17}), _hx_AnonObject({'rule': "", 'func': _hx_local_18})],"tokens")
 thttil_Lexer.tokens = _hx_init_thttil_Lexer_tokens()
 def _hx_init_thttil_Lexer_string():

@@ -47,17 +47,18 @@ from .ThttilGenerated import haxe_io_Bytes as Bytes
 
 # Generated classes
 from .ThttilGenerated import thttil_StreamCollection as StreamCollection
-from .ThttilGenerated import thttil_TokenDef         as TokenDef
-from .ThttilGenerated import thttil_Keyword          as Keyword
 from .ThttilGenerated import thttil_Stream           as Stream
 from .ThttilGenerated import thttil_Parser           as Parser
+from .ThttilGenerated import thttil_Token            as Token
 from .ThttilGenerated import thttil_Lexer            as Lexer
 
 # Generated symbols
 from .ThttilGenerated import thttil_symbols_InstructionBlock as SymbolInstructionBlock
+from .ThttilGenerated import thttil_symbols_TokenDefinition  as TokenDefinition
 from .ThttilGenerated import thttil_symbols_Variable         as SymbolVariable
 from .ThttilGenerated import thttil_symbols_Argument         as SymbolArgument
 from .ThttilGenerated import thttil_symbols_Program          as SymbolProgram
+from .ThttilGenerated import thttil_symbols_Keyword          as SymbolKeyword
 from .ThttilGenerated import thttil_symbols_PString          as SymbolString
 from .ThttilGenerated import thttil_symbols_Stream           as SymbolStream
 from .ThttilGenerated import thttil_symbols_Token            as SymbolToken

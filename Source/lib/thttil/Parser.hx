@@ -48,6 +48,15 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Token>, thtt
 		super(token_source);
 	}
 
+    private static function punion(position1: hxparse.Position, position2: hxparse.Position): hxparse.Position
+    {
+        return new hxparse.Position(
+            position1.psource,
+            position1.pmin < position2.pmin ? position1.pmin : position2.pmin,
+			position1.pmax > position2.pmax ? position1.pmax : position2.pmax
+        );
+    }
+
     /**
      * Parses a thttil program
      * @return ParserProgram
@@ -83,34 +92,42 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Token>, thtt
         return hxparse.Parser.parse(switch stream
         {
             // If we found the following pattern : @SomeStreamName
-            case [{token: TBeginStream, position: pos}, {token: TConst(CIdent(istream)), position: pos}]:
+            case [{token: TBeginStream, position: pos1}, {token: TConst(CIdent(istream)), position: pos2}]:
                 switch stream
                 {
                     // And next to the previous pattern there is "->@SomeOtherStreamName"
-                    case [TStreamRedirection, TBeginStream, TConst(CIdent(ostream))]:
+                    case [{token: TStreamRedirection}, {token: TBeginStream, position: pos3}, {token: TConst(CIdent(ostream)), position: pos4}]:
 
                         // This is a stream redirection from istream to ostream
-                        new thttil.symbols.Token("REDIRECTION", [new thttil.symbols.Stream(istream), new thttil.symbols.Stream(ostream)], null);
+                        new thttil.symbols.Token("REDIRECTION",
+                            [new thttil.symbols.Stream(istream, punion(pos1, pos2)),
+                             new thttil.symbols.Stream(ostream, punion(pos3, pos4))],
+                            punion(pos1, pos4), null);
 
                     // Otherwise, this is a simple stream selection
                     case _:
-                        new thttil.symbols.Token("SELECT", [new thttil.symbols.Stream(istream)], null);
+                        new thttil.symbols.Token("SELECT", [new thttil.symbols.Stream(istream, punion(pos1, pos2))], punion(pos1, pos2), null);
                 }
 
             // If there is the following pattern : $(COMMAND_NAME "Arg1", $arg2, @arg3, [...])
-            case [TBeginToken, TConst(CIdent(command_name)), arguments = parseTokenArguments([]), block = parseTokenInstructionBlock()]:
+            case [{token: TBeginToken, position: pos}, {token: TConst(CIdent(command_name))}, arguments = parseTokenArguments({array: [], max: 0}), block = parseTokenInstructionBlock()]:
 
                 // This is a token in it's most basic form
-                new thttil.symbols.Token(command_name, arguments, block);
+                pos.pmax = arguments.max;
+
+                if (block.instructions != null)
+                    pos = punion(pos, block.position);
+
+                new thttil.symbols.Token(command_name, arguments.array, pos, block);
 
             // If there is the following pattern: %Some random content ...%
-            case [TPrintToken(content)]:
+            case [{token: TPrintToken(content), position: pos}]:
 
                 // This is a simplified OUT token
-                new thttil.symbols.Token("OUT", [new thttil.symbols.PString(content)], null);
+                new thttil.symbols.Token("OUT", [new thttil.symbols.PString(content, pos)], pos, null);
 
             // And if this is the end of the file, returning 'null'.
-            case [TEOF]:
+            case [{token: TEOF}]:
                 null;
         });
     }
@@ -119,16 +136,22 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Token>, thtt
      * Parses a token instruction block
      * @return Array<thttil.symbols.Token> a token list or null if nothing has been found
      */
-    public function parseTokenInstructionBlock(): Array<thttil.symbols.Token>
+    public function parseTokenInstructionBlock(): thttil.symbols.InstructionBlock
     {
-        // If we don't found a '{' then there is no instruction block following.
-        if (peek(0) != TBeginInstructionBlock)
-            return null;
+        return hxparse.Parser.parse(switch stream{
 
-        junk();
+            // If we don't found a '{' then there is no instruction block following.
+            case [{token: TBeginInstructionBlock, position: pos}]:
 
-        // Parsing all the instructions in the block ...
-        return parseTokenInstructionBlockContent([]);
+                // Parsing all the instructions in the block ...
+                var content = parseTokenInstructionBlockContent({array: [], max: 0});
+                pos.pmax = content.max;
+                new thttil.symbols.InstructionBlock(content.array, pos);
+
+            case _:
+
+                new thttil.symbols.InstructionBlock(null, null);
+        });
     }
 
     /**
@@ -136,23 +159,27 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Token>, thtt
      * @param accumulator This allows the compilator to do some optimizations since we are doing recursive calls :/
      * @return Array<thttil.symbols.Token> instruction block
      */
-    public function parseTokenInstructionBlockContent(accumulator: Array<thttil.symbols.Token>): Array<thttil.symbols.Token>
+    public function parseTokenInstructionBlockContent(accumulator: {array: Array<thttil.symbols.Token>, max: Int}): {array: Array<thttil.symbols.Token>, max: Int}
     {
         return hxparse.Parser.parse(switch stream{
 
             // If we found '}', this means that this is the end of the block.
-            case [TEndInstructionBlock]: accumulator;
+            case [{token: TEndInstructionBlock, position: pos}]:
+                accumulator.max = pos.pmax;
+                accumulator;
 
             // Otherwise this means that there must be a token to parse here !
             case [token = parseToken()]:
 
                 // Adding the parsed token to the list
-                accumulator.push(token);
+                accumulator.array.push(token);
                 switch stream {
 
                     // Then checking again if there is '}' to tell
                     // us if this is the end of the block or not
-                    case [TEndInstructionBlock]: accumulator;
+                    case [{token: TEndInstructionBlock, position: pos}]:
+                        accumulator.max = pos.pmax;
+                        accumulator;
 
                     // Otherwise, there is another token to parse ...
                     case _: parseTokenInstructionBlockContent(accumulator);
@@ -165,26 +192,30 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Token>, thtt
      * @param accumulator This allows the compilator to do some optimizations since we are doing recursive calls :/
      * @return Array<thttil.symbols.Argument> arguments
      */
-    public function parseTokenArguments(accumulator: Array<thttil.symbols.Argument>): Array<thttil.symbols.Argument>
+    public function parseTokenArguments(accumulator: {array: Array<thttil.symbols.Argument>, max: Int}): {array: Array<thttil.symbols.Argument>, max: Int}
     {
         return hxparse.Parser.parse(switch stream {
 
             // If there is a ')', then this is the end of the token.
-            case [TEndToken]: accumulator;
+            case [{token: TEndToken, position: pos}]:
+                accumulator.max = pos.pmax;
+                accumulator;
 
             // Otherwise, there is still other arguments to parse !
             case [arg = parseTokenArgumentContent()]:
 
                 // Adding the parsed argument to the list
-                accumulator.push(arg);
+                accumulator.array.push(arg);
                 switch stream {
 
                     // Then checking again if there is ')' to tell
                     // us if this is the end of the token or not
-                    case [TEndToken]: accumulator;
+                    case [{token: TEndToken, position: pos}]:
+                        accumulator.max = pos.pmax;
+                        accumulator;
 
                     // Otherwise, there is another argument to parse ...
-                    case [TArgumentSeparator]: parseTokenArguments(accumulator);
+                    case [{token: TArgumentSeparator}]: parseTokenArguments(accumulator);
                 }
         });
     }
@@ -198,22 +229,23 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Token>, thtt
         return hxparse.Parser.parse(switch stream
         {
             // If the argument looks like this : $SomeName or like this $This.is.also.a.variable
-            case [TBeginVariable, TConst(CIdent(identifier)), sub_scopes = parseVariableSubScopes([])]:
+            case [{token: TBeginVariable, position: pos}, {token: TConst(CIdent(identifier))}, sub_scopes = parseVariableSubScopes({array: [], max: 0})]:
 
                 // Then we found a variable
-                new thttil.symbols.Variable(identifier, sub_scopes);
+                pos.pmax = sub_scopes.max;
+                new thttil.symbols.Variable(identifier, sub_scopes.array, pos);
 
             // If the argument looks like this: "Some string content"
-            case [TConst(CString(content))]:
+            case [{token: TConst(CString(content)), position: pos}]:
 
                 // Then we found a string
-                new thttil.symbols.PString(content);
+                new thttil.symbols.PString(content, pos);
 
             // If the argument looks like this: @StreamName
-            case [TBeginStream, TConst(CIdent(identifier))]:
+            case [{token: TBeginStream, position: pos1}, {token: TConst(CIdent(identifier)), position: pos2}]:
 
                 // Then we found a stream
-                new thttil.symbols.Stream(identifier);
+                new thttil.symbols.Stream(identifier, punion(pos1, pos2));
 
             // And finally if the argument looks like this: $(COMMAND "Args...")
             case [token = parseToken()]:
@@ -229,15 +261,16 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Token>, thtt
      * @param accumulator This allows the compilator to do some optimizations since we are doing recursive calls :/
      * @return Array<String> sub scopes
      */
-    public function parseVariableSubScopes(accumulator: Array<String>): Array<String>
+    public function parseVariableSubScopes(accumulator: {array: Array<String>, max: Int}): {array: Array<String>, max: Int}
     {
         return hxparse.Parser.parse(switch stream{
 
             // If there is the following pattern: .some_name
-            case [TDot, TConst(CIdent(identifier))]:
+            case [{token: TDot}, {token: TConst(CIdent(identifier)), position: pos}]:
 
                 // Then we found a sub scope
-                accumulator.push(identifier);
+                accumulator.max = pos.pmax;
+                accumulator.array.push(identifier);
 
                 // Looking for the next sub scope
                 parseVariableSubScopes(accumulator);
@@ -260,39 +293,39 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Token>, thtt
         {
             switch (stream.token())
             {
-                case TDot:
+                case {token: TDot}:
                     tree += "Dot ";
-                case TEndToken:
+                case {token: TEndToken}:
                     tree += "EndToken ";
-                case TBeginToken:
+                case {token: TBeginToken}:
                     tree += "BeginToken ";
-                case TBeginStream:
+                case {token: TBeginStream}:
                     tree += "BeginStream ";
-                case TBeginVariable:
+                case {token: TBeginVariable}:
                     tree += "BeginVariable ";
-                case TEndUsingString:
+                case {token: TEndUsingString}:
                     tree += "EndUsingString ";
-                case TBeginUsingString:
+                case {token: TBeginUsingString}:
                     tree += "BeginUsingString ";
-                case TStreamRedirection:
+                case {token: TStreamRedirection}:
                     tree += "StreamRedirection ";
-                case TArgumentSeparator:
+                case {token: TArgumentSeparator}:
                     tree += "ArgumentSeparator ";
-                case TEndInstructionBlock:
+                case {token: TEndInstructionBlock}:
                     tree += "EndInstructionBlock ";
-                case TBeginInstructionBlock:
+                case {token: TBeginInstructionBlock}:
                     tree += "BeginInstructionBlock ";
-                case TPrintToken(content):
+                case {token: TPrintToken(content)}:
                     tree += "TPrintToken (" + content + ") ";
-                case TConst(CString(content)):
+                case {token: TConst(CString(content))}:
                     tree += "String (" + content + ") ";
-                case TConst(CIdent(name)):
+                case {token: TConst(CIdent(name))}:
                     tree += "Identifier (" + name + ") ";
-                case TKeyword(keyword):
+                case {token: TKeyword(keyword)}:
                     tree += "Keyword (" + keyword + ") ";
-                case TComment(content):
+                case {token: TComment(content)}:
                     tree += "Comment (" + content + ") ";
-                case TEOF:
+                case {token: TEOF}:
                     tree += "EOF";
                     return tree;
                 case _:
