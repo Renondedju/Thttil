@@ -20,9 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-using <test.thtt> as <test>
-using <Lol.thtt>  as <Lol>
-
 @default
 
 %Extern variable test:   %   $(OUT   $extern_var)

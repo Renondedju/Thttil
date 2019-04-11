@@ -32,7 +32,7 @@ class ParserError
 	public var message : ParserErrorMessage;
 	public var position: hxparse.Position;
 	
-    public function new(message:ParserErrorMessage, position: hxparse.Position)
+    public function new(message: ParserErrorMessage, position: hxparse.Position)
     {
 		this.message  = message;
 		this.position = position;

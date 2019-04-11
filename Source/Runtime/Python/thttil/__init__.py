@@ -23,11 +23,11 @@
 # SOFTWARE.
 
 """
-    *** Thttil Python runtime library ***
+*** Thttil Python runtime library ***
 
-    For further information, please take a look at https://github.com/Renondedju/Thttil
+For further information, please take a look at https://github.com/Renondedju/Thttil
 
-    Documentation: https://github.com/Renondedju/Thttil/wiki
+Documentation: https://github.com/Renondedju/Thttil/wiki
 """
 
 # Meta data
@@ -37,13 +37,17 @@ __authors__     = ["Renondedju"]
 __version__     = "0.3.0-pre"
 __licence__     = "MIT"
 
-__slots__ = ("Bytes", "StreamCollection", "TokenDef", "Keyword",
+__slots__ = ("Bytes", "StreamCollection", "SymbolKeyword", "Token",
             "Stream", "Parser", "Lexer", "SymbolInstructionBlock",
             "SymbolVariable", "SymbolArgument", "SymbolProgram",
-            "SymbolString", "SymbolStream", "SymbolToken")
+            "SymbolString", "SymbolStream", "SymbolToken", "TokenDefinition")
 
 # Native haxe symbols
 from .ThttilGenerated import haxe_io_Bytes as Bytes
+
+# Python implementation
+from .Command           import Command
+from .CommandCollection import CommandCollection
 
 # Generated classes
 from .ThttilGenerated import thttil_StreamCollection as StreamCollection

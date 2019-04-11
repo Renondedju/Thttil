@@ -26,6 +26,9 @@ package thttil;
 
 import thttil.Lexer;
 
+import thttil.error.ParserError;
+import thttil.error.ParserErrorMessage;
+
 import thttil.symbols.InstructionBlock;
 import thttil.symbols.Definitions;
 import thttil.symbols.Argument;
@@ -47,6 +50,11 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Token>, thtt
 
 		super(token_source);
 	}
+
+    private function parsingError(error: thttil.error.ParserErrorMessage)
+    {
+        trace(error);
+    }
 
     private static function punion(position1: hxparse.Position, position2: hxparse.Position): hxparse.Position
     {

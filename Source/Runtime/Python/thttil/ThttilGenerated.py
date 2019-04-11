@@ -2068,7 +2068,7 @@ class thttil_Parser(hxparse_Parser_hxparse_LexerTokenSource_thttil_Token_thttil_
     _hx_class_name = "thttil.Parser"
     __slots__ = ("source_name",)
     _hx_fields = ["source_name"]
-    _hx_methods = ["parseProgram", "parseToken", "parseTokenInstructionBlock", "parseTokenInstructionBlockContent", "parseTokenArguments", "parseTokenArgumentContent", "parseVariableSubScopes", "toString"]
+    _hx_methods = ["parsingError", "parseProgram", "parseToken", "parseTokenInstructionBlock", "parseTokenInstructionBlockContent", "parseTokenArguments", "parseTokenArgumentContent", "parseVariableSubScopes", "toString"]
     _hx_statics = ["punion"]
     _hx_super = hxparse_Parser_hxparse_LexerTokenSource_thttil_Token_thttil_Token
 
@@ -2078,6 +2078,9 @@ class thttil_Parser(hxparse_Parser_hxparse_LexerTokenSource_thttil_Token_thttil_
         token_source = hxparse_LexerTokenSource(lexer,thttil_Lexer.tokens)
         self.source_name = source_name
         super().__init__(token_source)
+
+    def parsingError(self,error):
+        print(str(error))
 
     def parseProgram(self):
         program = thttil_symbols_Program([],hxparse_Position(self.source_name,0,0))

@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
  
-import thttil.Parser.ThttilParser as ThttilParser;
 import utest.Assert;
 
 class Test extends utest.Test
@@ -34,7 +33,7 @@ class Test extends utest.Test
 
     public function testParse()
     {
-        // TODO
+        // TODO theses tests will be implemented once the parser and lexer are done (at least)
         Assert.isTrue(true);
     }
 }
