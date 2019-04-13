@@ -38,12 +38,14 @@ class DefaultThttilInterpreter:
     def __init__(self):
         """ Main method of the default interpreter """
 
+        collection = thttil.CommandCollection(None)
+
         parser = ArgumentParser()
         
         with open(parser.template, "rt") as file:
             content = thttil.Bytes.ofString(file.read())
 
-        thttil_parser = thttil.Parser(content, "Test.thtt")
+        thttil_parser = thttil.Parser(content, parser.template)
 
         for instruction in thttil_parser.parseProgram().instructions:
             self.pretty_print(instruction, content)

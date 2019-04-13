@@ -40,10 +40,15 @@ __licence__     = "MIT"
 __slots__ = ("Bytes", "StreamCollection", "SymbolKeyword", "Token",
             "Stream", "Parser", "Lexer", "SymbolInstructionBlock",
             "SymbolVariable", "SymbolArgument", "SymbolProgram",
-            "SymbolString", "SymbolStream", "SymbolToken", "TokenDefinition")
+            "SymbolString", "SymbolStream", "SymbolToken", "TokenDefinition",
+            "CommandCollection", "Command")
 
 # Native haxe symbols
 from .ThttilGenerated import haxe_io_Bytes as Bytes
+
+# Submodules
+from thttil.types import *
+from thttil.ext   import *
 
 # Python implementation
 from .Command           import Command

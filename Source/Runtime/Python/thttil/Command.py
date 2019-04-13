@@ -22,14 +22,40 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import inspect
+
+from collections import deque
+from typing      import Any
+
 class Command(object):
 
-    __slots__ = ("command", "name")
+    __slots__ = ("command", "name", "const", "arguments")
 
-    def __init__(self, command, name: str, *args, **kwargs):
+    class Argument(object):
 
-        self.name    = name
-        self.command = command
+        __slots__ = ("name", "optional", "type")
+
+        def __init__(self, name: str, param_type: Any, optional: bool):
+
+            if (param_type == inspect.Parameter.empty):
+                raise ValueError("Command parameters must be annotated using the provided thttil.types types.")
+
+            self.name       = name
+            self.type       = param_type
+            self.optional   = optional
+
+            print(self.name, self.type, self.optional)
+
+    def __init__(self, command: callable, name: str, const: bool = False, *args, **kwargs):
+
+        self.name      = name
+        self.const     = const
+        self.command   = command
+        self.arguments = deque()
+
+        if self.command is not None:
+            for name, parameter in inspect.signature(self.command).parameters.items():
+                self.arguments.append(Command.Argument(name, parameter.annotation, not parameter.default == inspect.Parameter.empty))
 
     def __call__(self, *args, **kwargs):
         return self.command(*args, **kwargs)

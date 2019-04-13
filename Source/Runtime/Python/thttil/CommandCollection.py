@@ -2,7 +2,7 @@
 
 # MIT License
 
-# Copyright (c) 2019 Basile Combet
+# Copyright (c) 2019 Renondedju
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,27 +22,45 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import thttil
+import thttil.types
+
 from typing import Dict, Callable, List, Any
-from thttil import Command
 
 class CommandCollection(object):
 
-    def __init__(self):
-        self.commands = {getattr(self, method).name: getattr(self, method) for method in dir(type(self)) if isinstance(getattr(self, method), Command)}
+    __slots__ = ("commands", "interpreter")
+
+    def __init__(self, interpreter):
+
+        self.commands: Dict[str, Callable[List[Any]]] = {}
+        self.interpreter = interpreter
+
+        self.__scanAndFindCommands()
+
+    def __scanAndFindCommands(self):
+
+        # This little piece of code scans the class and automatically lists all the avaliable commands
+        self.commands = {getattr(self, method).name: getattr(self, method) for method in dir(type(self)) if isinstance(getattr(self, method), thttil.Command)}
 
     def Command(command = None, *args, **kwargs):
         """ Main decorator used to declare commands """
 
         if callable(command):
-            return Command(command, command.__name__.upper())
+            return thttil.Command(command, command.__name__.upper())
 
         else:
             def wrapper(function):
-                return Command(function, *args, **kwargs)
+                return thttil.Command(function, *args, **kwargs)
             
             return wrapper
 
     @staticmethod
-    @Command
-    def OUT():
+    @Command(name = "OUT", const = True)
+    def OUT(content: thttil.types.String):
         print("OUT !")
+
+    @staticmethod
+    @Command(name = "PRINT", const = True)
+    def PRINT(content: thttil.types.String):
+        print(content)
