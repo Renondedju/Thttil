@@ -33,19 +33,44 @@ class DefaultThttilInterpreter:
         To get more help of how to use this luncher please execute : ``python Thttil.py -h``
     """
     
-    __slots__ = ("parser", "content", "thttil_parser")
+    __slots__ = ("arg_parser", "collection")
 
     def __init__(self):
         """ Main method of the default interpreter """
 
-        collection = thttil.CommandCollection(None)
+        self.arg_parser = ArgumentParser()
+        self.collection = thttil.CommandCollection(None)
 
-        parser = ArgumentParser()
-        
-        with open(parser.template, "rt") as file:
+        if self.arg_parser.template:
+            self.run_template_file()
+        else:
+            self.run_live_interpretation()
+
+    def run_live_interpretation(self):
+
+        try:
+            content = input("}> ")
+            while (True):
+
+                byte = thttil.Bytes.ofString(content)
+                thttil_parser = thttil.Parser(byte, "<thttil python live interpreter>")
+
+                for instruction in thttil_parser.parseProgram().instructions:
+                    self.pretty_print(instruction, byte)
+                    if (instruction.command_name == "EXIT"):
+                        exit(0)
+
+                content = input("}> ")
+
+        except KeyboardInterrupt:
+            exit(0)
+
+    def run_template_file(self):
+
+        with open(self.arg_parser.template, "rt") as file:
             content = thttil.Bytes.ofString(file.read())
 
-        thttil_parser = thttil.Parser(content, parser.template)
+        thttil_parser = thttil.Parser(content, self.arg_parser.template)
 
         for instruction in thttil_parser.parseProgram().instructions:
             self.pretty_print(instruction, content)

@@ -44,8 +44,6 @@ class Command(object):
             self.type       = param_type
             self.optional   = optional
 
-            print(self.name, self.type, self.optional)
-
     def __init__(self, command: callable, name: str, const: bool = False, *args, **kwargs):
 
         self.name      = name

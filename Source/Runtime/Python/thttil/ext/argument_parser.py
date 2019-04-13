@@ -42,9 +42,10 @@ class ArgumentParser:
     def _checkArgs(self):
 
         #Checking the template file
-        if (not os.path.isfile(self.template)):
-            print(f"Error: the template file named \"{ self.template }\" does not exists.")
-            exit(1)
+        if (self.template):
+            if (not os.path.isfile(self.template)):
+                print(f"Error: the template file named \"{ self.template }\" does not exists.")
+                exit(1)
 
     def _parseVariables(self, items: list = []):
         variables = {}
@@ -89,5 +90,5 @@ class ArgumentParser:
         self.optional_args.add_argument('-v', '--variables', type=str, nargs='+', metavar='variables',
             help="Variables to declare before the interpretation (format must be: var_name=value or var_name=\"some other values\")")
 
-        self.required_args.add_argument('-t', '--template', type=str, metavar='template',
-            help="Path to the template file to interpret (*.t, *.thtt, *.thttil file)", required=True)
+        self.optional_args.add_argument('-t', '--template', type=str, metavar='template',
+            help="Path to the template file to interpret (*.t, *.thtt, *.thttil file)")
