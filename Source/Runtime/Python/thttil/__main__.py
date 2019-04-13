@@ -22,6 +22,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from thttil.ext import DefaultThttilInterpreter
+from thttil.ext import DefaultThttilInterface
 
-DefaultThttilInterpreter()
+DefaultThttilInterface()

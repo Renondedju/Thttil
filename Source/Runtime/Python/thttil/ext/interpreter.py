@@ -22,63 +22,40 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import thttil
+from thttil         import CommandCollection, Parser, Bytes
+from thttil.symbols import Program
 
-from thttil.ext.argument_parser import ArgumentParser
+class Interpreter(object):
+    """ Thttil interpreter """
 
-class DefaultThttilInterpreter:
-    """ This is the default Thttil interpreter, read readme.md for more information.
-        Python 3.5+ is required. Python 3.x versions might work but those have not been
-        tested, use them at your won risks.
-        To get more help of how to use this luncher please execute : ``python Thttil.py -h``
-    """
-    
-    __slots__ = ("arg_parser", "collection")
+    __slots__ = ("parser", "program", "command_collection")
 
-    def __init__(self):
-        """ Main method of the default interpreter """
+    def __init__(self, command_collection: CommandCollection = None):
 
-        self.arg_parser = ArgumentParser()
-        self.collection = thttil.CommandCollection(None)
+        self.parser            : Parser                 = None
+        self.program           : thttil.symbols.Program = None
+        self.command_collection: CommandCollection = command_collection
 
-        if self.arg_parser.template:
-            self.run_template_file()
-        else:
-            self.run_live_interpretation()
+        if not self.command_collection:
+            self.command_collection: CommandCollection = CommandCollection(self)
 
-    def run_live_interpretation(self):
-
-        try:
-            content = input("}> ")
-            while (True):
-
-                byte = thttil.Bytes.ofString(content)
-                thttil_parser = thttil.Parser(byte, "<thttil python live interpreter>")
-
-                for instruction in thttil_parser.parseProgram().instructions:
-                    self.pretty_print(instruction, byte)
-                    if (instruction.command_name == "EXIT"):
-                        exit(0)
-
-                content = input("}> ")
-
-        except KeyboardInterrupt:
-            exit(0)
-
-    def run_template_file(self):
-
-        with open(self.arg_parser.template, "rt") as file:
-            content = thttil.Bytes.ofString(file.read())
-
-        thttil_parser = thttil.Parser(content, self.arg_parser.template)
-
-        for instruction in thttil_parser.parseProgram().instructions:
-            self.pretty_print(instruction, content)
-
-    @staticmethod
-    def pretty_print(instruction, content):
-        print("{0.command_name:<15} @{0.position.psource}:{0.position.pmin:<5} {1}"
+    def interpret(self):
         
-        .format(instruction, content.getString(instruction.position.pmin, instruction.position.pmax - instruction.position.pmin)
-            .replace("\n", "\\n")
-            .replace("\t", "\\t")))
+        for token in self.program.instructions:
+            print(token.command_name)
+
+    def interpret_content(self, content: str, source: str = "unknown"):
+        """ Interprets some arbitrary content """
+
+        self.parser  = Parser(Bytes.ofString(content), source)
+        self.program = self.parser.parseProgram()
+        self.interpret()
+
+    def interpret_file(self, filename: str):
+        """ Interprets a thtt file """
+
+        with open(filename, 'rt') as file:
+            self.parser = Parser(Bytes.ofString(file.read()), filename)
+
+        self.program = self.parser.parseProgram()
+        self.interpret()

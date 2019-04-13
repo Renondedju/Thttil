@@ -22,5 +22,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from .Interface      import DefaultThttilInterface
-from .ArgumentParser import ArgumentParser
+# Generated symbols
+from ..ThttilGenerated import thttil_symbols_InstructionBlock as InstructionBlock
+from ..ThttilGenerated import thttil_symbols_TokenDefinition  as TokenDefinition
+from ..ThttilGenerated import thttil_symbols_Variable         as Variable
+from ..ThttilGenerated import thttil_symbols_Argument         as Argument
+from ..ThttilGenerated import thttil_symbols_Program          as Program
+from ..ThttilGenerated import thttil_symbols_Keyword          as Keyword
+from ..ThttilGenerated import thttil_symbols_PString          as String
+from ..ThttilGenerated import thttil_symbols_Stream           as Stream
+from ..ThttilGenerated import thttil_symbols_Token            as Token

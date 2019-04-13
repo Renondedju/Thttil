@@ -41,14 +41,14 @@ __slots__ = ("Bytes", "StreamCollection", "SymbolKeyword", "Token",
             "Stream", "Parser", "Lexer", "SymbolInstructionBlock",
             "SymbolVariable", "SymbolArgument", "SymbolProgram",
             "SymbolString", "SymbolStream", "SymbolToken", "TokenDefinition",
-            "CommandCollection", "Command")
+            "CommandCollection", "Command", "Interpreter")
 
 # Native haxe symbols
 from .ThttilGenerated import haxe_io_Bytes as Bytes
 
 # Submodules
-from thttil.types import *
-from thttil.ext   import *
+import thttil.types
+import thttil.symbols
 
 # Python implementation
 from .Command           import Command
@@ -60,14 +60,3 @@ from .ThttilGenerated import thttil_Stream           as Stream
 from .ThttilGenerated import thttil_Parser           as Parser
 from .ThttilGenerated import thttil_Token            as Token
 from .ThttilGenerated import thttil_Lexer            as Lexer
-
-# Generated symbols
-from .ThttilGenerated import thttil_symbols_InstructionBlock as SymbolInstructionBlock
-from .ThttilGenerated import thttil_symbols_TokenDefinition  as TokenDefinition
-from .ThttilGenerated import thttil_symbols_Variable         as SymbolVariable
-from .ThttilGenerated import thttil_symbols_Argument         as SymbolArgument
-from .ThttilGenerated import thttil_symbols_Program          as SymbolProgram
-from .ThttilGenerated import thttil_symbols_Keyword          as SymbolKeyword
-from .ThttilGenerated import thttil_symbols_PString          as SymbolString
-from .ThttilGenerated import thttil_symbols_Stream           as SymbolStream
-from .ThttilGenerated import thttil_symbols_Token            as SymbolToken
