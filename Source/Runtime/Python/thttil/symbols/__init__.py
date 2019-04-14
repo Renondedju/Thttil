@@ -22,6 +22,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+__slots__ = ("InstructionBlock", "TokenDefinition", "Variable", "Argument", "Program",
+            "Keyword", "String", "Stream", "Token")
+
 # Generated symbols
 from ..ThttilGenerated import thttil_symbols_InstructionBlock as InstructionBlock
 from ..ThttilGenerated import thttil_symbols_TokenDefinition  as TokenDefinition

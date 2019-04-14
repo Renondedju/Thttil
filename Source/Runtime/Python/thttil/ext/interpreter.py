@@ -22,19 +22,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from thttil         import CommandCollection, Parser, Bytes
+from thttil         import CommandCollection, Parser, Bytes, StreamCollection
+from thttil.types   import Stream
 from thttil.symbols import Program
 
 class Interpreter(object):
     """ Thttil interpreter """
 
-    __slots__ = ("parser", "program", "command_collection")
+    __slots__ = ("parser", "program", "command_collection", "streams", "selected_stream")
 
     def __init__(self, command_collection: CommandCollection = None):
 
         self.parser            : Parser                 = None
         self.program           : thttil.symbols.Program = None
-        self.command_collection: CommandCollection = command_collection
+        self.streams           : StreamCollection       = StreamCollection()
+        self.selected_stream   : Stream                 = self.streams.getNamedStream("default")
+        self.command_collection: CommandCollection      = command_collection
 
         if not self.command_collection:
             self.command_collection: CommandCollection = CommandCollection(self)
@@ -42,7 +45,7 @@ class Interpreter(object):
     def interpret(self):
         
         for token in self.program.instructions:
-            print(token.command_name)
+            print(token.command_name, token.arguments)
 
     def interpret_content(self, content: str, source: str = "unknown"):
         """ Interprets some arbitrary content """

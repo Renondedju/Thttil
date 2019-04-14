@@ -22,5 +22,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+__slots__ = ("DefaultThttilInterface", "Interpreter", "ArgumentParser")
+
 from .Interface      import DefaultThttilInterface
+from .Interpreter    import Interpreter
 from .ArgumentParser import ArgumentParser

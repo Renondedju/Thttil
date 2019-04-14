@@ -22,8 +22,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from thttil                    import __version__
 from thttil.ext.ArgumentParser import ArgumentParser
 from thttil.ext.Interpreter    import Interpreter
+from sys                       import platform, version_info
 
 class DefaultThttilInterface:
     """ This is the default Thttil interface, read readme.md for more information.
@@ -47,11 +49,14 @@ class DefaultThttilInterface:
 
     def run_live_interpretation(self):
 
+        print(f"Thttil {__version__} [Python {version_info.major}.{version_info.minor}.{version_info.micro}] on {platform}")
+        print("Type \"$(EXIT)\" to exit.\n")
+        content = ""
+
         try:
-            content = input("}> ")
             while (True):
                 self.interpreter.interpret_content(content)
-                content = input("}> ")
+                content = input(f"@{self.interpreter.selected_stream.getName()}# ")
 
         except (EOFError, KeyboardInterrupt):
             exit(0)

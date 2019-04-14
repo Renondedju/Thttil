@@ -51,6 +51,11 @@ class Parser extends hxparse.Parser<hxparse.LexerTokenSource<thttil.Token>, thtt
 		super(token_source);
 	}
 
+    public function getSourceName(): String
+    {
+        return source_name;
+    }
+
     private function parsingError(error: thttil.error.ParserErrorMessage)
     {
         trace(error);

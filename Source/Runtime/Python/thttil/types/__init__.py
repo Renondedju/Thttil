@@ -24,7 +24,8 @@
 
 """ Definition of all the runtime types of thttil. """
 
-__slots__ = ("Variable", "String")
+__slots__ = ("Variable", "String", "Stream")
 
 from .String   import String
+from .Stream   import Stream
 from .Variable import Variable
